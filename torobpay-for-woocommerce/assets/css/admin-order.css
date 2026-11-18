@@ -1,0 +1,1316 @@
+/* TorobPay Order Status Field Styles */
+.torobpay_order_status {
+    clear: both;
+    margin-top: 15px;
+    width: auto !important;
+    max-width: 100%;
+}
+
+.torobpay_order_status h3 {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 14px;
+    margin: 0 0 8px 0;
+}
+
+#torobpay-status-display {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+    margin-top: 1em;
+}
+
+.torobpay-order-actions-block {
+    margin-top: 16px;
+}
+
+.torobpay-order-actions-block h3 {
+    font-size: 14px;
+    margin: 0 0 8px 0;
+}
+
+#torobpay-status-value {
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #fff;
+    min-width: 150px;
+    text-align: center;
+    transition: background 0.15s ease;
+}
+
+/* Status Colors */
+#torobpay-status-value.status-success {
+    background: #46b450;
+}
+
+#torobpay-status-value.status-pending {
+    background: #ffb900;
+}
+
+#torobpay-status-value.status-failed {
+    background: #dc3232;
+}
+
+#torobpay-status-value.status-loading {
+    background: #8c8f94;
+}
+
+#torobpay-status-value.status-unknown {
+    background: #72777c;
+}
+
+.torobpay-refresh-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    text-decoration: none;
+    cursor: pointer;
+    color: #2271b1;
+    background: #f0f0f1;
+    border-radius: 4px;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.torobpay-refresh-link:hover {
+    color: #135e96;
+    background: #dcdcde;
+}
+
+.torobpay-refresh-link:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #2271b1;
+}
+
+.torobpay-refresh-link .dashicons {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}
+
+.torobpay-refresh-link.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+    background: #f0f0f1;
+}
+
+/* TorobPay Order Note Styles */
+.note_content:has(.torobpay-success) {
+    background: #99ffc1 !important;
+    background-repeat: no-repeat, repeat !important;
+    background-position: 4% 88% !important;
+    background-size: 20px auto !important;
+    color: #000;
+    font-weight: 700;
+}
+
+.note_content:has(.torobpay-success)::after {
+    border-color: #99ffc1 transparent !important;
+}
+
+.note_content:has(.torobpay-notice) {
+    background-color: #ffcb33 !important;
+    background-repeat: no-repeat, repeat !important;
+    background-position: 4% 88% !important;
+    background-size: 20px auto !important;
+    color: #000;
+}
+
+.note_content:has(.torobpay-notice)::after {
+    border-color: #ffcb33 transparent !important;
+}
+
+@media (max-width: 600px) {
+    .note_content {
+        padding-left: 50px !important;
+    }
+    .note_content:has(.torobpay-notice, .torobpay-success) {
+        background-position: 1% 95% !important;
+    }
+}
+
+/* TorobPay Admin Menu Icon */
+#adminmenu .toplevel_page_torobpay-orders .wp-menu-image img {
+    width: 20px !important;
+    height: auto !important;
+}
+
+/* ===== Edit & Sync Items Modal ===== */
+.torobpay-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 100100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.torobpay-modal {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+    width: 800px;
+    max-width: 95vw;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    direction: rtl;
+}
+
+.torobpay-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: #f0fde8;
+    border-bottom: 1px solid #c3f09a;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+    position: relative;
+    z-index: 3;
+    overflow: visible;
+}
+
+.torobpay-modal-header h2 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.torobpay-modal-title-icon {
+    display: inline-block;
+    margin-left: 6px;
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    vertical-align: text-bottom;
+}
+
+.torobpay-modal-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    position: relative;
+    z-index: 2;
+}
+
+.torobpay-modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #50575e;
+    padding: 0 4px;
+    line-height: 1;
+}
+
+.torobpay-modal-close:hover {
+    color: #d63638;
+}
+
+.trb-kbd-help {
+    display: none;
+    position: relative;
+}
+
+.trb-kbd-help.is-visible {
+    display: block;
+}
+
+.trb-kbd-help__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #50575e;
+    cursor: help;
+    border-radius: 4px;
+}
+
+.trb-kbd-help__btn .dashicons {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    line-height: 1;
+}
+
+.trb-kbd-help__btn:hover,
+.trb-kbd-help:focus-within .trb-kbd-help__btn {
+    color: var(--trb-green-dark);
+    background: var(--trb-green-soft);
+}
+
+.trb-kbd-help__panel {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    inset-inline-end: 0;
+    width: 280px;
+    padding: 10px 12px;
+    background: #fff;
+    border: 1px solid var(--trb-green-border);
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(26, 28, 35, 0.12);
+    z-index: 10000;
+    text-align: start;
+}
+
+.trb-kbd-help:hover .trb-kbd-help__panel,
+.trb-kbd-help:focus-within .trb-kbd-help__panel {
+    display: block;
+}
+
+.trb-kbd-help__title {
+    margin: 0 0 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--trb-text);
+}
+
+.trb-kbd-help__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) max-content;
+    column-gap: 10px;
+    align-items: start;
+    margin: 0 0 6px;
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+.trb-kbd-help__row:last-child {
+    margin-bottom: 0;
+}
+
+.trb-kbd-help__desc {
+    color: var(--trb-text-muted);
+    text-align: start;
+}
+
+.trb-kbd-help__keys {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-shrink: 0;
+    gap: 3px;
+    direction: ltr;
+    unicode-bidi: isolate;
+    justify-self: end;
+}
+
+.trb-kbd-help__sep {
+    color: var(--trb-text-muted);
+    font-size: 11px;
+}
+
+.trb-kbd-help__keys kbd {
+    display: inline-block;
+    min-width: 1.4em;
+    padding: 1px 5px;
+    border: 1px solid #dcdcde;
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    background: #f6f7f7;
+    color: #1d2327;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.torobpay-modal-body {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+/* ── Action Needed suggestions modal ─────────────────────────────── */
+.torobpay-action-modal {
+    max-width: 520px;
+}
+
+.torobpay-action-summary {
+    border-right: 4px solid #b32d2e;
+    background: #fcf0f1;
+    padding: 12px 14px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+}
+
+.torobpay-action-summary.severity-warning {
+    border-right-color: #996800;
+    background: #fcf9e8;
+}
+
+.torobpay-action-summary.severity-neutral {
+    border-right-color: #2271b1;
+    background: #f0f6fc;
+}
+
+.torobpay-action-summary h3 {
+    margin: 0 0 6px;
+    font-size: 15px;
+}
+
+.torobpay-action-reason {
+    margin: 0 0 6px;
+    font-size: 13px;
+    color: #1d2327;
+}
+
+.torobpay-action-hint {
+    margin: 0;
+    font-size: 12px;
+    color: #646970;
+}
+
+.torobpay-action-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* Consistent sizing for every action button inside the modal. */
+.torobpay-action-buttons .button {
+    margin: 0;
+    height: auto;
+    min-height: 34px;
+    padding: 0 14px;
+    line-height: 32px;
+    border-radius: 4px;
+    box-shadow: none;
+}
+
+.torobpay-action-do-refund {
+    background: #b32d2e !important;
+    border-color: #b32d2e !important;
+    color: #fff !important;
+}
+.torobpay-action-do-refund:hover {
+    background: #8a2424 !important;
+    border-color: #8a2424 !important;
+}
+
+.torobpay-action-do-fail {
+    background: #50575e !important;
+    border-color: #50575e !important;
+    color: #fff !important;
+}
+.torobpay-action-do-fail:hover {
+    background: #3c4146 !important;
+    border-color: #3c4146 !important;
+}
+
+.torobpay-action-do-dismiss {
+    background: transparent !important;
+    border-color: #c5c5c5 !important;
+    color: #646970 !important;
+}
+.torobpay-action-do-dismiss:hover {
+    color: #1d2327 !important;
+    text-decoration: underline;
+}
+
+/* ===== WC order edit page: compact TorobPay action icons ===== */
+.trb-order-actions {
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: center;
+    margin: 0;
+    vertical-align: middle;
+    margin-top: 1em;
+}
+
+.trb-order-actions .trb-action-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.15s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.trb-order-actions .trb-action-btn .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    line-height: 1;
+}
+
+.trb-order-actions .trb-btn-primary {
+    background: #2271b1;
+    color: #fff;
+}
+.trb-order-actions .trb-btn-primary:hover {
+    background: #135e96;
+    color: #fff;
+}
+
+.trb-order-actions .trb-btn-danger {
+    background: #c33333;
+    color: #fff;
+}
+.trb-order-actions .trb-btn-danger:hover {
+    background: #a00;
+    color: #fff;
+}
+
+.trb-order-actions .trb-btn-warning {
+    background: #996800;
+    color: #fff;
+}
+.trb-order-actions .trb-btn-warning:hover {
+    background: #704d00;
+    color: #fff;
+}
+
+.trb-order-actions .trb-btn-attention {
+    background: #b32d2e;
+    color: #fff;
+    animation: trb-attention-pulse 1.8s ease-in-out infinite;
+}
+.trb-order-actions .trb-btn-attention.severity-warning {
+    background: #996800;
+    animation: none;
+}
+.trb-order-actions .trb-btn-attention.is-dismissed {
+    background: #646970;
+    color: #fff;
+    animation: none;
+}
+.trb-order-actions .trb-btn-attention.is-dismissed:hover {
+    background: #50575e;
+    color: #fff;
+}
+.trb-order-actions .trb-btn-attention:hover {
+    background: #8a2424;
+    color: #fff;
+}
+
+@keyframes trb-attention-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(179, 45, 46, 0.5); }
+    50%      { box-shadow: 0 0 0 4px rgba(179, 45, 46, 0); }
+}
+
+.trb-order-actions .trb-action-btn::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 6px);
+    top: auto;
+    right: auto;
+    transform: translateX(-50%);
+    background: #1d2327;
+    color: #fff;
+    font-size: 11px;
+    white-space: nowrap;
+    padding: 4px 8px;
+    border-radius: 3px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    z-index: 9999;
+}
+
+.trb-order-actions .trb-action-btn:not(:disabled):hover::after {
+    opacity: 1;
+}
+
+/* Unified order-page trigger button (opens the modal). */
+.torobpay-action-trigger {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 6px;
+    margin-right: 10px !important;
+    height: auto;
+    line-height: 1.9;
+    background: #b32d2e !important;
+    border-color: #b32d2e !important;
+    color: #fff !important;
+}
+.torobpay-action-trigger:hover {
+    background: #8a2424 !important;
+    border-color: #8a2424 !important;
+    color: #fff !important;
+}
+.torobpay-action-trigger .dashicons {
+    font-size: 17px;
+    width: 17px;
+    height: 17px;
+    line-height: 1 !important;
+}
+.torobpay-action-trigger.severity-warning {
+    background: #996800 !important;
+    border-color: #996800 !important;
+}
+.torobpay-action-trigger.severity-warning:hover {
+    background: #704d00 !important;
+    border-color: #704d00 !important;
+}
+/* Dismissed: still flagged & clickable, but muted to a non-alarming grey. */
+.torobpay-action-trigger.is-dismissed {
+    background: #646970 !important;
+    border-color: #646970 !important;
+    color: #fff !important;
+}
+.torobpay-action-trigger.is-dismissed:hover {
+    background: #50575e !important;
+    border-color: #50575e !important;
+    color: #fff !important;
+}
+
+.torobpay-items-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.torobpay-items-table th {
+    text-align: right;
+    padding: 8px 10px;
+    background: #f0f0f1;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.torobpay-items-table td {
+    padding: 10px;
+    border-bottom: 1px solid #f0f0f1;
+    font-size: 13px;
+    vertical-align: middle;
+}
+
+.torobpay-items-table .torobpay-item-qty,
+.torobpay-items-table .torobpay-item-unit-price-input {
+    direction: rtl;
+    text-align: center;
+}
+
+.torobpay-items-table .torobpay-item-qty {
+    width: 60px;
+}
+
+.torobpay-items-table .torobpay-item-unit-price-input {
+    width: 100px;
+}
+
+.torobpay-items-table .torobpay-remove-item {
+    color: #d63638;
+    border-color: #d63638;
+    font-size: 16px;
+    line-height: 1;
+    padding: 2px 8px;
+    min-height: auto;
+}
+
+.torobpay-items-table .torobpay-remove-item:hover {
+    background: #d63638;
+    color: #fff;
+}
+
+.torobpay-items-table .torobpay-restore-item {
+    color: #2271b1;
+    border-color: #2271b1;
+    font-size: 16px;
+    line-height: 1;
+    padding: 2px 8px;
+    min-height: auto;
+}
+
+.torobpay-items-table .torobpay-restore-item:hover {
+    background: #2271b1;
+    color: #fff;
+}
+
+tr.torobpay-item-removed {
+    opacity: 0.35;
+    text-decoration: line-through;
+}
+
+tr.torobpay-item-removed .torobpay-item-qty,
+tr.torobpay-item-removed .torobpay-item-unit-price-input {
+    pointer-events: none;
+}
+
+.torobpay-modal-footer {
+    padding: 14px 20px;
+    border-top: 1px solid #dcdcde;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ── Edit-sync: resume banner & inline validation ─────────────────── */
+.torobpay-edit-resume-banner {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    margin-bottom: 14px;
+    padding: 10px 12px;
+    font-size: 13px;
+    color: #6d4c00;
+    background: #fcf9e8;
+    border: 1px solid #dba617;
+    border-right: 4px solid #996800;
+    border-radius: 4px;
+}
+
+.torobpay-edit-resume-banner .dashicons {
+    flex-shrink: 0;
+    margin-top: 1px;
+    color: #996800;
+}
+
+.torobpay-edit-validation {
+    margin: 0 0 14px;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #8a2424;
+    background: #fcf0f1;
+    border: 1px solid #f0b4b4;
+    border-right: 4px solid #d63638;
+    border-radius: 4px;
+}
+
+.torobpay-edit-already-saved {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #8a2424;
+    background: #fcf0f1;
+    border: 1px solid #f0b4b4;
+    border-right: 4px solid #d63638;
+    border-radius: 4px;
+}
+
+.torobpay-edit-already-saved .torobpay-already-saved-message {
+    margin: 0;
+    flex: 1;
+}
+
+.torobpay-edit-already-saved .torobpay-reload-editor {
+    flex-shrink: 0;
+    color: #2c3338;
+    font-weight: 400;
+}
+
+/* ── Toast notifications (edit-sync & shared admin) ───────────────── */
+.torobpay-toast-container {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    z-index: 100150;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 0 16px;
+    box-sizing: border-box;
+    pointer-events: none;
+    direction: rtl;
+}
+
+.torobpay-toast {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    box-sizing: border-box;
+    width: min(480px, 100%);
+    max-width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #c3c4c7;
+    border-right-width: 4px;
+    border-radius: 6px;
+    background: #f6f7f7;
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.18),
+        0 0 0 1px rgba(0, 0, 0, 0.04);
+    opacity: 0;
+    transform: translateY(-14px);
+    transition: opacity 0.22s ease, transform 0.22s ease;
+    pointer-events: auto;
+}
+
+.torobpay-toast.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.torobpay-toast--success {
+    background: #f0fde8;
+    border-color: #9ce76a;
+    border-right-color: #00a32a;
+}
+
+.torobpay-toast--error {
+    background: #fff4f4;
+    border-color: #f5c6c6;
+    border-right-color: #d63638;
+}
+
+.torobpay-toast--warning {
+    background: #fcf9e8;
+    border-color: #f0d58a;
+    border-right-color: #dba617;
+}
+
+.torobpay-toast--info {
+    background: #f0f6fc;
+    border-color: #c5d9ed;
+    border-right-color: #2271b1;
+}
+
+.torobpay-toast-icon {
+    flex-shrink: 0;
+    margin-top: 1px;
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
+}
+
+.torobpay-toast--success .torobpay-toast-icon { color: #007017; }
+.torobpay-toast--error .torobpay-toast-icon { color: #8a1f1f; }
+.torobpay-toast--warning .torobpay-toast-icon { color: #6d4c00; }
+.torobpay-toast--info .torobpay-toast-icon { color: #135e96; }
+
+.torobpay-toast-message {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.55;
+    color: #1d2327;
+}
+
+.torobpay-toast--success .torobpay-toast-message { color: #1e4620; }
+.torobpay-toast--error .torobpay-toast-message { color: #5a2020; }
+.torobpay-toast--warning .torobpay-toast-message { color: #5c4400; }
+.torobpay-toast--info .torobpay-toast-message { color: #1a3d5c; }
+
+.torobpay-toast-dismiss {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    font-size: 20px;
+    line-height: 1;
+    color: #50575e;
+    cursor: pointer;
+    padding: 0 2px;
+    opacity: 0.7;
+    transition: opacity 0.15s ease, color 0.15s ease;
+}
+
+.torobpay-toast-dismiss:hover {
+    opacity: 1;
+    color: #1d2327;
+}
+
+@media screen and (max-width: 782px) {
+    .torobpay-toast-container {
+        left: 16px;
+        right: 16px;
+        padding: 0;
+        width: auto;
+        max-width: none;
+    }
+
+    .torobpay-toast {
+        width: 100%;
+    }
+}
+
+#torobpay-order-fields {
+    padding: 14px 16px;
+    background: #f9f9f9;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+}
+
+.torobpay-order-fields-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 20px;
+    direction: rtl;
+}
+
+.torobpay-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.torobpay-field-group label {
+    font-weight: 600;
+    font-size: 12px;
+    color: #50575e;
+}
+
+.torobpay-field-group input[type="number"],
+.torobpay-field-group input[type="text"] {
+    padding: 6px 8px;
+    font-size: 13px;
+    border: 1px solid #dcdcde;
+    border-radius: 3px;
+    direction: rtl;
+    text-align: center;
+}
+
+.torobpay-field-group input[readonly] {
+    background: #fff;
+    color: #50575e;
+}
+
+.torobpay-field-full {
+    grid-column: 1 / -1;
+}
+
+.torobpay-field-group input[type="number"],
+.torobpay-field-group input[type="text"] {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Inputs for Edit & Sync modal: tax and totals (pulsing state handled via .trb-tax-updating) */
+#torobpay-edit-tax.trb-tax-updating,
+#torobpay-edit-new-total.trb-tax-updating {
+    animation: trb-pulse 1s infinite;
+}
+
+#torobpay-edit-new-total,
+#torobpay-original-total,
+#torobpay-edit-tax {
+    text-align: center;
+    direction: ltr;
+}
+
+@keyframes trb-pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.35; }
+}
+
+.trb-loading {
+    animation: trb-pulse 1s ease-in-out infinite;
+    pointer-events: none;
+}
+
+/* ===== Add Product Section ===== */
+.trb-add-product-section {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: #f9f9f9;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    position: relative;
+}
+
+.trb-add-product-section .trb-add-product-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.trb-add-product-section .regular-text {
+    flex: 1;
+    min-width: 180px;
+    direction: rtl;
+}
+
+.trb-add-product-section [role="listbox"] {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    z-index: 9999;
+    max-height: 220px;
+    overflow-y: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.trb-product-result-item {
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 13px;
+    border-bottom: 1px solid #f0f0f1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    direction: rtl;
+}
+
+.trb-product-result-item:last-child {
+    border-bottom: none;
+}
+
+.trb-product-result-item:hover {
+    background: #f0f6fc;
+}
+
+.trb-product-result-item.trb-checked,
+.trb-product-result-item.trb-checked:hover {
+    background: var(--trb-green-soft);
+}
+
+.trb-product-result-item.trb-selected {
+    box-shadow: inset 0 0 0 2px #2271b1;
+}
+
+.trb-product-result-check {
+    flex-shrink: 0;
+    box-sizing: border-box;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #8c8f94;
+    border-radius: 2px;
+    background: #fff;
+    position: relative;
+}
+
+.trb-product-result-item.trb-checked .trb-product-result-check {
+    background: var(--trb-green-dark);
+    border-color: var(--trb-green-dark);
+}
+
+.trb-product-result-item.trb-checked .trb-product-result-check::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 1px;
+    width: 5px;
+    height: 9px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.trb-product-result-main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.trb-product-result-name {
+    font-weight: 500;
+    color: #1d2327;
+}
+
+.trb-product-result-meta {
+    display: inline-flex;
+    align-items: center;
+    color: #72777c;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.trb-product-result-add {
+    width: 28px !important;
+    height: 28px !important;
+    min-height: 28px !important;
+    padding: 0 !important;
+    flex-shrink: 0;
+}
+
+.trb-product-result-sku,
+.trb-product-result-price {
+    unicode-bidi: isolate;
+    white-space: nowrap;
+}
+
+.trb-product-result-sku + .trb-product-result-price::before {
+    content: '·';
+    margin-inline: 6px;
+    opacity: 0.7;
+}
+
+.trb-add-product-section .trb-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    flex-shrink: 0;
+    line-height: normal;
+}
+
+.trb-add-product-section .trb-icon-btn .dashicons {
+    line-height: normal !important;
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}
+
+.trb-add-product-searching {
+    padding: 10px 12px;
+    color: #72777c;
+    font-size: 13px;
+    direction: rtl;
+}
+
+tr.torobpay-item-new td {
+    background: #f0f6fc;
+}
+
+/* ===== In-store order modal ===== */
+#torobpay-instore-modal-overlay .torobpay-modal {
+    width: 860px;
+}
+
+.torobpay-instore-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 16px;
+    margin-bottom: 16px;
+}
+
+.torobpay-instore-form-grid .torobpay-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.torobpay-instore-form-grid label {
+    font-weight: 600;
+}
+
+.torobpay-instore-amount-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+#torobpay-instore-modal-overlay .torobpay-tooltip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    background: #9ca3af;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 10px;
+    font-weight: 700;
+    cursor: help;
+    position: relative;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+#torobpay-instore-modal-overlay .torobpay-tooltip::after {
+    content: attr(data-tip);
+    position: absolute;
+    top: calc(100% + 8px);
+    right: -8px;
+    background: #1a1c23;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 400;
+    padding: 8px 12px;
+    border-radius: 6px;
+    width: 260px;
+    white-space: normal;
+    text-align: right;
+    direction: rtl;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+    z-index: 20;
+    line-height: 1.6;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+#torobpay-instore-modal-overlay .torobpay-tooltip::before {
+    content: '';
+    position: absolute;
+    top: calc(100% + 2px);
+    right: 4px;
+    border: 6px solid transparent;
+    border-bottom-color: #1a1c23;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+    z-index: 20;
+}
+
+#torobpay-instore-modal-overlay .torobpay-tooltip:hover::after,
+#torobpay-instore-modal-overlay .torobpay-tooltip:hover::before {
+    opacity: 1;
+}
+
+#torobpay-instore-items-table .torobpay-instore-items-empty td {
+    text-align: center;
+    color: #646970;
+    padding: 18px 12px;
+    font-style: italic;
+}
+
+.torobpay-instore-totals {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 16px;
+}
+
+.torobpay-instore-totals .torobpay-field-group input {
+    background: #f6f7f7;
+}
+
+#torobpay-instore-add-product-section.is-disabled {
+    opacity: 0.55;
+    pointer-events: none;
+}
+
+.torobpay-instore-pay-note {
+    margin: 0 0 12px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.torobpay-instore-qr-wrap {
+    text-align: center;
+    padding: 12px 0 8px;
+}
+
+#torobpay-instore-qr {
+    display: inline-block;
+    padding: 12px;
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 8px;
+}
+
+#torobpay-instore-qr img,
+#torobpay-instore-qr canvas,
+#torobpay-instore-qr table {
+    margin: 0 auto;
+}
+
+.torobpay-instore-pay-meta {
+    margin: 12px 0 0;
+    font-size: 13px;
+}
+
+.torobpay-instore-url-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 12px;
+}
+
+.torobpay-instore-url-row input {
+    flex: 1;
+    direction: ltr;
+    text-align: left;
+}
+
+.torobpay-instore-watch {
+    margin: 0 0 14px;
+    padding: 10px 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    border-radius: 8px;
+    border: 1px solid transparent;
+}
+
+.torobpay-instore-watch.is-pending {
+    color: #1d4d12;
+    background: #f4fbe8;
+    border-color: #c6e9a8;
+}
+
+.torobpay-instore-watch.is-paid {
+    color: #0f5132;
+    background: #d1e7dd;
+    border-color: #a3cfbb;
+}
+
+.torobpay-instore-watch.is-failed {
+    color: #842029;
+    background: #f8d7da;
+    border-color: #f1aeb5;
+}
+
+.torobpay-instore-watch.is-closed {
+    color: #41464b;
+    background: #e9ecef;
+    border-color: #ced4da;
+}
+
+.torobpay-instore-badge {
+    display: inline-block;
+    margin-inline-start: 6px;
+    padding: 1px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.6;
+    color: #1d4d12;
+    background: #e6f6d9;
+    border: 1px solid #9ce76a;
+    border-radius: 999px;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+/* Outrank WooCommerce `#order_data .order_data_column > h3 span { display: block }`. */
+#order_data .order_data_column.torobpay_order_status > h3 .torobpay-instore-badge {
+    display: inline-flex;
+    align-items: center;
+    width: auto;
+    max-width: max-content;
+    flex: 0 0 auto;
+    margin-inline-start: 0;
+}
+
+.torobpay-instore-form-grid label .required {
+    color: #d63638;
+    font-weight: 700;
+}
+
+input#torobpay-instore-phone,
+input#torobpay-instore-name,
+input#torobpay-instore-coupon,
+input#torobpay-instore-amount {
+    width: 100% !important;
+}
+
+a#torobpay-add-instore-order {
+    margin-right: 10px !important;
+}

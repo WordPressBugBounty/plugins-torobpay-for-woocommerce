@@ -1,0 +1,2682 @@
+/* Visual settings page loader */
+.torobpay-visual-settings-loader {
+	display: none;
+	position: fixed;
+	inset: 0;
+	z-index: 100000;
+	align-items: center;
+	justify-content: center;
+	background: rgba(255, 255, 255, 0.92);
+}
+
+.torobpay-visual-settings-loader img {
+	display: block;
+	width: 100px;
+	height: 100px;
+}
+
+.torobpay-visual-settings-wrap[aria-busy="true"] .torobpay-visual-settings-loader {
+	display: flex;
+}
+
+.torobpay-visual-settings-wrap[aria-busy="true"] > :not(.torobpay-visual-settings-loader) {
+	visibility: hidden;
+}
+
+.torobpay-visual-settings-wrap .required {
+	color: #d63638;
+	font-weight: 700;
+}
+
+/* Shared chrome so the visibility card and sidebar card stay the same width. */
+.torobpay-display-settings-card,
+.torobpay-visual-settings-layout {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 1100px;
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 12px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+/* In-page sidebar + settings card */
+.torobpay-visual-settings-layout {
+	display: grid;
+	grid-template-columns: minmax(200px, 240px) minmax(0, 1fr);
+	margin-top: 0;
+}
+
+.torobpay-visual-settings-nav {
+	background: #f6f7f7;
+	border-inline-end: 1px solid #dcdcde;
+	border-start-start-radius: 12px;
+	border-end-start-radius: 12px;
+}
+
+.torobpay-visual-settings-nav-list {
+	position: sticky;
+	top: 32px;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	margin: 0;
+	padding: 12px 10px;
+}
+
+.torobpay-visual-settings-nav-item {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 12px;
+	border: 1px solid transparent;
+	border-radius: 10px;
+	font-size: 14px;
+	line-height: 1.35;
+	white-space: normal;
+}
+
+.torobpay-visual-settings-wrap a.torobpay-visual-settings-nav-item,
+.torobpay-visual-settings-wrap a.torobpay-visual-settings-nav-item:hover,
+.torobpay-visual-settings-wrap a.torobpay-visual-settings-nav-item:focus,
+.torobpay-visual-settings-wrap a.torobpay-visual-settings-nav-item:focus-visible,
+.torobpay-visual-settings-wrap a.torobpay-visual-settings-nav-item:active {
+	color: #1d2327;
+	text-decoration: none;
+	border-radius: 10px;
+	box-shadow: none !important;
+	outline: none !important;
+}
+
+.torobpay-visual-settings-wrap a.torobpay-visual-settings-nav-item:hover,
+.torobpay-visual-settings-wrap a.torobpay-visual-settings-nav-item:focus,
+.torobpay-visual-settings-wrap a.torobpay-visual-settings-nav-item:focus-visible {
+	background: #fff;
+	color: #003D01;
+}
+
+.torobpay-visual-settings-wrap a.torobpay-visual-settings-nav-item.is-active,
+.torobpay-visual-settings-wrap a.torobpay-visual-settings-nav-item.is-active:hover,
+.torobpay-visual-settings-wrap a.torobpay-visual-settings-nav-item.is-active:focus,
+.torobpay-visual-settings-wrap a.torobpay-visual-settings-nav-item.is-active:focus-visible {
+	background: linear-gradient(135deg, #9CE76A 0%, #ABF27B 100%);
+	border-color: #003D01;
+	color: #003D01;
+	font-weight: 600;
+}
+
+.torobpay-visual-settings-nav-item .dashicons {
+	flex-shrink: 0;
+	width: 18px;
+	height: 18px;
+	font-size: 18px;
+	line-height: 1;
+}
+
+.torobpay-visual-settings-nav-label {
+	min-width: 0;
+}
+
+.torobpay-visual-settings-main {
+	min-width: 0;
+	background: #fff;
+	border-start-end-radius: 12px;
+	border-end-end-radius: 12px;
+}
+
+.torobpay-visual-settings-main .tab-content {
+	padding: 16px 20px 8px;
+}
+
+.torobpay-visual-settings-main .tab-content > .section-title:first-child {
+	margin-top: 4px;
+}
+
+.torobpay-visual-settings-main .submit {
+	margin: 8px 0 0;
+	padding: 16px 20px 20px;
+	border-top: 1px solid #dcdcde;
+	background: #fff;
+}
+
+.torobpay-visual-settings-wrap .torobpay-visual-settings-main .submit .button {
+	border-radius: 10px;
+}
+
+@media (max-width: 782px) {
+	.torobpay-visual-settings-layout {
+		grid-template-columns: 1fr;
+	}
+
+	.torobpay-visual-settings-nav {
+		border-inline-end: none;
+		border-bottom: 1px solid #dcdcde;
+		border-start-end-radius: 12px;
+		border-end-start-radius: 0;
+	}
+
+	.torobpay-visual-settings-nav-list {
+		position: static;
+		flex-direction: row;
+		flex-wrap: wrap;
+		padding: 10px;
+	}
+
+	.torobpay-visual-settings-nav-item {
+		flex: 1 1 calc(50% - 4px);
+	}
+
+	.torobpay-visual-settings-main {
+		border-start-end-radius: 0;
+		border-end-start-radius: 12px;
+	}
+}
+
+/* Slider placement tabs (horizontal with overflow) */
+.torobpay-tab-bar {
+	display: flex;
+	align-items: flex-end;
+	gap: 0;
+	margin: 20px 0 0;
+	border-bottom: 1px solid #ccc;
+	position: relative;
+	direction: rtl;
+}
+
+.torobpay-tab-bar .nav-tab-wrapper {
+	flex: 1;
+	min-width: 0;
+	display: flex;
+	flex-wrap: nowrap;
+	overflow: visible;
+	border-bottom: none;
+	margin: 0;
+	padding: 0;
+	direction: rtl;
+}
+
+.torobpay-tab-bar .nav-tab {
+	flex: 0 0 auto;
+	white-space: nowrap;
+	font-size: 15px;
+	padding: 10px 20px;
+	border-top-left-radius: 8px !important;
+	border-top-right-radius: 8px !important;
+}
+
+.torobpay-tab-bar .nav-tab.nav-tab-active {
+	background: linear-gradient(135deg, #9CE76A 0%, #ABF27B 100%) !important;
+	border-color: #003D01 !important;
+	color: #003D01 !important;
+	font-weight: 600;
+}
+
+.torobpay-tab-bar .nav-tab.nav-tab-active:focus {
+	box-shadow: inherit;
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+}
+
+.torobpay-tab-bar .nav-tab.is-tab-overflow-hidden {
+	display: none !important;
+}
+
+.torobpay-tab-overflow {
+	flex: 0 0 auto;
+	position: relative;
+	align-self: stretch;
+	display: flex;
+	align-items: flex-end;
+	direction: ltr;
+}
+
+.torobpay-tab-overflow[hidden] {
+	display: none !important;
+}
+
+.torobpay-tab-overflow-trigger {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	min-width: 40px;
+	height: 49px;
+	margin: 0 4px -1px 0;
+	padding: 0 10px;
+	border: 1px solid #c3c4c7;
+	border-bottom: none;
+	border-radius: 8px 8px 0 0;
+	background: #f0f0f1;
+	color: #50575e;
+	cursor: pointer;
+	line-height: 1;
+}
+
+.torobpay-tab-overflow-trigger:hover,
+.torobpay-tab-overflow-trigger[aria-expanded="true"] {
+	background: #fff;
+	color: #1d2327;
+	border-color: #ccc;
+}
+
+.torobpay-tab-overflow-trigger .dashicons {
+	width: 18px;
+	height: 18px;
+	font-size: 18px;
+}
+
+.torobpay-tab-overflow-count {
+	font-size: 12px;
+	font-weight: 600;
+	min-width: 1ch;
+}
+
+.torobpay-tab-overflow-menu {
+	position: absolute;
+	top: calc(100% - 1px);
+	left: 0;
+	z-index: 100;
+	min-width: 220px;
+	max-width: min(320px, 90vw);
+	max-height: 320px;
+	overflow-y: auto;
+	margin: 0;
+	padding: 6px 0;
+	border: 1px solid #c3c4c7;
+	border-radius: 0 0 6px 6px;
+	background: #fff;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.torobpay-tab-overflow-item {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	width: 100%;
+	padding: 10px 14px;
+	border: none;
+	background: transparent;
+	color: #1d2327;
+	font-size: 14px;
+	text-align: right;
+	cursor: pointer;
+	direction: rtl;
+}
+
+.torobpay-tab-overflow-item:hover,
+.torobpay-tab-overflow-item:focus {
+	background: #f6f7f7;
+	outline: none;
+}
+
+.torobpay-tab-overflow-item.is-active {
+	background: linear-gradient(135deg, #9CE76A 0%, #ABF27B 100%);
+	color: #003D01;
+	font-weight: 600;
+}
+
+.torobpay-tab-overflow-item .dashicons {
+	flex-shrink: 0;
+}
+
+.tab-content {
+	display: none;
+}
+
+.tab-content.active {
+	display: block;
+}
+
+.section-title {
+	margin-top: 30px;
+	margin-bottom: 0;
+	padding: 10px 15px;
+	background: linear-gradient(135deg, #9CE76A 0%, #ABF27B 100%);
+	color: #003D01;
+	border-radius: 6px;
+	font-size: 16px;
+	font-weight: 600;
+	border-right: 4px solid #003D01;
+	cursor: pointer;
+	display: flex;
+	gap: 8px;
+	align-items: center;
+	user-select: none;
+}
+
+.tab-content>.section-title:first-child {
+	margin-top: 10px;
+}
+
+.section-title+.form-table {
+	margin-top: 0;
+	border-radius: 0 0 6px 6px;
+	margin-bottom: 20px;
+}
+
+.section-collapse-icon {
+	transition: transform 0.2s ease;
+	flex-shrink: 0;
+	margin-right: auto;
+	font-size: 18px;
+	opacity: 0.7;
+}
+
+.section-title.torobpay-section-collapsed {
+	background: #d3d3d3;
+	color: #50575e;
+	border-right-color: #8c8f94;
+}
+
+.section-title.torobpay-section-collapsed .section-collapse-icon {
+	transform: rotate(-180deg);
+	opacity: 0.5;
+}
+
+.section-title.torobpay-section-collapsed + .torobpay-settings-note {
+	display: none;
+}
+
+.section-title.torobpay-section-collapsed + .form-table,
+.section-title.torobpay-section-collapsed + p.description,
+.section-title.torobpay-section-collapsed + p.description + .form-table,
+.section-title.torobpay-section-collapsed + .torobpay-settings-note + .form-table,
+.section-title.torobpay-section-collapsed + .torobpay-settings-note + .torobpay-layout-presets {
+	display: none;
+}
+
+/* -------------------------------------------------------------------------
+ * Per-device (responsive) settings field — switchable desktop/tablet/mobile.
+ *
+ * Structure:
+ *   .torobpay-responsive-field[data-active-device="desktop|tablet|mobile"]
+ *     .torobpay-rf-switcher  (button group)
+ *       button.torobpay-rf-btn[data-device="desktop|tablet|mobile"]
+ *     input.torobpay-rf-input[data-device="…"]  (one per device, hidden unless active)
+ *     span.torobpay-rf-unit
+ *     p.torobpay-rf-hint  (optional, textarea variant only)
+ * ---------------------------------------------------------------------- */
+.torobpay-responsive-field {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	flex-wrap: wrap;
+}
+
+/* Button group pill */
+.torobpay-rf-switcher {
+	display: inline-flex;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	overflow: hidden;
+	flex-shrink: 0;
+	height: 38px;
+}
+
+.torobpay-rf-btn {
+	background: #f6f7f7;
+	border: none;
+	border-right: 1px solid #c3c4c7;
+	padding: 3px 6px;
+	cursor: pointer;
+	color: #646970;
+	display: flex;
+	align-items: center;
+	line-height: 1;
+	transition: background 0.12s, color 0.12s;
+}
+
+.torobpay-rf-btn:first-child {
+	border-right: none;
+}
+
+.torobpay-rf-btn:hover {
+	background: #dcdcde;
+	color: #1d2327;
+}
+
+.torobpay-rf-btn.is-active {
+	background: #003D01;
+	color: #9CE76A;
+}
+
+.torobpay-rf-btn .dashicons {
+	font-size: 15px;
+	width: 15px;
+	height: 15px;
+}
+
+/* Only the active device's input/textarea is visible */
+.torobpay-responsive-field .torobpay-rf-input[data-device],
+.torobpay-responsive-field textarea[data-device] {
+	display: none;
+}
+
+.torobpay-responsive-field[data-active-device="desktop"] .torobpay-rf-input[data-device="desktop"],
+.torobpay-responsive-field[data-active-device="desktop"] textarea[data-device="desktop"] {
+	display: block;
+}
+
+.torobpay-responsive-field[data-active-device="tablet"] .torobpay-rf-input[data-device="tablet"],
+.torobpay-responsive-field[data-active-device="tablet"] textarea[data-device="tablet"] {
+	display: block;
+}
+
+.torobpay-responsive-field[data-active-device="mobile"] .torobpay-rf-input[data-device="mobile"],
+.torobpay-responsive-field[data-active-device="mobile"] textarea[data-device="mobile"] {
+	display: block;
+}
+
+/* number inputs stay small; textareas go full-width */
+.torobpay-responsive-field .torobpay-rf-input {
+	width: 80px;
+}
+
+.torobpay-responsive-field textarea.torobpay-rf-input {
+	width: 100%;
+	min-width: 300px;
+}
+
+.torobpay-rf-unit {
+	color: #646970;
+}
+
+.torobpay-rf-hint {
+	width: 100%;
+	margin-top: 4px !important;
+	margin-bottom: 0 !important;
+}
+
+/* Tablet/mobile hint badge shown on button when that device has a saved value */
+.torobpay-rf-btn.has-value {
+	position: relative;
+}
+
+.torobpay-rf-btn.has-value::after {
+	content: '';
+	position: absolute;
+	top: 2px;
+	left: 2px;
+	width: 5px;
+	height: 5px;
+	border-radius: 50%;
+	background: #9CE76A;
+	border: 1px solid #003D01;
+}
+
+/* Tooltip styles */
+.torobpay-tooltip {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 16px;
+	height: 16px;
+	background: #9CA3AF;
+	color: #fff;
+	border-radius: 50%;
+	font-size: 10px;
+	font-weight: bold;
+	cursor: help;
+	margin-right: 5px;
+	margin-left: 2px;
+	position: relative;
+	vertical-align: middle;
+	flex-shrink: 0;
+	line-height: 1;
+}
+
+.torobpay-tooltip::after {
+	content: attr(data-tip);
+	position: absolute;
+	bottom: calc(100% + 8px);
+	right: -8px;
+	background: #1a1c23;
+	color: #fff;
+	font-size: 12px;
+	font-weight: normal;
+	padding: 8px 12px;
+	border-radius: 6px;
+	width: 260px;
+	white-space: normal;
+	text-align: right;
+	direction: rtl;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.15s ease;
+	z-index: 99999;
+	line-height: 1.6;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.torobpay-tooltip::before {
+	content: '';
+	position: absolute;
+	bottom: calc(100% + 2px);
+	right: 4px;
+	border: 6px solid transparent;
+	border-top-color: #1a1c23;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.15s ease;
+	z-index: 99999;
+}
+
+.torobpay-tooltip:hover::after,
+.torobpay-tooltip:hover::before {
+	opacity: 1;
+}
+
+.form-table th {
+	overflow: visible;
+	vertical-align: middle;
+}
+
+.torobpay-display-settings-card {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	padding: 20px 20px 8px;
+}
+
+.torobpay-display-settings-card-header {
+	margin-bottom: 4px;
+}
+
+.torobpay-display-settings-card-header h2 {
+	line-height: 1.8;
+}
+
+.torobpay-display-settings-card h2 {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin: 0 0 6px;
+	color: #003D01;
+	font-size: 16px;
+}
+
+.torobpay-display-settings-card-header .description {
+	margin: 0 0 4px;
+}
+
+.torobpay-display-setting-label {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-weight: 600;
+}
+
+.torobpay-display-toggles-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 10px 28px;
+	margin-top: 12px;
+	padding-bottom: 12px;
+}
+
+.torobpay-display-toggle-item {
+	display: flex;
+	align-items: center;
+	min-height: 30px;
+}
+
+.torobpay-display-toggle-name {
+	display: inline-flex;
+	align-items: center;
+	gap: 3px;
+}
+
+.torobpay-display-toggle-item .torobpay-display-setting-label {
+	gap: 8px;
+}
+
+.torobpay-display-settings-card.is-loading .torobpay-display-toggles-grid {
+	opacity: 0.45;
+	pointer-events: none;
+	user-select: none;
+}
+
+@media only screen and (max-width: 600px) {
+
+	.torobpay-display-toggles-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+.torobpay-display-settings-card h2 .torobpay-display-toggle-status {
+	font-size: 12px;
+	font-weight: 500;
+	padding: 2px 8px;
+	border-radius: 10px;
+	transition: opacity 0.3s;
+	line-height: 1.6;
+}
+
+.torobpay-display-toggle-status.saving {
+	background: #f0f0f1;
+	color: #50575e;
+}
+
+.torobpay-display-toggle-status.saved {
+	background: #edfaec;
+	color: #1e6e1e;
+}
+
+.torobpay-display-toggle-status.error {
+	background: #fde8e8;
+	color: #b32d2e;
+}
+
+.torobpay-display-setting-label input[type="checkbox"] {
+	margin: 0;
+}
+
+/* Widget layout preset cards */
+
+.torobpay-layout-presets {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+	gap: 12px;
+	margin: 0 0 28px;
+}
+
+.torobpay-layout-preset-card {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 12px;
+	margin: 0;
+	border: 2px solid #e2e4ea;
+	border-radius: 12px;
+	background: #fff;
+	cursor: pointer;
+	text-align: right;
+	transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+	box-shadow: none;
+	appearance: none;
+	-webkit-appearance: none;
+	font: inherit;
+	color: inherit;
+}
+
+.torobpay-layout-preset-card:hover {
+	border-color: #9CE76A;
+	box-shadow: 0 4px 14px rgba(0, 61, 1, 0.08);
+	transform: translateY(-1px);
+}
+
+.torobpay-layout-preset-card.is-selected {
+	border-color: #003D01;
+	box-shadow: 0 0 0 1px #003D01, 0 6px 16px rgba(0, 61, 1, 0.12);
+}
+
+.torobpay-layout-preset-card:focus-visible {
+	outline: 2px solid #9CE76A;
+	outline-offset: 2px;
+}
+
+.torobpay-layout-preset-swatch {
+	pointer-events: none;
+	margin: 0 !important;
+	width: 100% !important;
+	min-height: 72px;
+	padding: 10px !important;
+	gap: 6px !important;
+	cursor: default !important;
+	transform: none !important;
+	box-shadow: none !important;
+}
+
+.torobpay-layout-preset-swatch:hover,
+.torobpay-layout-preset-swatch:active {
+	transform: none !important;
+	box-shadow: none !important;
+}
+
+.torobpay-layout-preset-swatch .torobpay-widget-image {
+	width: 36px !important;
+	border-radius: 10px;
+}
+
+.torobpay-layout-preset-swatch.torobpay-widget--stacked {
+	padding: 12px 8px !important;
+	gap: 6px !important;
+	min-height: 96px;
+}
+
+.torobpay-layout-preset-swatch.torobpay-widget--stacked .torobpay-widget-image {
+	width: 40px !important;
+}
+
+.torobpay-layout-preset-swatch.torobpay-widget--compact {
+	padding: 6px 10px 6px 8px !important;
+	min-height: 52px;
+	width: auto !important;
+	max-width: 100%;
+	border-radius: 999px;
+}
+
+.torobpay-layout-preset-swatch.torobpay-widget--compact .torobpay-widget-image {
+	width: 28px !important;
+	border-radius: 8px;
+}
+
+.torobpay-layout-preset-swatch .torobpay-widget-title {
+	font-size: 11px !important;
+	line-height: 140% !important;
+	margin-bottom: 0 !important;
+	display: block;
+}
+
+.torobpay-layout-preset-swatch .torobpay-widget-description {
+	font-size: 10px !important;
+	line-height: 140% !important;
+	display: block;
+	opacity: 0.9;
+}
+
+.torobpay-layout-preset-meta {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.torobpay-layout-preset-label {
+	font-weight: 700;
+	font-size: 13px;
+	color: #1a1c23;
+}
+
+.torobpay-layout-preset-desc {
+	font-size: 12px;
+	line-height: 1.45;
+	color: #646970;
+}
+
+.widget-preview-section {
+	margin-top: 30px;
+	padding: 20px;
+	background: #f9f9f9;
+	border: 2px solid #9CE76A;
+	border-radius: 8px;
+}
+
+@media only screen and (min-width: 1150px) {
+
+	.widget-preview-section,
+	.badge-preview-section {
+		position: fixed;
+		bottom: 45px;
+		left: 20px;
+		min-width: 435px;
+	}
+}
+
+/* Preview toggle button */
+.widget-preview-section h2,
+.badge-preview-section h2 {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin: 0;
+}
+
+.torobpay-preview-toggle {
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	cursor: pointer;
+	padding: 2px 6px;
+	line-height: 1;
+	color: #003D01;
+	flex-shrink: 0;
+}
+
+.torobpay-preview-toggle:hover {
+	background: #f0f0f1;
+	border-color: #003D01;
+}
+
+.torobpay-preview-collapsed .widget-preview-container,
+.torobpay-preview-collapsed .badge-preview-container {
+	display: none;
+}
+
+
+.widget-preview-container {
+	max-width: 400px;
+	margin-top: 15px;
+}
+
+.form-table th {
+	width: 200px;
+}
+
+.color-picker {
+	width: 60px;
+	height: 40px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+input[type="number"] {
+	width: 80px;
+}
+
+.torobpay-promo-amount-input,
+input[type="number"].torobpay-promo-amount-input {
+	width: 220px;
+	max-width: 100%;
+}
+
+.torobpay-promo-expires {
+	position: relative;
+	max-width: 280px;
+}
+
+.torobpay-promo-expires .jalali-date {
+	width: 100%;
+	max-width: 100%;
+	/* Keep numeric date/time LTR, but sit the value on the right in RTL admin. */
+	direction: ltr;
+	unicode-bidi: isolate;
+	text-align: right;
+	padding-left: 32px;
+	padding-right: 8px;
+}
+
+.torobpay-promo-expires .dashicons {
+	position: absolute;
+	left: 8px;
+	right: auto;
+	top: 50%;
+	transform: translateY(-50%);
+	color: #8c8f94;
+	pointer-events: none;
+}
+
+.torobpay-visual-settings-wrap select {
+	min-width: 180px;
+}
+
+/*
+ * jalaliDatePicker is appended to body, so WP admin + this page's select rules
+ * leak into the time dropdowns and push them outside the 7-day calendar width.
+ */
+.wp-admin jdp-container .jdp-time-container .jdp-time,
+jdp-container .jdp-time-container .jdp-time {
+	flex: 1 1 0;
+	min-width: 0;
+	max-width: 50%;
+}
+
+.wp-admin jdp-container .jdp-time,
+.wp-admin jdp-container .jdp-time input,
+.wp-admin jdp-container .jdp-time select,
+jdp-container .jdp-time,
+jdp-container .jdp-time input,
+jdp-container .jdp-time select {
+	min-width: 0 !important;
+	width: 100% !important;
+	max-width: 100% !important;
+	min-height: 0 !important;
+	height: auto !important;
+	line-height: 1.4 !important;
+	box-shadow: none !important;
+	border: none !important;
+	color-scheme: light;
+}
+
+.wp-admin jdp-container .jdp-time-container .jdp-time select,
+jdp-container .jdp-time-container .jdp-time select {
+	padding: 0.5rem 0.5rem 0.5rem 7px !important;
+	background: var(--jdp-color-1) !important;
+	background-image: none !important;
+	border-radius: 5px;
+	-webkit-appearance: menulist !important;
+	appearance: menulist !important;
+}
+
+/* Badge Preview Styles */
+.badge-preview-section {
+	margin-top: 30px;
+	padding: 20px;
+	background: #f9f9f9;
+	border: 2px solid #9CE76A;
+	border-radius: 8px;
+}
+
+.badge-preview-container {
+	margin-top: 15px;
+	display: flex;
+	justify-content: center;
+}
+
+.badge-product-mockup {
+	position: relative;
+	width: 250px;
+	background: #fff;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	padding: 15px;
+	text-align: center;
+}
+
+.badge-product-image {
+	position: relative;
+	width: 100%;
+	height: 200px;
+	background: #f5f5f5;
+	border-radius: 8px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	color: #999;
+	font-size: 14px;
+	overflow: hidden;
+}
+
+.badge-product-image::before {
+	font-family: dashicons;
+	content: '\f128';
+	font-size: 36px;
+	display: block;
+	margin-bottom: 6px;
+}
+
+.badge-product-image::after {
+	content: 'تصویر محصول';
+}
+
+.badge-product-name {
+	margin-top: 12px;
+	font-size: 14px;
+	font-weight: 600;
+	color: #333;
+}
+
+.badge-product-price {
+	margin-top: 6px;
+	font-size: 16px;
+	font-weight: bold;
+	color: #9CE76A;
+}
+
+/* Badge positioning in preview — pill collapse/hover comes from widget.css. */
+.torobpay-product-badge {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	z-index: 99;
+	direction: rtl;
+	margin: 0;
+	pointer-events: none;
+}
+
+.badge-preview-section .torobpay-product-badge-inner {
+	pointer-events: auto;
+}
+
+.badge-preview-section .torobpay-product-badge-icon {
+	width: auto;
+	height: 24px;
+	display: block;
+}
+
+/* Include base widget styles for preview */
+.torobpay-widget {
+	padding: 16px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	width: 100%;
+	margin: 10px 0;
+	border-style: solid;
+	transition: all 0.3s ease;
+	position: relative;
+}
+
+.torobpay-widget-image {
+	width: 60px;
+	height: auto;
+	border-radius: 15px;
+	display: block;
+}
+
+.torobpay-widget-media {
+	display: flex;
+	align-items: center;
+}
+
+.torobpay-widget-title {
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 180%;
+	margin-bottom: 2px;
+}
+
+.torobpay-widget-description {
+	font-weight: 300;
+	font-size: 12px;
+	line-height: 180%;
+	letter-spacing: -0.36px;
+}
+
+/* Animation keyframes */
+@keyframes pulse {
+	0% {
+		transform: scale(1);
+	}
+
+	50% {
+		transform: scale(1.1);
+	}
+
+	100% {
+		transform: scale(1);
+	}
+}
+
+@keyframes wobble {
+
+	0%,
+	100% {
+		transform: translateX(0%);
+	}
+
+	15% {
+		transform: translateX(-25%) rotate(-5deg);
+	}
+
+	30% {
+		transform: translateX(20%) rotate(3deg);
+	}
+
+	45% {
+		transform: translateX(-15%) rotate(-3deg);
+	}
+
+	60% {
+		transform: translateX(10%) rotate(2deg);
+	}
+
+	75% {
+		transform: translateX(-5%) rotate(-1deg);
+	}
+}
+
+@keyframes bounce {
+
+	0%,
+	20%,
+	50%,
+	80%,
+	100% {
+		transform: translateY(0);
+	}
+
+	40% {
+		transform: translateY(-15px);
+	}
+
+	60% {
+		transform: translateY(-7px);
+	}
+}
+
+@keyframes ping {
+	0% {
+		transform: scale(1);
+		box-shadow: 0 0 0 0 rgba(156, 231, 106, 0.45);
+	}
+
+	70% {
+		transform: scale(1.05);
+		box-shadow: 0 0 0 18px rgba(156, 231, 106, 0);
+	}
+
+	100% {
+		transform: scale(1);
+		box-shadow: 0 0 0 0 rgba(156, 231, 106, 0);
+	}
+}
+
+/* Animation classes */
+.torobpay-logo-pulse {
+	animation: pulse 1s ease-in-out infinite;
+}
+
+.torobpay-logo-wobble {
+	animation: wobble 1.2s ease-in-out infinite;
+}
+
+.torobpay-logo-bounce {
+	animation: bounce 1.2s ease-in-out infinite;
+}
+
+.torobpay-logo-ping {
+	animation: ping 1.6s ease-out infinite;
+}
+
+.torobpay-widget-media.torobpay-logo-light-sweep {
+	position: relative;
+	overflow: hidden;
+	border-radius: 15px;
+}
+
+.torobpay-widget-media.torobpay-logo-light-sweep::after {
+	content: '';
+	position: absolute;
+	top: -35%;
+	left: 0;
+	width: 60%;
+	height: 170%;
+	background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.75) 50%, rgba(255, 255, 255, 0) 100%);
+	transform: translateX(0) rotate(25deg);
+	opacity: 0;
+	pointer-events: none;
+	animation: torobpay-light-sweep 1.8s ease-in-out infinite;
+}
+
+.torobpay-widget-status-indicator {
+	position: absolute;
+	top: -8px;
+	right: -8px;
+	width: 18px;
+	height: 18px;
+	pointer-events: none;
+}
+
+.torobpay-widget-status-indicator .torobpay-status-heartbeat,
+.torobpay-widget-status-indicator .torobpay-status-dot {
+	position: absolute;
+	inset: 0;
+	border-radius: 9999px;
+}
+
+.torobpay-widget-status-indicator .torobpay-status-dot {
+	background: #9ce76a;
+}
+
+.torobpay-widget-status-indicator .torobpay-status-heartbeat {
+	background: #9ce76a;
+	opacity: 0.7;
+	animation: torobpay-status-ping 1.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes torobpay-status-ping {
+	0% {
+		transform: scale(1);
+		opacity: 0.7;
+	}
+
+	75% {
+		transform: scale(2.1);
+		opacity: 0;
+	}
+
+	100% {
+		transform: scale(2.3);
+		opacity: 0;
+	}
+}
+
+@keyframes torobpay-light-sweep {
+	0% {
+		transform: translateX(-120%) rotate(25deg);
+		opacity: 0;
+	}
+
+	30% {
+		opacity: 0.85;
+	}
+
+	60% {
+		transform: translateX(160%) rotate(25deg);
+		opacity: 0;
+	}
+
+	100% {
+		transform: translateX(160%) rotate(25deg);
+		opacity: 0;
+	}
+}
+
+/* Marquee Preview Styles - kept in sync with assets/css/marquee.css */
+.torobpay-product-marquee {
+	position: absolute;
+	left: 0;
+	right: 0;
+	overflow: hidden;
+	z-index: 10;
+	pointer-events: none;
+	direction: ltr;
+	backdrop-filter: blur(6px);
+	-webkit-backdrop-filter: blur(6px);
+	background: rgba(255, 255, 255, 0.22);
+	height: 26px;
+	bottom: 0;
+	border-top: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.torobpay-product-marquee-track {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: flex;
+	align-items: center;
+	height: 100%;
+	width: max-content;
+	white-space: nowrap;
+	animation: torobpay-marquee-scroll 14s linear infinite;
+	will-change: transform;
+}
+
+.torobpay-product-marquee:hover .torobpay-product-marquee-track {
+	animation-play-state: paused;
+}
+
+.torobpay-product-marquee-item {
+	display: inline-flex;
+	flex: 0 0 auto;
+	align-items: center;
+	direction: rtl;
+	gap: 4px;
+	padding: 0 14px;
+	font-size: 11px;
+	font-weight: 600;
+	color: #003D01;
+	line-height: 1;
+}
+
+.torobpay-product-marquee-logo {
+	height: 14px !important;
+	width: auto !important;
+	flex-shrink: 0 !important;
+	display: inline-block !important;
+	max-width: none !important;
+	min-width: 0 !important;
+	max-height: none !important;
+	min-height: 0 !important;
+	object-fit: contain !important;
+	vertical-align: middle;
+	margin: 0 !important;
+}
+
+.torobpay-product-marquee-sep {
+	opacity: 0.45;
+	margin: 0 5px;
+	font-weight: 400;
+}
+
+@keyframes torobpay-marquee-scroll {
+	from {
+		transform: translateX(-25%);
+	}
+
+	to {
+		transform: translateX(0);
+	}
+}
+
+/* ---------------------------------------------------------------------------
+ * Slider tab — live preview.
+ *
+ * Same floating bottom-left panel as the widget/badge previews. Width and
+ * height are adjustable via a drag handle in the top-right corner; container
+ * queries and an auto-derived device tier (from width) drive responsive layout.
+ * ------------------------------------------------------------------------- */
+.slider-preview-section {
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	box-sizing: border-box;
+	max-width: 100%;
+	margin-top: 0;
+	padding: 20px;
+	background: #f9f9f9;
+	border: 2px solid #9CE76A;
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.slider-preview-section h2 {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	flex-shrink: 0;
+	margin: 0;
+}
+
+.torobpay-preview-collapsed .torobpay-slider-preview-controls,
+.torobpay-preview-collapsed .torobpay-slider-preview-container,
+.torobpay-preview-collapsed .torobpay-slider-preview-resize-handle {
+	display: none;
+}
+
+.torobpay-preview-collapsed.slider-preview-section {
+	height: auto !important;
+	width: auto !important;
+}
+
+@media only screen and (min-width: 1150px) {
+
+	.slider-preview-section {
+		position: fixed;
+		bottom: 45px;
+		left: 20px;
+		width: 560px;
+		min-width: 280px;
+		max-width: calc(100vw - 40px);
+		max-height: calc(100vh - 90px);
+		z-index: 10;
+	}
+
+	.torobpay-preview-collapsed.slider-preview-section {
+		max-height: none;
+		min-width: 0;
+	}
+}
+
+.torobpay-slider-preview-controls {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	flex-shrink: 0;
+	gap: 10px;
+	margin-top: 14px;
+}
+
+.torobpay-slider-preview-placement-label {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-weight: 600;
+	color: #1d2327;
+}
+
+.torobpay-slider-preview-placement-label select {
+	min-width: 220px;
+}
+
+.torobpay-slider-preview-playback {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 2px 6px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	cursor: pointer;
+	line-height: 1;
+	color: #003D01;
+	flex-shrink: 0;
+}
+
+.torobpay-slider-preview-playback .dashicons {
+	width: 20px;
+	height: 20px;
+	font-size: 20px;
+}
+
+.torobpay-slider-preview-playback:hover,
+.torobpay-slider-preview-playback[aria-pressed="true"] {
+	background: #f0f6ec;
+	border-color: #003D01;
+}
+
+.torobpay-slider-preview-container {
+	flex: 1;
+	min-height: 0;
+	margin-top: 14px;
+	overflow-y: auto;
+}
+
+.torobpay-slider-preview-frame {
+	width: 100%;
+}
+
+.torobpay-slider-preview-frame.is-loading {
+	opacity: 0.5;
+}
+
+.torobpay-slider-preview-resize-handle {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 22px;
+	height: 22px;
+	padding: 0;
+	background: #fff;
+	border: none;
+	border-bottom: 1px solid #d3e8c4;
+	border-left: 1px solid #d3e8c4;
+	border-radius: 0 8px 0 8px;
+	cursor: nesw-resize;
+	touch-action: none;
+	z-index: 3;
+}
+
+.torobpay-slider-preview-resize-handle::before {
+	content: '';
+	position: absolute;
+	top: 4px;
+	right: 4px;
+	width: 10px;
+	height: 10px;
+	background:
+		linear-gradient(45deg, transparent 42%, #9aa0a6 42%, #9aa0a6 48%, transparent 48%),
+		linear-gradient(45deg, transparent 62%, #9aa0a6 62%, #9aa0a6 68%, transparent 68%),
+		linear-gradient(45deg, transparent 82%, #9aa0a6 82%, #9aa0a6 88%, transparent 88%);
+	pointer-events: none;
+}
+
+.torobpay-slider-preview-resize-handle:hover,
+.torobpay-slider-preview-resize-handle.is-dragging {
+	background: #f0f6ec;
+	border-color: #003D01;
+}
+
+.torobpay-slider-preview-resize-handle:hover::before,
+.torobpay-slider-preview-resize-handle.is-dragging::before {
+	background:
+		linear-gradient(45deg, transparent 42%, #003D01 42%, #003D01 48%, transparent 48%),
+		linear-gradient(45deg, transparent 62%, #003D01 62%, #003D01 68%, transparent 68%),
+		linear-gradient(45deg, transparent 82%, #003D01 82%, #003D01 88%, transparent 88%);
+}
+
+.slider-preview-section.is-resizing {
+	user-select: none;
+}
+
+.torobpay-slider-preview-empty {
+	margin: 14px 0 0;
+	padding: 30px 16px;
+	text-align: center;
+	color: #646970;
+	background: #fff;
+	border: 1px dashed #d3e8c4;
+	border-radius: 8px;
+}
+
+/* ---------------------------------------------------------------------------
+ * Slider tab — brand-locked slide list + custom-slide repeater (admin only).
+ * ------------------------------------------------------------------------- */
+.torobpay-slider-locked-list {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.torobpay-slider-locked-item {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 10px 12px;
+	background: #f4fff0;
+	border: 1px solid #cdeec0;
+	border-radius: 6px;
+}
+
+.torobpay-slider-locked-item .dashicons {
+	color: #003D01;
+	flex-shrink: 0;
+}
+
+.torobpay-slider-locked-item strong {
+	display: block;
+	color: #003D01;
+}
+
+.torobpay-slider-locked-item span {
+	display: block;
+	font-size: 12px;
+	color: #50575e;
+}
+
+.torobpay-slider-repeater {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin: 8px 0 14px;
+}
+
+.torobpay-slider-repeater-item {
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+	background: #fff;
+	overflow: hidden;
+}
+
+.torobpay-slider-repeater-head {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 12px;
+	background: #f6f7f7;
+	cursor: pointer;
+}
+
+.torobpay-slider-repeater-head .button-link,
+.torobpay-slider-placement-toolbar .torobpay-slider-remove {
+	text-decoration: none;
+	box-shadow: none;
+	border: none;
+}
+
+.torobpay-slider-repeater-head .button-link:hover,
+.torobpay-slider-repeater-head .button-link:focus,
+.torobpay-slider-repeater-head .button-link:active,
+.torobpay-slider-placement-toolbar .torobpay-slider-remove:hover,
+.torobpay-slider-placement-toolbar .torobpay-slider-remove:focus,
+.torobpay-slider-placement-toolbar .torobpay-slider-remove:active {
+	text-decoration: none;
+	box-shadow: none;
+}
+
+.torobpay-slider-repeater-head .torobpay-slider-drag {
+	cursor: grab;
+	color: #8c8f94;
+}
+
+.torobpay-slider-repeater-title {
+	flex: 1;
+	color: #1d2327;
+}
+
+.torobpay-slider-remove {
+	color: #b32d2e;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.torobpay-slider-remove .dashicons {
+	width: 18px;
+	height: 18px;
+	font-size: 18px;
+	color: #e50000;
+}
+
+.torobpay-slider-repeater-body {
+	padding: 14px 16px 16px;
+}
+
+.torobpay-slider-repeater-item.is-collapsed .torobpay-slider-repeater-body {
+	display: none;
+}
+
+.torobpay-slider-slide-content {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+
+.torobpay-slider-field-group label {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 6px;
+	color: #1d2327;
+}
+
+.torobpay-field-optional {
+	font-weight: 400;
+	color: #646970;
+	font-size: 12px;
+}
+
+.torobpay-slider-field-group .regular-text,
+.torobpay-slider-field-group .large-text {
+	width: 100%;
+	max-width: none;
+	border-color: #c3c4c7;
+	border-radius: 4px;
+	box-shadow: 0 0 0 transparent;
+}
+
+.torobpay-slider-field-group .regular-text:focus,
+.torobpay-slider-field-group .large-text:focus {
+	border-color: #003D01;
+	box-shadow: 0 0 0 1px #003D01;
+}
+
+.torobpay-slider-cta-row {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 10px;
+}
+
+.torobpay-slider-image-card {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	border: 1px solid #dce8d4;
+	border-radius: 10px;
+	background: #fff;
+	box-shadow: 0 1px 2px rgba(0, 61, 1, 0.04);
+	transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.torobpay-slider-image-card:hover {
+	border-color: #b8d4a8;
+	box-shadow: 0 2px 8px rgba(0, 61, 1, 0.07);
+}
+
+.torobpay-slider-image-card-preview {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	min-height: 120px;
+	max-height: 200px;
+	overflow: hidden;
+	background:
+		repeating-linear-gradient(
+			-45deg,
+			transparent,
+			transparent 8px,
+			rgba(156, 231, 106, 0.06) 8px,
+			rgba(156, 231, 106, 0.06) 16px
+		),
+		#f7fbf4;
+}
+
+.torobpay-slider-image-card:not(.is-empty) .torobpay-slider-image-card-preview {
+	background: #eef2ea;
+}
+
+.torobpay-slider-image-preview {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+}
+
+.torobpay-slider-image-position-control {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	padding: 8px 12px;
+	border-top: 1px solid #eef2ea;
+	background: #fafcf8;
+}
+
+.torobpay-slider-image-position-control label {
+	margin: 0;
+	font-size: 12px;
+	font-weight: 500;
+	color: #50575e;
+	white-space: nowrap;
+}
+
+.torobpay-slider-image-position-control select {
+	flex: 1;
+	min-width: 0;
+	max-width: 180px;
+}
+
+.torobpay-slider-image-card.is-empty .torobpay-slider-image-position-control {
+	display: none;
+}
+
+.torobpay-slider-image-card.is-empty .torobpay-slider-image-preview,
+.torobpay-slider-image-card.is-empty .torobpay-slider-bg-icon-preview,
+.torobpay-slider-image-card.is-empty .torobpay-topbar-bg-icon-preview {
+	display: none;
+}
+
+.torobpay-slider-image-card.is-empty .torobpay-slider-image-remove,
+.torobpay-slider-image-card.is-empty .torobpay-slider-bg-icon-remove,
+.torobpay-slider-image-card.is-empty .torobpay-topbar-bg-icon-remove {
+	display: none;
+}
+
+.torobpay-slider-image-card:not(.is-empty) .torobpay-slider-image-placeholder {
+	display: none;
+}
+
+.torobpay-slider-image-card:not(.is-empty) .torobpay-slider-bg-icon-preview,
+.torobpay-slider-image-card:not(.is-empty) .torobpay-topbar-bg-icon-preview {
+	display: block;
+	max-width: 72%;
+	max-height: 72%;
+	object-fit: contain;
+}
+
+.torobpay-bg-icon-card,
+.torobpay-topbar-bg-icon-card {
+	max-width: 220px;
+}
+
+.torobpay-bg-icon-card .torobpay-slider-image-card-preview,
+.torobpay-topbar-bg-icon-card .torobpay-slider-image-card-preview {
+	aspect-ratio: 1;
+	max-height: none;
+	min-height: 0;
+}
+
+.torobpay-slider-image-placeholder {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	color: #5a6b52;
+	font-size: 12px;
+	text-align: center;
+	padding: 12px;
+}
+
+.torobpay-slider-image-placeholder .dashicons {
+	width: 32px;
+	height: 32px;
+	font-size: 32px;
+	color: #9ce76a;
+	opacity: 0.85;
+}
+
+.torobpay-slider-image-card-actions {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	padding: 10px 12px;
+	border-top: 1px solid #eef2ea;
+	background: #fafcf8;
+}
+
+.torobpay-slider-image-card-actions .button-secondary {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	height: auto;
+	padding: 6px 14px;
+	border-color: #003D01;
+	border-radius: 6px;
+	background: #003D01;
+	color: #fff;
+	font-weight: 500;
+	line-height: 1.4;
+	box-shadow: none;
+	transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.torobpay-slider-image-card-actions .button-secondary:hover,
+.torobpay-slider-image-card-actions .button-secondary:focus {
+	background: #005a03;
+	border-color: #005a03;
+	color: #fff;
+}
+
+.torobpay-slider-image-card-actions .button-secondary .dashicons {
+	width: 16px;
+	height: 16px;
+	font-size: 16px;
+	line-height: 1;
+	margin: 0;
+}
+
+.torobpay-slider-image-card-actions .button-link {
+	height: auto;
+	padding: 6px 10px;
+	border: 1px solid transparent;
+	border-radius: 6px;
+	color: #a02222;
+	text-decoration: none;
+	line-height: 1.4;
+	transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.torobpay-slider-image-card-actions .button-link:hover,
+.torobpay-slider-image-card-actions .button-link:focus {
+	color: #861b1b;
+	background: #fef2f2;
+	border-color: #f5c2c2;
+}
+
+.torobpay-slider-slide-settings-divider {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin: 18px 0 14px;
+	color: #50575e;
+	font-size: 12px;
+	font-weight: 600;
+}
+
+.torobpay-slider-slide-settings-divider::before,
+.torobpay-slider-slide-settings-divider::after {
+	content: '';
+	flex: 1;
+	height: 1px;
+	background: #e0e0e0;
+}
+
+.torobpay-slider-repeater-body label {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 4px;
+}
+
+.torobpay-slider-bg-control th,
+.torobpay-slider-bg-control td {
+	padding-top: 6px;
+	padding-bottom: 6px;
+}
+
+/* ---------------------------------------------------------------------------
+ * Slider tab slide sections (#slider-settings and legacy .torobpay-slides-page).
+ * ------------------------------------------------------------------------- */
+#slider-settings .torobpay-slides-section,
+.torobpay-slides-page .torobpay-slides-section {
+	margin-top: 26px;
+	border-bottom: 1px solid #dcdcde;
+}
+
+#slider-settings .torobpay-slides-section-content,
+.torobpay-slides-page .torobpay-slides-section-content {
+	margin: 20px 0;
+}
+
+/* Use existing collapse system from widget-settings */
+#slider-settings .torobpay-section-collapsed + .torobpay-slides-section-content,
+.torobpay-slides-page .torobpay-section-collapsed + .torobpay-slides-section-content {
+	display: none !important;
+}
+
+#slider-settings .torobpay-slides-section .dashicons,
+.torobpay-slides-page .torobpay-slides-section .dashicons {
+	vertical-align: middle;
+	color: #003D01;
+}
+
+.torobpay-slider-mandatory-list {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin: 8px 0 14px;
+}
+
+.torobpay-slider-repeater-item.is-mandatory .torobpay-slider-repeater-head {
+	background: #f0f6ec;
+}
+
+.torobpay-slider-repeater-item.is-mandatory .torobpay-slider-repeater-head .dashicons-lock {
+	color: #003D01;
+}
+
+.torobpay-slider-add-slide-row {
+	margin: 0 0 12px;
+}
+
+.torobpay-slide-shortcode-toggle {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	padding: 0;
+	color: #50575e;
+	text-decoration: none;
+	border-radius: 4px;
+	cursor: pointer;
+	flex-shrink: 0;
+}
+
+.torobpay-slide-shortcode-toggle:hover,
+.torobpay-slide-shortcode-toggle.is-open {
+	color: #003D01;
+	background: #e8f5df;
+}
+
+.torobpay-slide-shortcode-toggle .dashicons {
+	width: 18px;
+	height: 18px;
+	font-size: 18px;
+	line-height: 1;
+}
+
+.torobpay-slide-shortcode-panel {
+	padding: 10px 12px 12px;
+	background: #f7faf5;
+	border-bottom: 1px solid #d8e8cc;
+}
+
+.torobpay-slide-shortcode-panel .description {
+	display: block;
+	margin-top: 6px;
+	font-size: 12px;
+	color: #646970;
+}
+
+.torobpay-slide-shortcode-row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	max-width: 100%;
+}
+
+.torobpay-slide-shortcode-input {
+	flex: 1 1 auto;
+	min-width: 0;
+	font-family: Consolas, Monaco, monospace;
+	font-size: 12px;
+	background: #fff;
+}
+
+.torobpay-slide-shortcode-copy {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	min-height: 30px;
+	padding: 0 10px;
+}
+
+.torobpay-slide-shortcode-copy .dashicons {
+	margin: 0;
+	line-height: 1;
+}
+
+.torobpay-slider-placements-shell {
+	margin-top: 0;
+	background: linear-gradient(180deg, #f4faef 0%, #fff 120px);
+	border: 1px solid #d3e8c4;
+	border-radius: 10px;
+	padding: 14px 16px 18px;
+	box-shadow: 0 1px 4px rgba(0, 61, 1, 0.07);
+}
+
+.torobpay-slider-placement-tab-bar.torobpay-tab-bar {
+	margin: -14px -16px 0;
+	padding: 10px 12px 0;
+	width: 100%;
+	border-bottom: 1px solid #d3e8c4;
+	background: rgba(255, 255, 255, 0.55);
+	border-radius: 10px 10px 0 0;
+	justify-content: flex-start;
+}
+
+.torobpay-slider-placement-tab-bar .torobpay-slider-placement-tab-overflow {
+	flex-shrink: 0;
+	margin-right: auto;
+}
+
+.torobpay-slider-placement-tab-bar .torobpay-slider-placement-tab-overflow[hidden] {
+	display: none !important;
+}
+
+.torobpay-slider-placement-tab-strip {
+	display: inline-flex;
+	align-items: flex-end;
+	flex: 0 1 auto;
+	max-width: 100%;
+	min-width: 0;
+	gap: 6px;
+	direction: rtl;
+}
+
+.torobpay-slider-placement-tab-bar .torobpay-slider-placement-nav.nav-tab-wrapper {
+	flex: 0 1 auto;
+	width: auto;
+	max-width: 100%;
+	min-width: 0;
+}
+
+.torobpay-slider-placement-tab-bar .nav-tab.is-tab-overflow-hidden {
+	display: none !important;
+}
+
+.torobpay-slider-placement-tab-bar .torobpay-slider-placement-tab {
+	flex: 0 0 auto;
+	white-space: nowrap;
+	max-width: 220px;
+	cursor: pointer;
+	font-size: 14px;
+}
+
+.torobpay-slider-placement-tab-bar .torobpay-slider-placement-tab.is-disabled-placement {
+	opacity: 0.55;
+}
+
+.torobpay-slider-placement-tab-text {
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.torobpay-slider-placement-tab-bar .torobpay-slider-add-placement-tab.button {
+	flex-shrink: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 32px;
+	height: 32px;
+	width: 32px;
+	padding: 0;
+	margin: 0 0 4px 0;
+	border-radius: 50%;
+	border: 1px solid #9CE76A;
+	color: #003D01;
+	background: #fff;
+	box-shadow: 0 1px 2px rgba(0, 61, 1, 0.08);
+	line-height: 1;
+}
+
+.torobpay-slider-placement-tab-bar .torobpay-slider-add-placement-tab.button:hover {
+	background: #f4faef;
+	border-color: #003D01;
+	color: #003D01;
+}
+
+.torobpay-slider-placement-tab-bar .torobpay-slider-add-placement-tab .dashicons {
+	width: 18px;
+	height: 18px;
+	font-size: 18px;
+	line-height: 1;
+}
+
+.torobpay-slider-placements-shell-note {
+	margin: 0;
+	padding: 10px 4px 4px;
+	font-size: 13px;
+	color: #646970;
+	line-height: 1.5;
+}
+
+.torobpay-slider-placements-panels {
+	padding-top: 8px;
+}
+
+.torobpay-slider-placement-item {
+	display: none;
+	padding: 4px 2px 0;
+}
+
+.torobpay-slider-placement-item.is-active {
+	display: block;
+}
+
+.torobpay-slider-placement-toolbar {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 16px;
+	padding: 10px 12px;
+	border: 1px solid #e5eedb;
+	border-radius: 8px;
+	background: rgba(255, 255, 255, 0.85);
+}
+
+.torobpay-slider-placement-panel-title {
+	flex: 1;
+	margin: 0;
+	font-size: 15px;
+	font-weight: 600;
+	color: #1d2327;
+}
+
+.torobpay-slider-placement-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 12px 16px;
+}
+
+.torobpay-slider-placement-enabled {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	font-weight: 600;
+	cursor: pointer;
+	white-space: nowrap;
+}
+
+.torobpay-slider-placement-item .torobpay-slide-device-field {
+	margin: 0;
+}
+
+.regular-text.torobpay-slider-placement-hook-custom {
+	width: 17em;
+}
+
+.torobpay-slider-locked-text {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	padding: 8px 10px;
+	margin: 0 0 10px;
+	background: #f6f7f7;
+	border-radius: 4px;
+	color: #50575e;
+	overflow: visible;
+}
+
+.torobpay-slider-repeater-item.is-mandatory {
+	overflow: visible;
+}
+
+.torobpay-slider-locked-text-bar {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 10px;
+}
+
+.torobpay-slider-locked-text-actions {
+	display: inline-flex;
+	align-items: center;
+	flex-shrink: 0;
+	margin-top: 1px;
+}
+
+.torobpay-slider-shop-name-reset[hidden] {
+	display: none !important;
+}
+
+.torobpay-slider-shop-name-reset {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 22px;
+	height: 22px;
+	padding: 0;
+	margin: 0 4px 0 0;
+	border: none;
+	background: transparent;
+	color: #646970;
+	border-radius: 3px;
+	cursor: pointer;
+	vertical-align: middle;
+	transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.torobpay-slider-shop-name-reset .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+}
+
+.torobpay-slider-shop-name-reset:hover,
+.torobpay-slider-shop-name-reset:focus {
+	background: rgba(34, 113, 177, 0.1);
+	color: #2271b1;
+	outline: none;
+}
+
+.torobpay-slider-locked-text .torobpay-tooltip--bottom-left::after {
+	bottom: auto;
+	top: calc(100% + 8px);
+	right: auto;
+	left: 0;
+}
+
+.torobpay-slider-locked-text .torobpay-tooltip--bottom-left::before {
+	bottom: auto;
+	top: calc(100% + 2px);
+	right: auto;
+	left: 4px;
+	border-top-color: transparent;
+	border-bottom-color: #1a1c23;
+}
+
+.torobpay-slider-locked-text .torobpay-slider-locked-heading {
+	margin: 0;
+	flex: 1;
+	min-width: 0;
+}
+
+.torobpay-slider-locked-text.is-shop-name-hidden:not(.is-editing-shop-name) .torobpay-slider-locked-shop-segment {
+	display: none;
+}
+
+.torobpay-slider-shop-name-trigger {
+	display: inline-flex;
+	align-items: center;
+	gap: 3px;
+	padding: 0 4px;
+	margin: 0 3px;
+	border: none;
+	background: rgba(34, 113, 177, 0.08);
+	color: #2271b1;
+	cursor: pointer;
+	border-radius: 3px;
+	font: inherit;
+	font-weight: 700;
+	vertical-align: baseline;
+	line-height: 1.4;
+	transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.torobpay-slider-shop-name-trigger .dashicons {
+	font-size: 14px;
+	width: 14px;
+	height: 14px;
+	opacity: 0.65;
+}
+
+.torobpay-slider-shop-name-trigger:hover,
+.torobpay-slider-shop-name-trigger:focus {
+	background: rgba(34, 113, 177, 0.14);
+	color: #135e96;
+	outline: none;
+	box-shadow: 0 0 0 1px #2271b1;
+}
+
+.torobpay-slider-shop-name-input {
+	display: inline-block;
+	width: auto;
+	min-width: 9em;
+	max-width: min(100%, 22em);
+	padding: 1px 6px;
+	margin: 0;
+	border: 1px solid #2271b1;
+	border-radius: 3px;
+	background: #fff;
+	color: #1d2327;
+	font: inherit;
+	font-weight: 700;
+	vertical-align: baseline;
+	line-height: 1.4;
+	box-shadow: 0 0 0 1px rgba(34, 113, 177, 0.2);
+}
+
+.torobpay-slider-shop-name-editor {
+	display: inline-flex;
+	align-items: center;
+	gap: 2px;
+	margin: 0 3px;
+	vertical-align: baseline;
+}
+
+.torobpay-slider-shop-name-clear {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 22px;
+	height: 22px;
+	padding: 0;
+	border: none;
+	background: transparent;
+	color: #646970;
+	border-radius: 3px;
+	cursor: pointer;
+	flex-shrink: 0;
+}
+
+.torobpay-slider-shop-name-clear .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+}
+
+.torobpay-slider-shop-name-clear:hover,
+.torobpay-slider-shop-name-clear:focus {
+	background: rgba(214, 54, 56, 0.1);
+	color: #d63638;
+	outline: none;
+}
+
+.torobpay-slider-locked-text.is-editing-shop-name .torobpay-slider-shop-name-trigger {
+	display: none;
+}
+
+/* Per-slide settings grid (transition, position, preset, bg, duration, …). */
+.torobpay-slide-settings {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 6px 18px;
+	margin-top: 10px;
+	padding-top: 10px;
+}
+
+.torobpay-slide-settings > p {
+	margin: 4px 0;
+}
+
+.torobpay-slide-settings select,
+.torobpay-slide-settings input[type="number"] {
+	max-width: 220px;
+}
+
+.torobpay-slide-visibility {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px 14px;
+}
+
+.torobpay-slide-visibility .torobpay-display-setting-label {
+	font-weight: 400;
+	margin: 0;
+}
+
+/* Per-device size/typography controls inside a slide card. */
+.torobpay-slide-device-field > label {
+	display: block;
+	margin-bottom: 4px;
+}
+
+.torobpay-slide-device-field .torobpay-responsive-field {
+	gap: 6px;
+}
+
+.torobpay-slide-device-field .torobpay-responsive-field .torobpay-rf-input {
+	max-width: 80px;
+}
+
+.torobpay-slide-device-field .torobpay-responsive-field select.torobpay-rf-input {
+	max-width: 190px;
+}
+
+.torobpay-slide-placements-field {
+	margin: 0;
+}
+
+.torobpay-slide-placements-chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.torobpay-placement-chip {
+	display: inline-flex;
+	align-items: center;
+	margin: 0;
+	padding: 7px 12px;
+	border: 1px solid #d3e8c4;
+	border-radius: 999px;
+	background: #fff;
+	cursor: pointer;
+	transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+	user-select: none;
+}
+
+.torobpay-placement-chip:hover {
+	border-color: #9ce76a;
+	background: #f8fcf5;
+}
+
+.torobpay-placement-chip.is-selected {
+	border-color: #003D01;
+	background: #e8f5df;
+	box-shadow: 0 0 0 1px rgba(0, 61, 1, 0.08);
+}
+
+.torobpay-placement-chip input {
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	height: 0;
+	pointer-events: none;
+}
+
+.torobpay-placement-chip-label {
+	font-weight: 500;
+	font-size: 12px;
+	color: #1d2327;
+	line-height: 1.35;
+}
+
+.torobpay-placement-chip.is-selected .torobpay-placement-chip-label {
+	color: #003D01;
+}
+
+.torobpay-slide-placements-orphaned {
+	display: flex;
+	align-items: flex-start;
+	gap: 6px;
+	flex-basis: 100%;
+	margin: 2px 0 0;
+	padding: 8px 10px;
+	border: 1px solid #f0d58a;
+	border-right: 4px solid #dba617;
+	border-radius: 6px;
+	background: #fcf9e8;
+	color: #5c4400;
+	font-size: 12px;
+	line-height: 1.6;
+}
+
+.torobpay-slide-placements-orphaned .dashicons {
+	flex-shrink: 0;
+	width: 16px;
+	height: 16px;
+	margin-top: 2px;
+	font-size: 16px;
+	color: #996800;
+}
+
+.torobpay-slide-placements-orphaned-body {
+	flex: 1;
+	min-width: 0;
+}
+
+.torobpay-slide-placements-orphaned-intro,
+.torobpay-slide-placements-orphaned-note {
+	margin: 0;
+}
+
+.torobpay-slide-placements-orphaned-note {
+	margin-top: 6px;
+	color: #6d4c00;
+}
+
+.torobpay-slide-placements-orphan-items {
+	margin: 6px 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.torobpay-slide-placements-orphan-item {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 10px;
+	padding: 5px 0;
+	border-top: 1px solid rgba(219, 166, 23, 0.25);
+}
+
+.torobpay-slide-placements-orphan-item:first-child {
+	border-top: none;
+	padding-top: 0;
+}
+
+.torobpay-slide-placements-orphan-label {
+	font-weight: 600;
+	color: #3d2f00;
+}
+
+.torobpay-placement-orphan-remove {
+	flex-shrink: 0;
+	color: #b32d2e !important;
+	text-decoration: none;
+	padding: 0 !important;
+}
+
+.torobpay-placement-orphan-remove:hover,
+.torobpay-placement-orphan-remove:focus {
+	color: #8a2424 !important;
+	text-decoration: underline;
+}
+
+.torobpay-slide-placements-empty {
+	margin: 0;
+	padding: 10px 12px;
+	border: 1px dashed #dcdcde;
+	border-radius: 6px;
+	background: #f6f7f7;
+	color: #646970;
+	font-size: 12px;
+	line-height: 1.5;
+}
+
+/* ---------------------------------------------------------------------------
+ * Slider tab — shortcode usage guide.
+ * ------------------------------------------------------------------------- */
+.torobpay-slider-shortcode-guide {
+	margin-top: 26px;
+	padding: 18px 20px 20px;
+	background: linear-gradient(180deg, #f4faef 0%, #fff 100px);
+}
+
+.torobpay-slider-shortcode-guide-title {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin: 0 0 16px;
+	font-size: 15px;
+	color: #003D01;
+}
+
+.torobpay-slider-shortcode-guide-title .dashicons {
+	color: #003D01;
+	font-size: 20px;
+	width: 20px;
+	height: 20px;
+}
+
+.torobpay-shortcode-guide-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 12px;
+	margin-bottom: 14px;
+}
+
+.torobpay-shortcode-card {
+	padding: 14px 16px;
+	border: 1px solid #d3e8c4;
+	border-radius: 8px;
+	background: #fff;
+}
+
+.torobpay-shortcode-card-title {
+	margin: 0 0 8px;
+	font-size: 13px;
+	font-weight: 600;
+	color: #003D01;
+}
+
+.torobpay-shortcode-card-desc {
+	margin: 0 0 10px;
+	font-size: 13px;
+	line-height: 1.55;
+	color: #1d2327;
+}
+
+.torobpay-shortcode-card-note {
+	margin: 8px 0 0;
+	font-size: 12px;
+	line-height: 1.5;
+	color: #646970;
+}
+
+.torobpay-shortcode-snippet {
+	display: block;
+	width: 100%;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 10px 12px;
+	border: 1px solid #d3e8c4;
+	border-radius: 6px;
+	background: #f8fcf5;
+	font-family: Consolas, Monaco, monospace;
+	font-size: 13px;
+	line-height: 1.4;
+	color: #003D01;
+	white-space: nowrap;
+	overflow-x: auto;
+}
+
+.torobpay-shortcode-snippet--example {
+	margin-top: 10px;
+}
+
+.torobpay-shortcode-inline {
+	padding: 1px 5px;
+	border-radius: 3px;
+	background: #f0fde8;
+	border: 1px solid #d3e8c4;
+	font-family: Consolas, Monaco, monospace;
+	font-size: 12px;
+	color: #003D01;
+}
+
+.torobpay-shortcode-inline-icon {
+	display: inline-block;
+	vertical-align: middle;
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+	color: #50575e;
+}
+
+.torobpay-shortcode-attrs {
+	padding: 14px 16px;
+	border: 1px dashed #c3e8b0;
+	border-radius: 8px;
+	background: rgba(255, 255, 255, 0.7);
+}
+
+.torobpay-shortcode-attrs-title {
+	margin: 0 0 10px;
+	font-size: 13px;
+	font-weight: 600;
+	color: #1d2327;
+}
+
+.torobpay-shortcode-attr-list {
+	margin: 0 0 4px;
+	padding: 0 18px 0 0;
+	font-size: 12px;
+	line-height: 1.65;
+	color: #50575e;
+}
+
+.torobpay-shortcode-attr-list li {
+	margin-bottom: 4px;
+}
+
+.torobpay-shortcode-attr-list code {
+	padding: 1px 4px;
+	border-radius: 3px;
+	background: #f6f7f7;
+	font-size: 11.5px;
+	color: #003D01;
+}
+
+.torobpay-shortcode-attr-required {
+	color: #b32d2e;
+	font-size: 11px;
+}
+
+@media (max-width: 782px) {
+	.torobpay-shortcode-guide-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.torobpay-slider-cta-row {
+		grid-template-columns: 1fr;
+	}
+
+	.torobpay-slider-image-card-actions {
+		flex-wrap: wrap;
+	}
+
+	.torobpay-slider-image-card-actions .button-secondary,
+	.torobpay-slider-image-card-actions .button-link {
+		flex: 1 1 auto;
+		justify-content: center;
+		text-align: center;
+	}
+
+	.torobpay-slide-settings {
+		grid-template-columns: 1fr;
+	}
+}
+

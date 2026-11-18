@@ -1,0 +1,514 @@
+/* Page-specific styles */
+.torobpay-filters, .wp-list-table {
+    border: 1px solid #9ce76a !important;
+    border-radius: 6px;
+}
+
+/* Hide Input Number Arrows only inside the TorobPay filters panel */
+/* Chrome, Safari, Edge, Opera */
+.torobpay-filters input[type=number]::-webkit-outer-spin-button,
+.torobpay-filters input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+.torobpay-filters input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.widefat td {
+    vertical-align: middle !important;
+}
+
+.torobpay-instore-badge {
+    display: inline-block;
+    margin-right: 6px;
+    padding: 1px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.6;
+    color: #1d4d12;
+    background: #e6f6d9;
+    border: 1px solid #9ce76a;
+    border-radius: 999px;
+    vertical-align: middle;
+}
+
+/* ─── Compact action buttons ─── */
+.trb-actions {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    align-items: center;
+}
+
+.trb-action-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.15s, box-shadow 0.15s;
+}
+
+.trb-action-btn .dashicons {
+    font-size: 15px;
+    width: 15px;
+    height: 15px;
+    line-height: 1;
+}
+
+.trb-btn-primary {
+    background: #2271b1;
+    color: #fff;
+}
+.trb-btn-primary:hover {
+    background: #135e96;
+    color: #fff;
+}
+
+.trb-btn-danger {
+    background: #c33333;
+    color: #fff;
+}
+.trb-btn-danger:hover {
+    background: #a00;
+    color: #fff;
+}
+
+.trb-btn-warning {
+    background: #996800;
+    color: #fff;
+}
+.trb-btn-warning:hover {
+    background: #704d00;
+    color: #fff;
+}
+
+.trb-btn-attention {
+    background: #b32d2e;
+    color: #fff;
+    animation: trb-attention-pulse 1.8s ease-in-out infinite;
+}
+.trb-btn-attention.severity-warning {
+    background: #996800;
+    animation: none;
+}
+/* Dismissed: still flagged & clickable, but muted to a non-alarming grey. */
+.trb-btn-attention.is-dismissed {
+    background: #646970;
+    color: #fff;
+    animation: none;
+}
+.trb-btn-attention.is-dismissed:hover {
+    background: #50575e;
+    color: #fff;
+}
+.trb-btn-attention:hover {
+    background: #8a2424;
+    color: #fff;
+}
+@keyframes trb-attention-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(179, 45, 46, 0.5); }
+    50%      { box-shadow: 0 0 0 4px rgba(179, 45, 46, 0); }
+}
+
+/* Tooltip shown on hover */
+.trb-action-btn::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 6px);
+    top: auto;
+    right: auto;
+    transform: translateX(-50%);
+    background: #1d2327;
+    color: #fff;
+    font-size: 11px;
+    white-space: nowrap;
+    padding: 3px 7px;
+    border-radius: 3px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 9999;
+}
+
+.trb-action-btn:not(:disabled):hover::after {
+    opacity: 1;
+}
+
+.torobpay-filters {
+    background: #fff;
+    padding: 20px;
+    margin: 15px 0;
+}
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    align-items: start;
+}
+
+.filter-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.filter-item label {
+    font-weight: 600;
+    color: #23282d;
+    font-size: 13px;
+}
+
+.filter-item input[type="text"],
+.filter-item input[type="number"],
+.filter-item select {
+    width: 100%;
+    padding: 6px 12px;
+    border: 1px solid #8c8f94;
+    border-radius: 4px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    line-height: normal;
+}
+
+.filter-item.date-range {
+    min-width: 0;
+}
+
+.filter-item input:focus,
+.filter-item select:focus {
+    border-color: var(--trb-green-dark, #003d01);
+    box-shadow: 0 0 0 1px var(--trb-green, #9ce76a);
+    outline: none;
+}
+
+.date-input-wrapper:focus-within .dashicons {
+    color: var(--trb-green-dark, #003d01);
+}
+
+.date-input-wrapper {
+    position: relative;
+}
+
+.date-input-wrapper .jalali-date {
+    padding-left: 32px;
+}
+
+.date-input-wrapper .dashicons {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #8c8f94;
+    pointer-events: none;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    height: 100%;
+}
+
+.filter-actions .button {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    height: auto;
+    line-height: normal;
+}
+
+.filter-actions .button .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: auto;
+    line-height: normal;
+}
+
+@media screen and (max-width: 782px) {
+    .filter-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .filter-actions {
+        flex-direction: column;
+    }
+
+    .filter-actions .button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Filter section header */
+.filter-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.filter-section-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #1d2327;
+}
+
+.filter-section-title .dashicons {
+    color: #4a9c1e;
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    line-height: 1;
+}
+
+.active-filters-badge {
+    display: inline-flex;
+    align-items: center;
+    background: var(--trb-green, #9ce76a);
+    color: var(--trb-green-dark, #003d01);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+/* Icon in filter labels — reserved for future use */
+.filter-item label .dashicons {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+    color: #646970;
+}
+
+/* jalaliDatePicker: reference layout with TorobPay brand tokens.
+   Beat WP admin input/select rules: the popup is appended to body. */
+.wp-admin jdp-container,
+jdp-container {
+    --jdp-primary: var(--trb-green, #9ce76a);
+    --jdp-color-0: var(--trb-bg, #fff);
+    --jdp-red: var(--trb-danger, #d63638);
+    padding: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--trb-green, #9ce76a);
+    box-shadow: 0 8px 24px rgba(0, 61, 1, 0.12);
+    color-scheme: light;
+}
+
+.wp-admin jdp-container .jdp-years,
+.wp-admin jdp-container .jdp-months,
+jdp-container .jdp-years,
+jdp-container .jdp-months {
+    margin: 0;
+    padding: 0.55rem 2%;
+    background: var(--trb-green, #9ce76a);
+    color: var(--trb-green-dark, #003d01);
+    fill: var(--trb-green-dark, #003d01);
+}
+
+.wp-admin jdp-container .jdp-months,
+jdp-container .jdp-months {
+    float: right;
+    width: 55%;
+}
+
+.wp-admin jdp-container .jdp-years,
+jdp-container .jdp-years {
+    float: left;
+    width: 45%;
+}
+
+.wp-admin jdp-container .jdp-year,
+.wp-admin jdp-container .jdp-month,
+.wp-admin jdp-container .jdp-year input,
+.wp-admin jdp-container .jdp-year select,
+.wp-admin jdp-container .jdp-month input,
+.wp-admin jdp-container .jdp-month select,
+jdp-container .jdp-year,
+jdp-container .jdp-month,
+jdp-container .jdp-year input,
+jdp-container .jdp-year select,
+jdp-container .jdp-month input,
+jdp-container .jdp-month select {
+    background-color: transparent !important;
+    background-image: none !important;
+    color: var(--trb-green-dark, #003d01) !important;
+    font-weight: 600;
+    box-shadow: none !important;
+    border: none !important;
+    min-height: 0 !important;
+    height: auto !important;
+    line-height: 1.4 !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    color-scheme: light;
+}
+
+.wp-admin jdp-container .jdp-year input,
+jdp-container .jdp-year input {
+    -moz-appearance: textfield;
+}
+
+.wp-admin jdp-container .jdp-year input::-webkit-outer-spin-button,
+.wp-admin jdp-container .jdp-year input::-webkit-inner-spin-button,
+jdp-container .jdp-year input::-webkit-outer-spin-button,
+jdp-container .jdp-year input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.wp-admin jdp-container .jdp-month select,
+jdp-container .jdp-month select {
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath fill='%23003d01' d='M5 6l5 5 5-5 2 1-7 7-7-7z'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: left 2px center !important;
+    background-size: 12px 12px !important;
+    padding-left: 16px !important;
+}
+
+.wp-admin jdp-container .jdp-month select option,
+.wp-admin jdp-container .jdp-year select option,
+jdp-container .jdp-month select option,
+jdp-container .jdp-year select option {
+    color: var(--trb-green-dark, #003d01) !important;
+    background-color: var(--trb-bg, #fff) !important;
+}
+
+.wp-admin jdp-container .jdp-icon-plus,
+.wp-admin jdp-container .jdp-icon-minus,
+jdp-container .jdp-icon-plus,
+jdp-container .jdp-icon-minus {
+    border-color: var(--trb-green-dark, #003d01);
+    border-radius: 4px;
+    fill: var(--trb-green-dark, #003d01);
+    background: transparent;
+}
+
+.wp-admin jdp-container .jdp-icon-plus svg,
+.wp-admin jdp-container .jdp-icon-minus svg,
+jdp-container .jdp-icon-plus svg,
+jdp-container .jdp-icon-minus svg {
+    fill: var(--trb-green-dark, #003d01);
+}
+
+.wp-admin jdp-container .jdp-days-header,
+jdp-container .jdp-days-header {
+    clear: both;
+    margin-top: 0;
+    padding: 0.3rem 0.3rem;
+    background-color: var(--trb-green, #9ce76a);
+}
+
+.wp-admin jdp-container .jdp-days-header .jdp-day-name,
+.wp-admin jdp-container .jdp-days-header .jdp-day-name.last-week,
+.wp-admin jdp-container .jdp-days-header .jdp-day-name.holiday-day,
+.wp-admin jdp-container .jdp-days-header .jdp-day-name.holly-day,
+jdp-container .jdp-days-header .jdp-day-name,
+jdp-container .jdp-days-header .jdp-day-name.last-week,
+jdp-container .jdp-days-header .jdp-day-name.holiday-day,
+jdp-container .jdp-days-header .jdp-day-name.holly-day {
+    color: var(--trb-green-dark, #003d01);
+    font-weight: 600;
+}
+
+.wp-admin jdp-container .jdp-day.selected,
+.wp-admin jdp-container .jdp-day-name.selected,
+jdp-container .jdp-day.selected,
+jdp-container .jdp-day-name.selected {
+    background-color: var(--trb-green, #9ce76a) !important;
+    color: var(--trb-green-dark, #003d01) !important;
+    border-radius: 8px;
+}
+
+.wp-admin jdp-container .jdp-day.in-range,
+.wp-admin jdp-container .jdp-day-name.in-range,
+jdp-container .jdp-day.in-range,
+jdp-container .jdp-day-name.in-range {
+    background-color: var(--trb-green-soft, #f0fde8);
+    color: var(--trb-green-dark, #003d01);
+    border-radius: 0;
+}
+
+.wp-admin jdp-container .jdp-day.range-start,
+.wp-admin jdp-container .jdp-day-name.range-start,
+jdp-container .jdp-day.range-start,
+jdp-container .jdp-day-name.range-start {
+    border-radius: 0 8px 8px 0;
+}
+
+.wp-admin jdp-container .jdp-day.range-end,
+.wp-admin jdp-container .jdp-day-name.range-end,
+jdp-container .jdp-day.range-end,
+jdp-container .jdp-day-name.range-end {
+    border-radius: 8px 0 0 8px;
+}
+
+.wp-admin jdp-container .jdp-day:not(.disabled-day):not(.in-range):not(.range-start):not(.range-end),
+jdp-container .jdp-day:not(.disabled-day):not(.in-range):not(.range-start):not(.range-end) {
+    border-radius: 8px;
+}
+
+.wp-admin jdp-container .jdp-day:not(.disabled-day):hover,
+jdp-container .jdp-day:not(.disabled-day):hover {
+    background: var(--trb-green-soft, #f0fde8);
+    border-color: var(--trb-green, #9ce76a);
+    transform: none;
+}
+
+.wp-admin jdp-container .jdp-days,
+.wp-admin jdp-container .jdp-footer,
+jdp-container .jdp-days,
+jdp-container .jdp-footer {
+    background: var(--trb-bg, #fff);
+    color-scheme: light;
+}
+
+.wp-admin jdp-container .jdp-footer,
+jdp-container .jdp-footer {
+    padding: 0.5rem 0.5rem 0.65rem;
+    margin: 0;
+}
+
+.wp-admin jdp-container .jdp-btn-today,
+.wp-admin jdp-container .jdp-btn-empty,
+.wp-admin jdp-container .jdp-btn-close,
+jdp-container .jdp-btn-today,
+jdp-container .jdp-btn-empty,
+jdp-container .jdp-btn-close {
+    background: var(--trb-green, #9ce76a);
+    color: var(--trb-green-dark, #003d01);
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 0.4em 0.85em;
+}
+
+.wp-admin jdp-container .jdp-year:hover,
+.wp-admin jdp-container .jdp-month:hover,
+jdp-container .jdp-year:hover,
+jdp-container .jdp-month:hover {
+    filter: none;
+}
+
+
+
+

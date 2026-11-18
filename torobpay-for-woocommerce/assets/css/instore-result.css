@@ -1,0 +1,502 @@
+@font-face {
+	font-family: IRANYekanX;
+	src: url("https://storage.torobpay.com/frontend/IRANYekanXVF.woff2") format("woff2 supports variations"), url("https://storage.torobpay.com/frontend/IRANYekanXVF.woff2") format("woff2-variations");
+	font-style: normal;
+	font-weight: 100 900;
+	font-display: swap;
+}
+
+.torobpay-instore-result-body {
+	margin: 0;
+	padding: 0 !important;
+	background: #f4f5f7;
+	color: #1a1c23;
+	font-family: IRANYekanX, Tahoma, "Segoe UI", system-ui, -apple-system, sans-serif !important;
+}
+
+.torobpay-instore-result-body button {
+	font-family: inherit;
+}
+
+.torobpay-instore-result-body *,
+.torobpay-instore-result-body *::before,
+.torobpay-instore-result-body *::after {
+	box-sizing: border-box;
+}
+
+/* Theme chrome (sticky nav, footer, header) must not appear on this page. */
+body.torobpay-instore-result-body > *:not(.torobpay-instore-result):not(#wpadminbar) {
+	display: none !important;
+}
+
+.torobpay-instore-result {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(240px, 38%);
+	min-height: 100vh;
+	direction: ltr;
+}
+
+.torobpay-instore-result__main,
+.torobpay-instore-result__brand {
+	direction: ltr;
+}
+
+html[dir="rtl"] .torobpay-instore-result__main,
+html[dir="rtl"] .torobpay-instore-result__brand,
+html[dir="rtl"] .torobpay-instore-result__card {
+	direction: rtl;
+}
+
+.torobpay-instore-result__main {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 2.5rem 1.5rem;
+	background: #f4f5f7;
+}
+
+.torobpay-instore-result__card {
+	width: 100%;
+	max-width: 26.5rem;
+	margin: 0;
+	padding: 1.25rem 1.25rem 1.5rem;
+	border-radius: 20px;
+	background: #fff;
+	box-shadow: 0 12px 40px rgba(26, 28, 35, 0.08);
+	text-align: start;
+}
+
+.torobpay-instore-result__summary {
+	padding: 0.85rem 1rem;
+	border-radius: 12px;
+	background: #f4f5f7;
+}
+
+.torobpay-instore-result__summary-text {
+	min-width: 0;
+}
+
+.torobpay-instore-result__store,
+.torobpay-instore-result__total,
+.torobpay-instore-result__order {
+	margin: 0;
+	line-height: 1.45;
+}
+
+.torobpay-instore-result__store {
+	font-size: 0.92rem;
+	font-weight: 700;
+	color: #1a1c23;
+}
+
+.torobpay-instore-result__total {
+	margin-top: 0.15rem;
+	font-size: 0.88rem;
+	color: #3d414c;
+}
+
+.torobpay-instore-result__total-label {
+	margin-inline-end: 0.25rem;
+}
+
+.torobpay-instore-result__order {
+	margin-top: 0.1rem;
+	font-size: 0.78rem;
+	color: #6b6f7a;
+}
+
+.torobpay-instore-result__status {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 1.75rem 0.5rem 1.25rem;
+	text-align: center;
+}
+
+.torobpay-instore-result__icon {
+	display: flex;
+	width: 4.5rem;
+	height: 4.5rem;
+	margin: 0 auto 1rem;
+}
+
+.torobpay-instore-result__icon svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.torobpay-instore-result__title {
+	margin: 0 0 0.5rem;
+	width: 100%;
+	font-size: 1.35rem;
+	line-height: 1.35;
+	font-weight: 700;
+	color: #1a1c23;
+}
+
+.torobpay-instore-result__message {
+	margin: 0;
+	width: 100%;
+	font-size: 0.95rem;
+	line-height: 1.7;
+	color: #5b5f6a;
+}
+
+.torobpay-instore-result__error {
+	margin: 0 0 1rem;
+	padding: 0.75rem 0.9rem;
+	border-radius: 10px;
+	background: #fdecea;
+	color: #8a1f11;
+	font-size: 0.9rem;
+}
+
+.torobpay-instore-result__form {
+	margin: 0 0 0.5rem;
+}
+
+.torobpay-instore-result__retry,
+.torobpay-instore-result button.torobpay-instore-result__retry {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	min-height: 3rem;
+	padding: 0.75rem 1rem;
+	border: 0;
+	border-radius: 12px;
+	background: #9ce76a;
+	color: #003d01;
+	font-size: 1rem;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.torobpay-instore-result__retry:hover,
+.torobpay-instore-result__retry:focus {
+	background: #8bd85a;
+	color: #003d01;
+}
+
+.torobpay-instore-result__retry:focus-visible {
+	outline: 3px solid #003d01;
+	outline-offset: 2px;
+}
+
+.torobpay-instore-result__closed {
+	margin: 0 0 0.5rem;
+	padding: 0.75rem 0.9rem;
+	border-radius: 10px;
+	background: #f4f5f7;
+	color: #5b5f6a;
+	font-size: 0.92rem;
+	text-align: center;
+}
+
+.torobpay-instore-result__steps {
+	margin-top: 1.25rem;
+	padding-top: 1.15rem;
+	border-top: 1px solid #eef0f4;
+}
+
+.torobpay-instore-result__steps-title {
+	margin: 0 0 1rem;
+	font-size: 0.92rem;
+	font-weight: 700;
+	color: #1a1c23;
+	text-align: center;
+}
+
+.torobpay-instore-result__steps-list {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	gap: 0.5rem;
+	position: relative;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.torobpay-instore-result__steps-list::before {
+	content: "";
+	position: absolute;
+	top: 18px;
+	inset-inline: 16%;
+	height: 2px;
+	background: #d7f3be;
+	z-index: 0;
+}
+
+.torobpay-instore-result__step {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	flex: 1;
+	min-width: 0;
+	text-align: center;
+}
+
+.torobpay-instore-result__step-icon {
+	display: block;
+	width: 36px;
+	height: 36px;
+	margin-bottom: 0.4rem;
+	background: #fff;
+	border-radius: 50%;
+}
+
+svg.torobpay-instore-result__step-icon {
+	overflow: visible;
+	border-radius: 0;
+	background: transparent;
+}
+
+.torobpay-instore-result__steps:not(.torobpay-instore-result__steps--installments) .torobpay-instore-result__step.is-pending .torobpay-instore-result__step-icon,
+.torobpay-instore-result__steps:not(.torobpay-instore-result__steps--installments) .torobpay-instore-result__step.is-failed .torobpay-instore-result__step-icon {
+	filter: grayscale(1);
+}
+
+.torobpay-instore-result__step.is-failed .torobpay-instore-result__step-icon {
+	filter: grayscale(1) sepia(0.6) hue-rotate(-40deg);
+}
+
+.torobpay-instore-result__step-label {
+	font-size: 0.75rem;
+	line-height: 1.35;
+	color: #5b5f6a;
+}
+
+.torobpay-instore-result__step.is-done .torobpay-instore-result__step-label {
+	color: #1a3d1e;
+	font-weight: 600;
+}
+
+.torobpay-instore-result__step-date {
+	display: block;
+	margin-top: 0.15rem;
+	font-size: 0.68rem;
+	line-height: 1.35;
+	color: #5b5f6a;
+	font-variant-numeric: tabular-nums;
+	direction: ltr;
+	unicode-bidi: isolate;
+	white-space: nowrap;
+}
+
+.torobpay-instore-result__step.is-done .torobpay-instore-result__step-date {
+	color: #1a3d1e;
+	font-weight: 600;
+}
+
+.torobpay-instore-result__steps--installments {
+	margin-top: 0.5rem;
+	padding: 1.1rem 0.85rem 1.15rem;
+	border: 0;
+	border-radius: 16px;
+	background: #f4f6f8;
+}
+
+.torobpay-instore-result__steps--installments .torobpay-instore-result__steps-list {
+	gap: 0.25rem;
+}
+
+.torobpay-instore-result__steps--installments .torobpay-instore-result__steps-list::before {
+	display: none;
+}
+
+.torobpay-instore-result__steps--installments .torobpay-instore-result__steps-title {
+	color: #6b6f7a;
+}
+
+.torobpay-instore-result__steps--installments .torobpay-instore-result__step-icon {
+	width: 40px;
+	height: 40px;
+}
+
+.torobpay-instore-result__steps--installments .torobpay-instore-result__step-label,
+.torobpay-instore-result__steps--installments .torobpay-instore-result__step.is-done .torobpay-instore-result__step-label {
+	margin-top: 0.15rem;
+	font-size: 0.82rem;
+	font-weight: 600;
+	color: #3d5c44;
+	white-space: nowrap;
+}
+
+.torobpay-instore-result__brand {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 1.1rem;
+	padding: 2.5rem 1.75rem;
+	background: #9ce76a;
+	color: #1a3d1e;
+	text-align: center;
+}
+
+.torobpay-instore-result__brand-logo {
+	width: 4.5rem;
+	height: 4.5rem;
+}
+
+.torobpay-instore-result__brand-title {
+	margin: 0;
+	max-width: 16rem;
+	font-size: 1.45rem;
+	line-height: 1.45;
+	font-weight: 800;
+}
+
+.torobpay-instore-result__brand-parts {
+	display: block;
+	width: min(220px, 80%);
+	height: auto;
+}
+
+.torobpay-instore-result__brand-tagline {
+	margin: 0;
+	max-width: 16rem;
+	font-size: 0.95rem;
+	line-height: 1.6;
+	font-weight: 600;
+}
+
+@media (max-width: 800px) {
+	.torobpay-instore-result-body {
+		background: #fff;
+		color: #1a202c;
+	}
+
+	.torobpay-instore-result {
+		grid-template-columns: 1fr;
+		grid-template-rows: auto 1fr;
+		min-height: 100vh;
+		background: #fff;
+	}
+
+	.torobpay-instore-result__brand {
+		order: -1;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: center;
+		gap: 0.7rem;
+		min-height: 0;
+		padding: 1.1rem 1.25rem 0.35rem;
+		background: #fff;
+		color: #1a202c;
+		text-align: start;
+	}
+
+	.torobpay-instore-result__brand-logo {
+		width: 2.35rem;
+		height: 2.35rem;
+	}
+
+	.torobpay-instore-result__brand-title {
+		max-width: none;
+		font-size: 1.05rem;
+		line-height: 1.5;
+		font-weight: 800;
+	}
+
+	.torobpay-instore-result__brand-parts,
+	.torobpay-instore-result__brand-tagline {
+		display: none;
+	}
+
+	.torobpay-instore-result__main {
+		align-items: stretch;
+		justify-content: flex-start;
+		padding: 0 0 2rem;
+		background: #fff;
+	}
+
+	.torobpay-instore-result__card {
+		max-width: none;
+		padding: 0;
+		overflow: visible;
+		border-radius: 0;
+		box-shadow: none;
+		background: transparent;
+	}
+
+	.torobpay-instore-result__summary {
+		padding: 0.95rem 1.25rem;
+		border-radius: 0;
+		background: #f4f6f8;
+	}
+
+	.torobpay-instore-result__error,
+	.torobpay-instore-result__closed {
+		margin-inline: 1.25rem;
+	}
+
+	.torobpay-instore-result__store {
+		font-size: 0.95rem;
+	}
+
+	.torobpay-instore-result__total {
+		font-size: 0.9rem;
+		color: #4a5060;
+	}
+
+	.torobpay-instore-result__status {
+		padding: 1.6rem 1.25rem 1.15rem;
+		text-align: center;
+	}
+
+	.torobpay-instore-result__icon {
+		width: 3.25rem;
+		height: 3.25rem;
+		margin: 0 auto 0.85rem;
+	}
+
+	.torobpay-instore-result__title {
+		font-size: 1.45rem;
+		line-height: 1.4;
+	}
+
+	.torobpay-instore-result__message {
+		margin-top: 0.35rem;
+		font-size: 0.92rem;
+		color: #5b5f6a;
+	}
+
+	.torobpay-instore-result__form {
+		margin: 0.15rem 1.25rem 0.25rem;
+	}
+
+	.torobpay-instore-result__retry,
+	.torobpay-instore-result button.torobpay-instore-result__retry {
+		min-height: 3.1rem;
+		border-radius: 12px;
+		background: #98e36a;
+		font-size: 1.02rem;
+	}
+
+	.torobpay-instore-result__steps {
+		margin: 1.75rem 1.25rem 0;
+		padding: 1.15rem 1rem 1.2rem;
+		border: 1px solid #e8eaef;
+		border-radius: 16px;
+		background: #fff;
+	}
+
+	.torobpay-instore-result__steps--installments {
+		background: #f4f6f8;
+		border: 0;
+	}
+
+	.torobpay-instore-result__steps-title {
+		margin-bottom: 1.1rem;
+		font-size: 0.95rem;
+	}
+
+	.torobpay-instore-result__step-date {
+		font-size: 0.65rem;
+	}
+}

@@ -1,0 +1,5413 @@
+# Copyright (C) 2026 TorobPay
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: TorobPay for WooCommerce 4.8.16\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/torobpay-for-woocommerce\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-10-24T17:07:44+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: torobpay-for-woocommerce\n"
+
+#. Plugin Name of the plugin
+#: torobpay-for-woocommerce.php
+msgid "TorobPay for WooCommerce"
+msgstr ""
+
+#. Description of the plugin
+#: torobpay-for-woocommerce.php
+msgid "Accept TorobPay installment payments in WooCommerce."
+msgstr ""
+
+#. Author of the plugin
+#: torobpay-for-woocommerce.php
+#: class-wc-gateway-torobpay.php:122
+#: hooks.php:595
+#: hooks.php:1578
+#: hooks.php:1579
+#: includes/admin/torobpay-instore-ajax.php:460
+#: includes/torobpay-dashboard-widget.php:360
+#: includes/torobpay-slider.php:2657
+#: includes/torobpay-slider.php:2759
+#: includes/torobpay-widget.php:136
+#: includes/widget-settings-page.php:957
+msgid "TorobPay"
+msgstr ""
+
+#. Author URI of the plugin
+#: torobpay-for-woocommerce.php
+msgid "https://torobpay.com/account?page=about-us"
+msgstr ""
+
+#: build/hosted/includes/updater.php:385
+msgid "TorobPay could not retrieve a fresh update package. Please try again."
+msgstr ""
+
+#: build/hosted/includes/updater.php:392
+msgid "TorobPay is already up to date."
+msgstr ""
+
+#: campaign-page.php:22
+#: campaign-page.php:99
+msgid "You do not have permission to access this page."
+msgstr ""
+
+#: campaign-page.php:55
+#: includes/notifications/providers/campaign.php:32
+#: includes/torobpay-dashboard-widget.php:265
+msgid "Join TorobPay campaign"
+msgstr ""
+
+#: campaign-page.php:71
+#: campaign-page.php:115
+msgid "WooCommerce is not active. WooCommerce must be active to join the campaign."
+msgstr ""
+
+#: campaign-page.php:106
+msgid "Security verification failed. Please try again."
+msgstr ""
+
+#: campaign-page.php:179
+msgid "Not yet"
+msgstr ""
+
+#: campaign-page.php:213
+msgid "Special TorobPay credit"
+msgstr ""
+
+#: campaign-page.php:214
+msgid "for your customers"
+msgstr ""
+
+#: campaign-page.php:217
+msgid "TorobPay offers purchase credit to your eligible customers and invites them to buy from your store in installments."
+msgstr ""
+
+#: campaign-page.php:232
+msgid ""
+"SMS sent by\n"
+"TorobPay"
+msgstr ""
+
+#: campaign-page.php:236
+msgid ""
+"No cost\n"
+"for the store"
+msgstr ""
+
+#: campaign-page.php:240
+msgid ""
+"Aimed at increasing\n"
+"repeat purchases"
+msgstr ""
+
+#: campaign-page.php:255
+msgid "Activate campaign"
+msgstr ""
+
+#: campaign-page.php:263
+msgid "By activating, paid order data is shared with TorobPay to identify eligible customers. This information stays confidential and is used only for this campaign."
+msgstr ""
+
+#: campaign-page.php:294
+msgid "Campaign status"
+msgstr ""
+
+#: campaign-page.php:301
+msgid "Your campaign is active"
+msgstr ""
+
+#: campaign-page.php:309
+msgid "Disable campaign sharing"
+msgstr ""
+
+#: campaign-page.php:314
+msgid "TorobPay identifies eligible customers of your store and notifies them by SMS to receive credit. TorobPay sends these messages free of charge."
+msgstr ""
+
+#: campaign-page.php:322
+msgid "Last information update"
+msgstr ""
+
+#: campaign-page.php:332
+msgid "List of customers receiving credit"
+msgstr ""
+
+#: campaign-page.php:335
+msgid "You can download the list of customers who received TorobPay credit and send them SMS, or use it in your own dedicated campaign."
+msgstr ""
+
+#: campaign-page.php:342
+msgid "No campaign files yet."
+msgstr ""
+
+#: campaign-page.php:363
+msgid "Download list"
+msgstr ""
+
+#: campaign-page.php:366
+msgid "The campaign file is being prepared…"
+msgstr ""
+
+#: class-torobpay-api.php:156
+#: includes/notifications/providers/auth-error.php:33
+msgid "TorobPay authentication error"
+msgstr ""
+
+#. translators: %s: API error message
+#: class-torobpay-api.php:159
+#, php-format
+msgid "Authentication error: %s"
+msgstr ""
+
+#: class-torobpay-api.php:174
+msgid "Invalid response. Access token was not received."
+msgstr ""
+
+#: class-torobpay-api.php:238
+msgid "TorobPay payment gateway plugin settings error"
+msgstr ""
+
+#. translators: %s: underlying error message
+#: class-torobpay-api.php:260
+#, php-format
+msgid "Gateway error %s"
+msgstr ""
+
+#: class-torobpay-api.php:424
+#: includes/torobpay-instore.php:332
+msgid "In-store sale"
+msgstr ""
+
+#: class-torobpay-api.php:428
+#: class-torobpay-orders-table.php:785
+#: class-torobpay-orders-table.php:984
+#: hooks.php:2100
+#: includes/torobpay-instore.php:98
+msgid "In-store"
+msgstr ""
+
+#. translators: %s: product name or SKU
+#: class-torobpay-api.php:447
+#, php-format
+msgid "Product \"%s\" was not found in the store (deleted or inactive). Item sync is not possible."
+msgstr ""
+
+#: class-torobpay-api.php:650
+msgid "Invalid response from TorobPay API"
+msgstr ""
+
+#: class-torobpay-api.php:696
+#: class-torobpay-api.php:730
+#: includes/torobpay-campaign-rest.php:506
+msgid "TorobPay authentication is unavailable."
+msgstr ""
+
+#: class-torobpay-api.php:699
+msgid "TorobPay authentication credentials are incomplete."
+msgstr ""
+
+#: class-torobpay-blocks-support.php:146
+#: class-wc-gateway-torobpay.php:129
+#: includes/torobpay-instore-result.php:614
+msgid "Pay in installments with TorobPay"
+msgstr ""
+
+#: class-torobpay-blocks-support.php:147
+#: includes/torobpay-widget.php:118
+#: assets/js/blocks/torobpay-blocks.js:160
+msgid "Installments based on TorobPay credit"
+msgstr ""
+
+#: class-torobpay-orders-table.php:41
+msgid "Unknown status"
+msgstr ""
+
+#: class-torobpay-orders-table.php:46
+msgid " (Paid)"
+msgstr ""
+
+#: class-torobpay-orders-table.php:79
+#: class-torobpay-orders-table.php:143
+msgid "Order ID"
+msgstr ""
+
+#: class-torobpay-orders-table.php:80
+msgid "Channel"
+msgstr ""
+
+#: class-torobpay-orders-table.php:81
+#: class-torobpay-orders-table.php:144
+msgid "Payment date"
+msgstr ""
+
+#: class-torobpay-orders-table.php:82
+#: class-torobpay-orders-table.php:145
+msgid "Mobile number"
+msgstr ""
+
+#: class-torobpay-orders-table.php:83
+#: class-torobpay-orders-table.php:146
+msgid "Customer name"
+msgstr ""
+
+#: class-torobpay-orders-table.php:84
+#: class-torobpay-orders-table.php:147
+msgid "Order status"
+msgstr ""
+
+#: class-torobpay-orders-table.php:85
+#: class-torobpay-orders-table.php:148
+msgid "TorobPay transaction status"
+msgstr ""
+
+#: class-torobpay-orders-table.php:86
+#: class-torobpay-orders-table.php:149
+msgid "Total amount"
+msgstr ""
+
+#: class-torobpay-orders-table.php:104
+#: class-torobpay-orders-table.php:985
+#: includes/torobpay-instore.php:101
+msgid "Online"
+msgstr ""
+
+#: class-torobpay-orders-table.php:113
+#: class-torobpay-orders-table.php:807
+msgid "No response"
+msgstr ""
+
+#: class-torobpay-orders-table.php:150
+msgid "Actions"
+msgstr ""
+
+#: class-torobpay-orders-table.php:195
+msgid "Refresh transaction status"
+msgstr ""
+
+#: class-torobpay-orders-table.php:196
+#: hooks.php:1068
+msgid "Refund order"
+msgstr ""
+
+#: class-torobpay-orders-table.php:197
+msgid "Export CSV"
+msgstr ""
+
+#: class-torobpay-orders-table.php:330
+#: hooks.php:1331
+#: includes/torobpay-order-payment.php:465
+msgid "TorobPay refund"
+msgstr ""
+
+#: class-torobpay-orders-table.php:842
+msgid "No TorobPay gateway orders found."
+msgstr ""
+
+#: class-torobpay-orders-table.php:855
+msgid "Not updated yet"
+msgstr ""
+
+#: class-torobpay-orders-table.php:861
+msgid "Just now"
+msgstr ""
+
+#: class-torobpay-orders-table.php:865
+#: class-torobpay-orders-table.php:872
+msgid " seconds ago"
+msgstr ""
+
+#: class-torobpay-orders-table.php:872
+msgid " minutes and "
+msgstr ""
+
+#: class-torobpay-orders-table.php:874
+#: class-torobpay-orders-table.php:881
+msgid " minutes ago"
+msgstr ""
+
+#: class-torobpay-orders-table.php:881
+msgid " hours and "
+msgstr ""
+
+#: class-torobpay-orders-table.php:883
+#: class-torobpay-orders-table.php:889
+msgid " hours ago"
+msgstr ""
+
+#: class-torobpay-orders-table.php:889
+msgid " days and "
+msgstr ""
+
+#: class-torobpay-orders-table.php:891
+msgid " days ago"
+msgstr ""
+
+#: class-torobpay-orders-table.php:911
+msgid "Important note:"
+msgstr ""
+
+#. translators: %s: TorobPay merchant panel URL
+#: class-torobpay-orders-table.php:916
+#, php-format
+msgid "The authoritative order status is the one shown in the TorobPay merchants panel. To open the panel, <a href=\"%s\" target=\"_blank\">click here</a>."
+msgstr ""
+
+#: class-torobpay-orders-table.php:928
+msgid "Last TorobPay order status fetch:"
+msgstr ""
+
+#: class-torobpay-orders-table.php:934
+msgid "Filter orders"
+msgstr ""
+
+#. translators: %d: number of active filters
+#: class-torobpay-orders-table.php:940
+#, php-format
+msgid "%d active filter"
+msgid_plural "%d active filters"
+msgstr[0] ""
+msgstr[1] ""
+
+#: class-torobpay-orders-table.php:946
+msgid "Order number:"
+msgstr ""
+
+#: class-torobpay-orders-table.php:951
+msgid "Search order number"
+msgstr ""
+
+#: class-torobpay-orders-table.php:956
+msgid "Order status:"
+msgstr ""
+
+#: class-torobpay-orders-table.php:958
+#: class-torobpay-orders-table.php:971
+#: class-torobpay-orders-table.php:983
+#: includes/notifications/notification-render.php:226
+msgid "All"
+msgstr ""
+
+#: class-torobpay-orders-table.php:969
+msgid "TorobPay transaction status:"
+msgstr ""
+
+#: class-torobpay-orders-table.php:972
+msgid "Paid"
+msgstr ""
+
+#: class-torobpay-orders-table.php:973
+#: includes/torobpay-reconcile.php:453
+msgid "Awaiting payment"
+msgstr ""
+
+#: class-torobpay-orders-table.php:974
+msgid "Cancelled / Failed"
+msgstr ""
+
+#: class-torobpay-orders-table.php:975
+msgid "Incomplete edit"
+msgstr ""
+
+#: class-torobpay-orders-table.php:976
+#: assets/js/admin-order-actions.js:960
+#: assets/js/admin-order-actions.js:1081
+msgid "Action required"
+msgstr ""
+
+#: class-torobpay-orders-table.php:981
+msgid "Channel:"
+msgstr ""
+
+#: class-torobpay-orders-table.php:990
+msgid "Date range:"
+msgstr ""
+
+#: class-torobpay-orders-table.php:1000
+msgid "Start date - End date"
+msgstr ""
+
+#: class-torobpay-orders-table.php:1011
+msgid "Mobile number:"
+msgstr ""
+
+#: class-torobpay-orders-table.php:1016
+msgid "Search mobile number"
+msgstr ""
+
+#: class-torobpay-orders-table.php:1022
+msgid "Apply filters"
+msgstr ""
+
+#: class-torobpay-orders-table.php:1027
+msgid "Clear filters"
+msgstr ""
+
+#: class-torobpay-orders-table.php:1104
+msgid "Export all"
+msgstr ""
+
+#: class-torobpay-orders-table.php:1110
+msgid "Export selected"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:75
+msgid "None of the TorobPay account fields may be empty."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:123
+msgid "TorobPay payment gateway settings for WooCommerce"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:130
+#: includes/torobpay-widget.php:621
+#: includes/widget-settings-page.php:1200
+#: assets/js/badge-compatibility.js:237
+#: assets/js/blocks/torobpay-blocks.js:109
+#: assets/js/blocks/torobpay-blocks.js:119
+#: assets/js/blocks/torobpay-blocks.js:155
+#: assets/js/blocks/torobpay-blocks.js:178
+msgid "TorobPay installment payment"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:193
+#: includes/notifications/providers/visual-elements.php:21
+#: includes/widget-settings-page.php:399
+#: assets/js/widget-settings.js:1351
+msgid "Widget"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:196
+#: includes/notifications/providers/visual-elements.php:22
+#: includes/widget-settings-page.php:402
+#: assets/js/widget-settings.js:1352
+msgid "Badge"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:199
+#: includes/notifications/providers/visual-elements.php:23
+#: includes/torobpay-dashboard-widget.php:380
+#: includes/widget-settings-page.php:405
+#: includes/widget-settings-page.php:936
+#: assets/js/widget-settings.js:1353
+msgid "Marquee"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:202
+#: includes/notifications/providers/visual-elements.php:24
+#: includes/widget-settings-page.php:408
+#: assets/js/widget-settings.js:1354
+msgid "Top bar"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:205
+#: includes/notifications/providers/visual-elements.php:25
+#: includes/torobpay-slider.php:1585
+#: includes/widget-settings-page.php:411
+#: assets/js/widget-settings.js:1355
+msgid "Slider"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:214
+#: includes/widget-settings-page.php:419
+#: assets/js/widget-settings.js:1388
+msgid "Enabling TorobPay elements can increase sales"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:215
+#: includes/widget-settings-page.php:420
+msgid "Showing the widget, badge, marquee, slider, and top bar informs shoppers about fee-free installment payments and can improve conversion by raising awareness of this payment method in your store."
+msgstr ""
+
+#. translators: %s: disabled TorobPay UI element name
+#: class-wc-gateway-torobpay.php:224
+#: includes/notifications/providers/visual-elements.php:47
+#, php-format
+msgid "%s is disabled"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:234
+msgid "Enable in visual settings"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:249
+msgid "Basic settings"
+msgstr ""
+
+#. translators: %s: URL to TorobPay visual settings
+#: class-wc-gateway-torobpay.php:253
+#, php-format
+msgid "Widget and badge are enabled by default. To change them, go to <a href=\"%s\">TorobPay visual settings</a>."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:258
+msgid "Enable/Disable"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:260
+msgid "Enable TorobPay gateway"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:261
+msgid "Check this box to enable the TorobPay payment gateway"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:266
+msgid "Require mobile number"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:268
+msgid "If you use WooCommerce block checkout, also mark phone as required in the block settings so the phone field does not show \"optional\"."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:269
+msgid "Check this box to require a mobile number"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:275
+msgid "Require postal code"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:277
+msgid "Supports block checkout and classic checkout."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:278
+msgid "Check this box to require a postal code"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:283
+msgid "Default gateway"
+msgstr ""
+
+#. translators: %s: URL to WooCommerce Payments settings
+#: class-wc-gateway-torobpay.php:287
+#, php-format
+msgid "Note: In WooCommerce 9.6 and later, you can set the default gateway by dragging TorobPay to the top of the list under <a href=\"%s\">WooCommerce > Settings > Payments</a>."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:290
+msgid "Check this box if you want TorobPay to be the default payment gateway"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:303
+msgid "Redirect directly to gateway (deprecated)"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:305
+msgid "Deprecated — checkout always goes directly to the gateway"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:306
+msgid "This option no longer affects placing an order at checkout. Checkout always redirects to TorobPay. It only still applies on the order-pay receipt page and will be removed in a later version."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:311
+msgid "Disable order payment retry"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:313
+msgid "Disable retrying payment after a failed attempt"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:314
+msgid "When enabled, customers cannot retry failed orders and must place a new order"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:319
+msgid "TorobPay account settings"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:324
+msgid "TorobPay merchant ID"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:333
+msgid "TorobPay key"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:342
+msgid "TorobPay username"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:351
+msgid "TorobPay password"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:360
+msgid "Fetch account details"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:365
+#: includes/widget-settings-page.php:1171
+#: includes/widget-settings-page.php:1483
+msgid "Advanced settings"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:370
+msgid "Gateway URL"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:372
+msgid "TorobPay API base URL (HTTPS only)"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:383
+msgid "Enable Smart DNS Resolve"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:385
+msgid "Enable only on servers that fail to resolve the TorobPay API domain."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:386
+msgid "When enabled, the plugin uses a fixed or cached IP to work around server DNS issues."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:391
+msgid "Fixed API IP (optional)"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:393
+msgid "If you see DNS timeout (cURL error 28), enter <code>81.12.31.29</code> or get the correct IP from TorobPay support."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:395
+msgid "Example: 81.12.31.29"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:399
+msgid "HTTP Requests Manager"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:401
+msgid "Allow TorobPay API host in the HTTP Requests Manager plugin"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:402
+msgid "Optional. Only takes effect if the HTTP Requests Manager plugin is installed. When enabled and you save settings, TorobPay adds its API host to that plugin’s allow list so outbound TorobPay calls are not blocked."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:407
+msgid "Blocked HTTP requests (Beta)"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:409
+msgid "Allow TorobPay API calls when WordPress or another plugin blocks them"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:410
+msgid "Lets only the Gateway URL host through."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:415
+msgid "UTM and marketing settings"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:417
+msgid "Optional checkout behavior for Torob visitors and TorobPay visitors."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:420
+msgid "Auto-select for Torob visitors"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:422
+msgid "Auto-select TorobPay for Torob visitors"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:423
+msgid "Applies when utm_source is torob. TorobPay is auto-selected and shown first for 24 hours."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:428
+msgid "Only installment method for Torob visitors"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:430
+msgid "Keep TorobPay as the only installment method for Torob visitors"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:431
+msgid "Applies when utm_source is torob. TorobPay stays the only installment method for 2 hours. Other payment methods stay available."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:436
+msgid "Auto-select for TorobPay visitors"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:438
+msgid "Auto-select TorobPay for TorobPay visitors"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:439
+msgid "Applies when utm_medium contains \"TorobPay\". TorobPay is auto-selected and shown first for 24 hours."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:444
+msgid "Only installment method for TorobPay visitors"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:446
+msgid "Keep TorobPay as the only installment method for TorobPay visitors"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:447
+msgid "Applies when utm_medium contains \"TorobPay\". TorobPay stays the only installment method for 2 hours. Other payment methods stay available."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:452
+msgid "Payment operation settings"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:457
+msgid "Successful payment message"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:459
+msgid "Enter the message shown after a successful payment. You can use the {referenceID} shortcode for the transaction reference code."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:460
+msgid "Thank you. Your order was paid successfully."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:463
+msgid "Failed payment message"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:465
+msgid "Enter the message shown after a failed payment. You can use the {fault} shortcode for the error reason returned by TorobPay."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:466
+msgid "Your payment failed. Please try again or contact the site administrator if the problem continues."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:469
+msgid "Transaction number"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:470
+msgid "Payment token"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:471
+msgid "Transaction reference code"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:555
+msgid "Use a custom gateway URL"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:590
+msgid "You can fetch account details directly from TorobPay; on success, fields are filled automatically."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:593
+msgid "Automatic fetch has stopped. Use this button for a manual fetch, and check your account status in the TorobPay panel if needed."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:595
+msgid "The plugin retries automatically every 4 hours for up to 30 days; you can also fetch manually now."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:649
+msgid "Gateway URL cannot be empty. The default URL will be used."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:656
+msgid "Invalid gateway URL. Only HTTPS URLs are allowed. The default URL will be used."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:662
+msgid "Gateway URL must use HTTPS. The default URL will be used."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:687
+#: class-wc-gateway-torobpay.php:692
+#: class-wc-gateway-torobpay.php:1296
+msgid "Error: order not found."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:816
+#: includes/torobpay-instore.php:220
+msgid "Payment completed successfully."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:824
+msgid "Payment failed. If the amount was deducted from your bank account, contact support."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:826
+msgid "The order has not been paid yet."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:996
+msgid "TorobPay: This order was already paid."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:1052
+#: class-wc-gateway-torobpay.php:1070
+#: class-wc-gateway-torobpay.php:1177
+msgid "An error occurred while connecting to the gateway. Please try again."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:1088
+msgid "TorobPay: Payment was completed."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:1163
+msgid "The payment amount could not be confirmed. Please try again."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:1180
+msgid "Error retrieving payment token:"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:1197
+msgid "The return URL from the gateway was invalid and payment was stopped."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:1199
+#: includes/torobpay-instore-result.php:240
+#: includes/torobpay-instore-result.php:255
+msgid "Error redirecting to the gateway. Please try again."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:1224
+msgid "Redirecting to TorobPay gateway with payment token:"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:1224
+#: class-wc-gateway-torobpay.php:1597
+#: includes/torobpay-order-payment.php:1076
+#: includes/torobpay-order-payment.php:1161
+msgid "Transaction ID:"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:1258
+#: includes/torobpay-instore-result.php:420
+msgid "Payment"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:1259
+msgid "Return"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:1326
+msgid "Order number is missing."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:1334
+#: hooks.php:1284
+#: hooks.php:1375
+#: hooks.php:1487
+#: hooks.php:1533
+#: includes/admin/torobpay-instore-ajax.php:558
+#: includes/admin/torobpay-instore-ajax.php:622
+#: includes/admin/torobpay-order-items-ajax.php:453
+#: includes/admin/torobpay-order-items-ajax.php:557
+#: includes/admin/torobpay-order-items-ajax.php:748
+#: includes/admin/torobpay-order-items-ajax.php:1093
+msgid "Order not found."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:1363
+msgid "Invalid order key."
+msgstr ""
+
+#. translators: 1: original payment/transaction ID, 2: duplicate payment/transaction ID
+#: class-wc-gateway-torobpay.php:1393
+#, php-format
+msgid "This order was already paid with payment ID (%1$s), so your payment with payment ID (%2$s) is a duplicate and will be refunded shortly. If the amount is not returned, contact support."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:1415
+#: class-wc-gateway-torobpay.php:1484
+msgid "An error occurred when returning from the gateway."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:1416
+#: class-wc-gateway-torobpay.php:1483
+msgid "Payment failed at the gateway."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:1455
+msgid "Order error: invalid payment token."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:1490
+msgid "Gateway error: payment failed."
+msgstr ""
+
+#. translators: %s: gateway error message
+#: class-wc-gateway-torobpay.php:1493
+#, php-format
+msgid "Gateway error: %s"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:1589
+msgid "Transaction was successful."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:1593
+msgid "In-store payment was successful."
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:1601
+#: includes/torobpay-order-payment.php:1077
+#: includes/torobpay-order-payment.php:1162
+msgid "Payment token:"
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:1607
+#: class-wc-gateway-torobpay.php:1846
+#: includes/torobpay-reconcile.php:39
+msgid "TorobPay: "
+msgstr ""
+
+#: class-wc-gateway-torobpay.php:1615
+msgid "TorobPay: Payment was confirmed but final settlement did not complete. The order was flagged for review and automatic finalization."
+msgstr ""
+
+#: hooks.php:525
+msgid "TorobPay payment token was not found for this order."
+msgstr ""
+
+#: hooks.php:551
+msgid "Updating the order in TorobPay failed."
+msgstr ""
+
+#: hooks.php:600
+msgid "Order status is set for refund"
+msgstr ""
+
+#: hooks.php:751
+msgid "Settings"
+msgstr ""
+
+#: hooks.php:752
+#: hooks.php:1609
+#: hooks.php:1610
+msgid "Support"
+msgstr ""
+
+#: hooks.php:802
+#: hooks.php:816
+msgid "Commission type"
+msgstr ""
+
+#: hooks.php:804
+#: hooks.php:819
+msgid "Enter the commission type specified for this category"
+msgstr ""
+
+#: hooks.php:881
+#: includes/notifications/providers/auth-error.php:34
+msgid "Error connecting to TorobPay. Please check the settings."
+msgstr ""
+
+#: hooks.php:897
+#: includes/notifications/action-needed-notice.php:56
+#: includes/torobpay-api-helpers.php:101
+#: includes/torobpay-api-helpers.php:114
+#: includes/torobpay-api-helpers.php:130
+#: includes/torobpay-api-helpers.php:147
+#: includes/torobpay-provision.php:1649
+#: includes/torobpay-utils.php:192
+#: torobpay-for-woocommerce.php:241
+msgid "TorobPay:"
+msgstr ""
+
+#: hooks.php:899
+#: includes/torobpay-error-codes.php:421
+msgid "Review settings"
+msgstr ""
+
+#: hooks.php:903
+#: includes/torobpay-provision.php:1558
+msgid "Fetch account details from TorobPay"
+msgstr ""
+
+#: hooks.php:908
+msgid "Dismiss this message"
+msgstr ""
+
+#: hooks.php:916
+#: hooks.php:1000
+#: hooks.php:2186
+#: hooks.php:2272
+#: hooks.php:2336
+#: includes/torobpay-provision.php:1397
+#: includes/torobpay-provision.php:1673
+#: includes/torobpay-slider.php:1747
+msgid "Unauthorized"
+msgstr ""
+
+#: hooks.php:970
+msgid "If <code>WP_ACCESSIBLE_HOSTS</code> is already defined, append the TorobPay domains to it."
+msgstr ""
+
+#: hooks.php:971
+msgid "If <code>WP_ACCESSIBLE_HOSTS</code> is already defined, append this host to it."
+msgstr ""
+
+#: hooks.php:976
+msgid "TorobPay — required setting"
+msgstr ""
+
+#: hooks.php:977
+msgid "The <code>WP_HTTP_BLOCK_EXTERNAL</code> setting is enabled on your WordPress site and blocks API requests to TorobPay."
+msgstr ""
+
+#: hooks.php:978
+msgid "To fix this, add the following code to your <code>wp-config.php</code> file:"
+msgstr ""
+
+#: hooks.php:986
+msgid "Quick fix (beta): under Advanced settings, enable “Allow TorobPay API calls when WordPress or another plugin blocks them” and save."
+msgstr ""
+
+#: hooks.php:987
+#: torobpay-for-woocommerce.php:243
+msgid "Open Advanced settings"
+msgstr ""
+
+#: hooks.php:990
+#: includes/notifications/action-needed-notice.php:52
+#: includes/notifications/notification-render.php:186
+msgid "Dismiss"
+msgstr ""
+
+#: hooks.php:1081
+msgid "Resume edit — item editing is incomplete"
+msgstr ""
+
+#: hooks.php:1090
+msgid "Edit items"
+msgstr ""
+
+#: hooks.php:1122
+msgid "Show payment QR"
+msgstr ""
+
+#: hooks.php:1142
+msgid "TorobPay actions:"
+msgstr ""
+
+#: hooks.php:1278
+#: hooks.php:1368
+#: hooks.php:1481
+#: hooks.php:1527
+#: includes/admin/torobpay-order-items-ajax.php:442
+#: includes/admin/torobpay-order-items-ajax.php:550
+#: includes/admin/torobpay-order-items-ajax.php:737
+#: includes/admin/torobpay-order-items-ajax.php:1082
+#: assets/js/admin-order-actions.js:871
+msgid "An error occurred."
+msgstr ""
+
+#: hooks.php:1290
+#: hooks.php:1380
+#: hooks.php:1491
+#: hooks.php:1538
+#: includes/admin/torobpay-instore-ajax.php:563
+#: includes/admin/torobpay-instore-ajax.php:627
+#: includes/admin/torobpay-order-items-ajax.php:459
+#: includes/admin/torobpay-order-items-ajax.php:563
+msgid "This order does not belong to TorobPay."
+msgstr ""
+
+#: hooks.php:1295
+#: hooks.php:1385
+#: hooks.php:1496
+#: hooks.php:1543
+#: hooks.php:2289
+#: includes/admin/torobpay-order-items-ajax.php:464
+#: includes/admin/torobpay-order-items-ajax.php:568
+#: includes/admin/torobpay-order-items-ajax.php:753
+#: includes/admin/torobpay-order-items-ajax.php:1098
+msgid "This order is a marketplace vendor sub-order and has no independent payment token."
+msgstr ""
+
+#: hooks.php:1310
+msgid "Refund was not confirmed in TorobPay; local refund was not recorded to avoid a financial mismatch. Please check the payment status in the TorobPay panel."
+msgstr ""
+
+#: hooks.php:1338
+msgid "Error creating refund: "
+msgstr ""
+
+#: hooks.php:1355
+#: assets/js/admin-order-actions.js:53
+#: assets/js/admin-order-actions.js:1185
+msgid "Order refunded successfully."
+msgstr ""
+
+#: hooks.php:1432
+msgid "Payment status was synced with TorobPay and no further action is needed."
+msgstr ""
+
+#: hooks.php:1433
+msgid "No mismatch was found between WooCommerce and TorobPay status."
+msgstr ""
+
+#: hooks.php:1503
+msgid "TorobPay: With admin confirmation, and because payment was cancelled/incomplete in TorobPay, the order was marked as \"Failed\"."
+msgstr ""
+
+#: hooks.php:1514
+msgid "The order was marked as \"Failed\" and the warning was cleared."
+msgstr ""
+
+#: hooks.php:1547
+msgid "TorobPay: The \"Action required\" warning was reviewed and dismissed by an admin; the order remains listed until fully resolved."
+msgstr ""
+
+#: hooks.php:1552
+msgid "Warning removed from notices; the order remains in the list until fully resolved."
+msgstr ""
+
+#: hooks.php:1591
+#: hooks.php:1592
+#: hooks.php:1751
+msgid "Orders"
+msgstr ""
+
+#: hooks.php:1600
+#: hooks.php:1601
+#: includes/notifications/providers/campaign.php:35
+#: includes/torobpay-dashboard-widget.php:293
+msgid "Join campaign"
+msgstr ""
+
+#: hooks.php:1618
+#: hooks.php:1619
+#: includes/widget-settings-page.php:391
+msgid "TorobPay visual settings"
+msgstr ""
+
+#: hooks.php:1627
+#: hooks.php:1628
+#: includes/torobpay-provision.php:1653
+msgid "Gateway settings"
+msgstr ""
+
+#: hooks.php:1659
+#: hooks.php:1676
+#: includes/notifications/notification-render.php:40
+msgid "TorobPay notifications"
+msgstr ""
+
+#: hooks.php:1729
+msgid "All notifications"
+msgstr ""
+
+#. translators: %d: number of refunded orders
+#: hooks.php:1786
+#, php-format
+msgid "✓ %d order(s) refunded successfully."
+msgstr ""
+
+#: hooks.php:1796
+msgid "Error refunding orders: #"
+msgstr ""
+
+#: hooks.php:1801
+msgid "No refundable orders were found."
+msgstr ""
+
+#: hooks.php:1805
+msgid "Payment status was successfully queried from TorobPay."
+msgstr ""
+
+#: hooks.php:1812
+#: support-page.php:183
+msgid "TorobPay orders"
+msgstr ""
+
+#: hooks.php:1814
+#: assets/js/admin-instore.js:40
+#: assets/js/admin-instore.js:255
+msgid "Add in-store order"
+msgstr ""
+
+#: hooks.php:1989
+msgid "Payment gateway settings conflict"
+msgstr ""
+
+#: hooks.php:1990
+msgid "To avoid conflicts between payment plugins, enable only the TorobPay default-gateway option. Select only one gateway as default:"
+msgstr ""
+
+#: hooks.php:1994
+msgid "TorobPay settings"
+msgstr ""
+
+#: hooks.php:1998
+msgid "SnappPay settings"
+msgstr ""
+
+#: hooks.php:2087
+#: hooks.php:2134
+#: hooks.php:2312
+#: assets/js/admin-order-actions.js:241
+#: assets/js/admin-order-actions.js:695
+msgid "Loading..."
+msgstr ""
+
+#: hooks.php:2098
+msgid "Order status in TorobPay:"
+msgstr ""
+
+#: hooks.php:2107
+msgid "Refresh status"
+msgstr ""
+
+#: hooks.php:2154
+#: hooks.php:2161
+msgid "✕ Error loading"
+msgstr ""
+
+#: hooks.php:2181
+msgid "Invalid request"
+msgstr ""
+
+#: hooks.php:2192
+#: hooks.php:2284
+#: includes/torobpay-order-payment.php:550
+msgid "Order not found"
+msgstr ""
+
+#: hooks.php:2198
+#: includes/torobpay-order-payment.php:559
+msgid "This order is not a TorobPay order"
+msgstr ""
+
+#: hooks.php:2204
+#: hooks.php:2230
+#: includes/torobpay-reconcile.php:477
+msgid "Payment token not found"
+msgstr ""
+
+#: hooks.php:2217
+#: hooks.php:2238
+#: includes/torobpay-api-helpers.php:64
+msgid "Unknown error"
+msgstr ""
+
+#: hooks.php:2218
+#: hooks.php:2239
+msgid "API error: "
+msgstr ""
+
+#: hooks.php:2224
+msgid "The order could not be loaded after restoring history."
+msgstr ""
+
+#: hooks.php:2278
+msgid "Invalid order ID"
+msgstr ""
+
+#: hooks.php:2350
+msgid "Saved"
+msgstr ""
+
+#: includes/admin/torobpay-instore-ajax.php:22
+#: includes/admin/torobpay-order-items-ajax.php:1125
+#: includes/notifications/action-needed-notice.php:121
+#: includes/notifications/notification-ajax.php:47
+#: includes/notifications/notification-ajax.php:88
+msgid "Unauthorized."
+msgstr ""
+
+#: includes/admin/torobpay-instore-ajax.php:29
+#: assets/js/admin-instore.js:189
+msgid "In-store selling is not available for this shop."
+msgstr ""
+
+#: includes/admin/torobpay-instore-ajax.php:276
+#: includes/admin/torobpay-instore-ajax.php:482
+msgid "One of the selected products is not available."
+msgstr ""
+
+#. translators: %s: product name
+#: includes/admin/torobpay-instore-ajax.php:285
+#, php-format
+msgid "%s is not available for in-store sale."
+msgstr ""
+
+#. translators: 1: product name, 2: available quantity
+#: includes/admin/torobpay-instore-ajax.php:296
+#, php-format
+msgid "%1$s only has %2$d available for in-store sale."
+msgstr ""
+
+#: includes/admin/torobpay-instore-ajax.php:312
+#: includes/admin/torobpay-instore-ajax.php:492
+msgid "The coupon could not be applied."
+msgstr ""
+
+#: includes/admin/torobpay-instore-ajax.php:414
+#: assets/js/admin-instore.js:727
+msgid "Enter a valid mobile number."
+msgstr ""
+
+#: includes/admin/torobpay-instore-ajax.php:433
+#: assets/js/admin-instore.js:731
+msgid "Add at least one product or enter a total amount."
+msgstr ""
+
+#: includes/admin/torobpay-instore-ajax.php:455
+#: includes/admin/torobpay-instore-ajax.php:501
+#: assets/js/admin-instore.js:755
+#: assets/js/admin-instore.js:785
+msgid "Could not create the order."
+msgstr ""
+
+#. translators: %s: new order amount
+#: includes/admin/torobpay-order-items-ajax.php:47
+#: assets/js/admin-order-actions.js:217
+#, php-format,js-format
+msgid "New amount (%s) must be greater than zero."
+msgstr ""
+
+#. translators: 1: new order amount, 2: original order amount
+#: includes/admin/torobpay-order-items-ajax.php:55
+#, php-format
+msgid "New amount (%1$s) must be less than the original order amount (%2$s). Removing a discount is only possible if other changes lower the total by more than the discount."
+msgstr ""
+
+#: includes/admin/torobpay-order-items-ajax.php:427
+msgid "This order is already being updated. Wait a moment and try again."
+msgstr ""
+
+#: includes/admin/torobpay-order-items-ajax.php:476
+msgid "Order status is not suitable for editing."
+msgstr ""
+
+#: includes/admin/torobpay-order-items-ajax.php:495
+msgid "TorobPay: Status temporarily changed for item editing."
+msgstr ""
+
+#: includes/admin/torobpay-order-items-ajax.php:657
+#: assets/js/admin-instore.js:68
+#: assets/js/admin-order-actions.js:244
+msgid "Product"
+msgstr ""
+
+#: includes/admin/torobpay-order-items-ajax.php:668
+#: includes/admin/torobpay-order-items-ajax.php:918
+msgid "Shipping"
+msgstr ""
+
+#: includes/admin/torobpay-order-items-ajax.php:687
+#: includes/admin/torobpay-order-items-ajax.php:942
+#: assets/js/admin-instore.js:89
+msgid "Discount"
+msgstr ""
+
+#: includes/admin/torobpay-order-items-ajax.php:722
+msgid "Error calculating tax preview. Please try again."
+msgstr ""
+
+#: includes/admin/torobpay-order-items-ajax.php:760
+msgid "This order was already saved. Your changes were not applied."
+msgstr ""
+
+#: includes/admin/torobpay-order-items-ajax.php:762
+#: assets/js/admin-order-actions.js:185
+#: assets/js/admin-order-actions.js:189
+msgid "Reload editor"
+msgstr ""
+
+#: includes/admin/torobpay-order-items-ajax.php:798
+msgid "Invalid item data."
+msgstr ""
+
+#: includes/admin/torobpay-order-items-ajax.php:899
+msgid "Could not add the new product. Please select the product again."
+msgstr ""
+
+#: includes/admin/torobpay-order-items-ajax.php:958
+msgid "No item changes were made."
+msgstr ""
+
+#: includes/admin/torobpay-order-items-ajax.php:989
+msgid "TorobPay: Item update failed; WooCommerce changes were rolled back."
+msgstr ""
+
+#: includes/admin/torobpay-order-items-ajax.php:994
+msgid "Sending to TorobPay failed and WooCommerce changes were rolled back: "
+msgstr ""
+
+#: includes/admin/torobpay-order-items-ajax.php:1022
+msgid "TorobPay: Items were edited and status was restored."
+msgstr ""
+
+#: includes/admin/torobpay-order-items-ajax.php:1028
+#: assets/js/admin-order-actions.js:864
+msgid "Items were edited successfully and sent to TorobPay."
+msgstr ""
+
+#: includes/admin/torobpay-order-items-ajax.php:1041
+msgid "TorobPay: Items were synced with TorobPay; local finalization was incomplete."
+msgstr ""
+
+#: includes/admin/torobpay-order-items-ajax.php:1053
+msgid "Items were saved in TorobPay, but WooCommerce finalization did not complete. Please refresh the page."
+msgstr ""
+
+#: includes/admin/torobpay-order-items-ajax.php:1065
+msgid "Error saving items. Changes were rolled back; please try again."
+msgstr ""
+
+#: includes/admin/torobpay-order-items-ajax.php:1103
+msgid "The order was not in edit mode."
+msgstr ""
+
+#: includes/admin/torobpay-order-items-ajax.php:1114
+msgid "Edit cancelled."
+msgstr ""
+
+#: includes/admin/torobpay-order-items-ajax.php:1165
+msgid "TorobPay: Item editing was cancelled and status was restored."
+msgstr ""
+
+#: includes/fee-plugins/arvan.php:42
+msgid "Arvan Pay"
+msgstr ""
+
+#. translators: 1: plugin name, 2: plugin text domain / slug
+#: includes/fee-plugins/arvan.php:314
+#: includes/fee-plugins/karmozd.php:336
+#: includes/fee-plugins/qestx.php:409
+#: includes/fee-plugins/siteskill.php:257
+#: includes/fee-plugins/toroobche.php:84
+#, php-format
+msgid "Plugin \"%1$s\" (<code>%2$s</code>) is active."
+msgstr ""
+
+#: includes/fee-plugins/arvan.php:318
+#: includes/fee-plugins/karmozd.php:340
+#: includes/fee-plugins/qestx.php:413
+#: includes/fee-plugins/siteskill.php:261
+#: includes/fee-plugins/toroobche.php:88
+msgid "Under TorobPay terms, charging a fee on the TorobPay gateway is not allowed."
+msgstr ""
+
+#: includes/fee-plugins/arvan.php:319
+#: includes/fee-plugins/karmozd.php:341
+msgid "TorobPay automatically removes the surcharge/fee on its payment method. Discounts and fees on other gateways are not changed."
+msgstr ""
+
+#: includes/fee-plugins/karmozd.php:66
+msgid "Karmozd Pay"
+msgstr ""
+
+#: includes/fee-plugins/qestx.php:43
+msgid "QestX"
+msgstr ""
+
+#: includes/fee-plugins/qestx.php:414
+msgid "TorobPay automatically removes the surcharge/fee on its payment method and keeps TorobPay available below QestX’s minimum order amount. Discounts, maximum order limits, and fees on other gateways are not changed."
+msgstr ""
+
+#: includes/fee-plugins/shared.php:342
+#: includes/notifications/notification-render.php:44
+#: includes/torobpay-provision.php:1660
+#: assets/js/admin-instore.js:41
+#: assets/js/admin-instore.js:114
+#: assets/js/admin-order-actions.js:232
+#: assets/js/admin-order-actions.js:961
+#: assets/js/admin-toast.js:56
+msgid "Close"
+msgstr ""
+
+#: includes/fee-plugins/shared.php:346
+msgid "TorobPay notice"
+msgstr ""
+
+#: includes/fee-plugins/shared.php:348
+msgid "TorobPay terms and conditions reminder"
+msgstr ""
+
+#: includes/fee-plugins/shared.php:374
+msgid "TorobPay terms reminder: gateway fee"
+msgstr ""
+
+#: includes/fee-plugins/siteskill.php:37
+msgid "SiteSkill Pay Discount"
+msgstr ""
+
+#: includes/fee-plugins/siteskill.php:262
+msgid "TorobPay automatically removes the surcharge/fee and its checkout badge or product-page promo on its payment method. Discounts and fees on other gateways are not changed."
+msgstr ""
+
+#: includes/fee-plugins/toroobche.php:46
+msgid "WooCommerce gateway fee & discount plugin — Torbache"
+msgstr ""
+
+#: includes/fee-plugins/toroobche.php:89
+msgid "TorobPay automatically blocks gateway fees on its payment method. Discounts and fees on other gateways are not changed."
+msgstr ""
+
+#: includes/fee-plugins/toroobche.php:90
+msgid "Despite the similar name (Torbache), this plugin has no affiliation with TorobPay."
+msgstr ""
+
+#. translators: %d: number of orders needing review
+#: includes/notifications/action-needed-notice.php:61
+#, php-format
+msgid "%d order(s) need review or action (status mismatch or incomplete settlement/refund)."
+msgstr ""
+
+#: includes/notifications/action-needed-notice.php:68
+msgid "View orders needing action"
+msgstr ""
+
+#: includes/notifications/notification-ajax.php:97
+msgid "Invalid notification ID."
+msgstr ""
+
+#: includes/notifications/notification-engine.php:114
+#: includes/torobpay-api-helpers.php:93
+msgid "Update"
+msgstr ""
+
+#: includes/notifications/notification-engine.php:118
+msgid "Orders needing action"
+msgstr ""
+
+#: includes/notifications/notification-engine.php:122
+msgid "Incomplete edits"
+msgstr ""
+
+#: includes/notifications/notification-engine.php:126
+msgid "Settings need attention"
+msgstr ""
+
+#: includes/notifications/notification-engine.php:130
+msgid "News"
+msgstr ""
+
+#: includes/notifications/notification-render.php:68
+msgid "No new notifications."
+msgstr ""
+
+#: includes/notifications/notification-render.php:84
+msgid "No active notifications."
+msgstr ""
+
+#: includes/notifications/notification-render.php:95
+msgid "Dismissed notifications"
+msgstr ""
+
+#: includes/notifications/notification-render.php:170
+msgid "Checking…"
+msgstr ""
+
+#: includes/notifications/notification-render.php:171
+msgid "Check again"
+msgstr ""
+
+#: includes/notifications/notification-render.php:180
+msgid "Restore notice"
+msgstr ""
+
+#: includes/notifications/providers/action-orders.php:33
+msgid "Orders needing review"
+msgstr ""
+
+#. translators: %d: number of TorobPay orders needing review
+#: includes/notifications/providers/action-orders.php:35
+#, php-format
+msgid "%d TorobPay order(s) need review or action (status mismatch or incomplete settlement/refund)."
+msgstr ""
+
+#: includes/notifications/providers/action-orders.php:37
+#: includes/notifications/providers/unfinished-edits.php:55
+msgid "View orders"
+msgstr ""
+
+#: includes/notifications/providers/campaign.php:33
+#: includes/torobpay-dashboard-widget.php:266
+msgid "TorobPay sends SMS to customers who are eligible to receive credit. TorobPay covers the cost of these messages."
+msgstr ""
+
+#: includes/notifications/providers/eligibility-error.php:43
+msgid "Until this is resolved, TorobPay is not offered at checkout."
+msgstr ""
+
+#: includes/notifications/providers/missing-credentials.php:31
+msgid "Set up your TorobPay account"
+msgstr ""
+
+#: includes/notifications/providers/missing-credentials.php:32
+msgid "If you do not have a TorobPay account yet, you can register using this link."
+msgstr ""
+
+#: includes/notifications/providers/missing-credentials.php:34
+msgid "Register"
+msgstr ""
+
+#: includes/notifications/providers/unfinished-edits.php:42
+msgid "One order has incomplete item editing and is on hold."
+msgstr ""
+
+#. translators: %d: number of orders with incomplete item edits
+#: includes/notifications/providers/unfinished-edits.php:44
+#, php-format
+msgid "%d order(s) have incomplete item edits and are on hold."
+msgstr ""
+
+#. translators: %d: number of orders with incomplete item edits
+#: includes/notifications/providers/unfinished-edits.php:52
+#, php-format
+msgid "Incomplete edit (%d order(s))"
+msgstr ""
+
+#: includes/notifications/providers/visual-elements.php:59
+msgid "TorobPay visual elements"
+msgstr ""
+
+#: includes/notifications/providers/visual-elements.php:60
+msgid "Some TorobPay visual elements are disabled. For the full TorobPay experience, we recommend enabling all elements."
+msgstr ""
+
+#: includes/notifications/providers/visual-elements.php:63
+msgid "Visual settings"
+msgstr ""
+
+#: includes/slider-settings-fields.php:28
+msgid "Slider preview"
+msgstr ""
+
+#: includes/slider-settings-fields.php:28
+#: includes/widget-settings-page.php:945
+#: includes/widget-settings-page.php:1193
+#: includes/widget-settings-page.php:1501
+msgid "Shrink/expand preview"
+msgstr ""
+
+#: includes/slider-settings-fields.php:31
+msgid "Display location:"
+msgstr ""
+
+#: includes/slider-settings-fields.php:37
+#: assets/js/torobpay-slider-admin.js:799
+#: assets/js/torobpay-slider-admin.js:800
+msgid "Continue preview"
+msgstr ""
+
+#: includes/slider-settings-fields.php:45
+#: includes/torobpay-slider.php:1794
+#: includes/torobpay-slider.php:2099
+#: assets/js/torobpay-slider-admin.js:835
+msgid "No slide is selected for this display location."
+msgstr ""
+
+#: includes/slider-settings-fields.php:47
+msgid "Resize preview"
+msgstr ""
+
+#: includes/slider-settings-fields.php:53
+msgid "Manage display locations"
+msgstr ""
+
+#: includes/slider-settings-fields.php:59
+msgid "Slider display locations"
+msgstr ""
+
+#: includes/slider-settings-fields.php:60
+msgid "Add display location"
+msgstr ""
+
+#: includes/slider-settings-fields.php:71
+#: includes/slider-settings-fields.php:72
+msgid "More locations"
+msgstr ""
+
+#: includes/slider-settings-fields.php:81
+msgid "You can show the slider in multiple locations (hooks) at once. Each location has independent settings."
+msgstr ""
+
+#: includes/slider-settings-fields.php:99
+msgid "Using the slider elsewhere"
+msgstr ""
+
+#: includes/slider-settings-fields.php:103
+msgid "Full slider"
+msgstr ""
+
+#: includes/slider-settings-fields.php:104
+msgid "To show the full slider on a page or in a template:"
+msgstr ""
+
+#: includes/slider-settings-fields.php:106
+msgid "Uses global slider defaults and works independently of the automatic locations above."
+msgstr ""
+
+#: includes/slider-settings-fields.php:110
+msgid "Single slide"
+msgstr ""
+
+#: includes/slider-settings-fields.php:111
+msgid "To show"
+msgstr ""
+
+#: includes/slider-settings-fields.php:111
+msgid "one slide"
+msgstr ""
+
+#: includes/slider-settings-fields.php:111
+msgid "inside other sliders (like Elementor or Smart Slider), copy that slide's shortcode from the icon"
+msgstr ""
+
+#: includes/slider-settings-fields.php:111
+msgid "next to the slide name and place it in an empty slide."
+msgstr ""
+
+#: includes/slider-settings-fields.php:113
+msgid "Fixed TorobPay slide:"
+msgstr ""
+
+#: includes/slider-settings-fields.php:118
+msgid "Parameters for"
+msgstr ""
+
+#: includes/slider-settings-fields.php:120
+msgid "Slide ID"
+msgstr ""
+
+#: includes/slider-settings-fields.php:120
+msgid "(required)"
+msgstr ""
+
+#: includes/slider-settings-fields.php:121
+msgid "Height; default"
+msgstr ""
+
+#: includes/slider-settings-fields.php:121
+msgid " — e.g."
+msgstr ""
+
+#: includes/slider-settings-fields.php:121
+msgid "only inside a container (e.g. div) with a defined height"
+msgstr ""
+
+#: includes/slider-settings-fields.php:122
+msgid "Custom CSS class — e.g."
+msgstr ""
+
+#: includes/slider-settings-fields.php:123
+msgid "Corner radius in px; default"
+msgstr ""
+
+#: includes/slider-slides-page.php:36
+msgid "Shortcode"
+msgstr ""
+
+#: includes/slider-slides-page.php:38
+msgid "Show shortcode"
+msgstr ""
+
+#: includes/slider-slides-page.php:58
+#: includes/slider-slides-page.php:60
+msgid "Copy shortcode"
+msgstr ""
+
+#: includes/slider-slides-page.php:63
+msgid "You can use this shortcode in other slider plugins or place it as a banner on pages."
+msgstr ""
+
+#. translators: %s: inherited or default font-weight value
+#: includes/slider-slides-page.php:87
+#: includes/slider-slides-page.php:103
+#: includes/slider-slides-page.php:111
+#, php-format
+msgid "Default (%s)"
+msgstr ""
+
+#. translators: %s: inherited or default font-weight value
+#: includes/slider-slides-page.php:87
+#: includes/slider-slides-page.php:103
+#: includes/slider-slides-page.php:111
+msgid "Default"
+msgstr ""
+
+#: includes/slider-slides-page.php:93
+#: includes/slider-slides-page.php:185
+#: includes/torobpay-admin-responsive.php:168
+#: includes/torobpay-slider.php:1841
+msgid "Desktop (default for all screens)"
+msgstr ""
+
+#: includes/slider-slides-page.php:100
+#: includes/slider-slides-page.php:192
+#: includes/torobpay-admin-responsive.php:175
+#: includes/torobpay-slider.php:1848
+msgid "Tablet (empty = inherit from desktop)"
+msgstr ""
+
+#: includes/slider-slides-page.php:108
+#: includes/slider-slides-page.php:199
+#: includes/torobpay-admin-responsive.php:182
+#: includes/torobpay-slider.php:1855
+msgid "Mobile (empty = inherit from desktop)"
+msgstr ""
+
+#: includes/slider-slides-page.php:119
+#: includes/slider-slides-page.php:226
+#: includes/slider-slides-page.php:274
+#: includes/slider-slides-page.php:464
+#: includes/slider-slides-page.php:670
+#: includes/torobpay-admin-responsive.php:192
+#: includes/torobpay-slider.php:1865
+#: includes/torobpay-slider.php:1944
+#: includes/torobpay-slider.php:1954
+#: includes/torobpay-slider.php:1963
+#: includes/widget-settings-page.php:497
+#: includes/widget-settings-page.php:622
+#: includes/widget-settings-page.php:636
+#: includes/widget-settings-page.php:650
+#: includes/widget-settings-page.php:722
+#: includes/widget-settings-page.php:754
+#: includes/widget-settings-page.php:777
+#: includes/widget-settings-page.php:801
+#: includes/widget-settings-page.php:818
+#: includes/widget-settings-page.php:833
+#: includes/widget-settings-page.php:932
+#: includes/widget-settings-page.php:1000
+#: includes/widget-settings-page.php:1013
+#: includes/widget-settings-page.php:1068
+#: includes/widget-settings-page.php:1082
+#: includes/widget-settings-page.php:1133
+#: includes/widget-settings-page.php:1178
+#: includes/widget-settings-page.php:1225
+#: includes/widget-settings-page.php:1245
+#: includes/widget-settings-page.php:1395
+#: includes/widget-settings-page.php:1418
+#: includes/widget-settings-page.php:1455
+#: includes/widget-settings-page.php:1469
+#: includes/widget-settings-page.php:1490
+#: includes/widget-settings-page.php:1547
+#: includes/widget-settings-page.php:1636
+#: includes/widget-settings-page.php:1665
+#: includes/widget-settings-page.php:1690
+#: includes/widget-settings-page.php:1700
+#: includes/widget-settings-page.php:1710
+#: includes/widget-settings-page.php:1733
+#: includes/widget-settings-page.php:1754
+#: includes/widget-settings-page.php:1763
+#: includes/widget-settings-page.php:1800
+#: includes/widget-settings-page.php:1819
+#: includes/widget-settings-page.php:1829
+#: includes/widget-settings-page.php:1838
+msgid "?"
+msgstr ""
+
+#: includes/slider-slides-page.php:273
+#: includes/slider-slides-page.php:274
+#: includes/widget-settings-page.php:1762
+msgid "Background logo"
+msgstr ""
+
+#: includes/slider-slides-page.php:273
+#: includes/slider-slides-page.php:569
+#: includes/slider-slides-page.php:576
+msgid "(optional)"
+msgstr ""
+
+#: includes/slider-slides-page.php:274
+#: includes/widget-settings-page.php:1763
+msgid "PNG or SVG only. Your store logo appears beside the TorobPay logo in the background. A square logo works best."
+msgstr ""
+
+#: includes/slider-slides-page.php:287
+#: includes/widget-settings-page.php:1777
+msgid "No logo"
+msgstr ""
+
+#: includes/slider-slides-page.php:292
+#: includes/widget-settings-page.php:1782
+msgid "Select logo"
+msgstr ""
+
+#: includes/slider-slides-page.php:293
+#: includes/widget-settings-page.php:1783
+msgid "Remove logo"
+msgstr ""
+
+#: includes/slider-slides-page.php:327
+msgid "Slide"
+msgstr ""
+
+#: includes/slider-slides-page.php:328
+msgid "Fade out"
+msgstr ""
+
+#: includes/slider-slides-page.php:329
+#: includes/widget-settings-page.php:1675
+msgid "Zoom in"
+msgstr ""
+
+#: includes/slider-slides-page.php:330
+msgid "Rotate"
+msgstr ""
+
+#: includes/slider-slides-page.php:333
+#: includes/widget-settings-page.php:787
+msgid "No animation"
+msgstr ""
+
+#: includes/slider-slides-page.php:334
+msgid "Aurora"
+msgstr ""
+
+#: includes/slider-slides-page.php:335
+msgid "TorobPay four-part mark"
+msgstr ""
+
+#: includes/slider-slides-page.php:336
+msgid "Noisy float (Perlin)"
+msgstr ""
+
+#: includes/slider-slides-page.php:337
+msgid "Icon shower"
+msgstr ""
+
+#: includes/slider-slides-page.php:338
+msgid "Float upward"
+msgstr ""
+
+#: includes/slider-slides-page.php:341
+#: includes/widget-settings-page.php:1739
+msgid "Low"
+msgstr ""
+
+#: includes/slider-slides-page.php:342
+#: includes/widget-settings-page.php:1740
+msgid "Medium"
+msgstr ""
+
+#: includes/slider-slides-page.php:343
+#: includes/widget-settings-page.php:1741
+msgid "High"
+msgstr ""
+
+#: includes/slider-slides-page.php:344
+msgid "Very high"
+msgstr ""
+
+#: includes/slider-slides-page.php:352
+msgid "Transition effect"
+msgstr ""
+
+#: includes/slider-slides-page.php:361
+msgid "Text position"
+msgstr ""
+
+#: includes/slider-slides-page.php:370
+msgid "Background preset"
+msgstr ""
+
+#: includes/slider-slides-page.php:378
+#: includes/widget-settings-page.php:1709
+msgid "Background animation"
+msgstr ""
+
+#: includes/slider-slides-page.php:386
+msgid "Background density"
+msgstr ""
+
+#: includes/slider-slides-page.php:394
+msgid "Background speed"
+msgstr ""
+
+#: includes/slider-slides-page.php:399
+msgid "Display duration (seconds)"
+msgstr ""
+
+#: includes/slider-slides-page.php:427
+#: includes/torobpay-slider.php:1968
+msgid "Show by device"
+msgstr ""
+
+#: includes/slider-slides-page.php:430
+#: includes/torobpay-slider.php:1970
+msgid "Desktop"
+msgstr ""
+
+#: includes/slider-slides-page.php:432
+#: includes/torobpay-slider.php:1972
+msgid "Tablet"
+msgstr ""
+
+#: includes/slider-slides-page.php:434
+#: includes/torobpay-slider.php:1974
+msgid "Mobile"
+msgstr ""
+
+#: includes/slider-slides-page.php:464
+msgid "Display locations"
+msgstr ""
+
+#: includes/slider-slides-page.php:464
+msgid "The slide is shown only in selected locations. Without a selection, it is available only via shortcode."
+msgstr ""
+
+#: includes/slider-slides-page.php:497
+#: assets/js/torobpay-slider-admin.js:212
+msgid "This slide is still linked to removed display location(s):"
+msgstr ""
+
+#: includes/slider-slides-page.php:503
+#: assets/js/torobpay-slider-admin.js:228
+msgid "Remove link from this slide"
+msgstr ""
+
+#: includes/slider-slides-page.php:503
+#: assets/js/torobpay-slider-admin.js:229
+msgid "Remove link"
+msgstr ""
+
+#: includes/slider-slides-page.php:507
+#: assets/js/torobpay-slider-admin.js:237
+msgid "Recreating the same display location restores the previous link."
+msgstr ""
+
+#: includes/slider-slides-page.php:514
+#: assets/js/torobpay-slider-admin.js:266
+msgid "No display location defined yet. Add one under \"Manage display locations\" first."
+msgstr ""
+
+#: includes/slider-slides-page.php:551
+msgid "Reorder"
+msgstr ""
+
+#: includes/slider-slides-page.php:552
+#: includes/torobpay-slider.php:2077
+#: assets/js/torobpay-slider-admin.js:1197
+msgid "New slide"
+msgstr ""
+
+#: includes/slider-slides-page.php:554
+msgid "Delete slide"
+msgstr ""
+
+#: includes/slider-slides-page.php:561
+msgid "Title"
+msgstr ""
+
+#: includes/slider-slides-page.php:562
+msgid "e.g. Autumn special discount"
+msgstr ""
+
+#: includes/slider-slides-page.php:565
+msgid "Description"
+msgstr ""
+
+#: includes/slider-slides-page.php:566
+msgid "Short promotional text"
+msgstr ""
+
+#: includes/slider-slides-page.php:569
+msgid "Call-to-action button"
+msgstr ""
+
+#: includes/slider-slides-page.php:571
+msgid "Button text (e.g. View products)"
+msgstr ""
+
+#: includes/slider-slides-page.php:576
+msgid "Background image"
+msgstr ""
+
+#: includes/slider-slides-page.php:588
+msgid "No image"
+msgstr ""
+
+#: includes/slider-slides-page.php:593
+#: assets/js/torobpay-slider-admin.js:59
+msgid "Select image"
+msgstr ""
+
+#: includes/slider-slides-page.php:594
+msgid "Remove image"
+msgstr ""
+
+#: includes/slider-slides-page.php:597
+msgid "Image position"
+msgstr ""
+
+#: includes/slider-slides-page.php:613
+msgid "Appearance and behavior settings"
+msgstr ""
+
+#: includes/slider-slides-page.php:636
+msgid "Click the store name to edit it. Clearing the text removes the store name from the slide and shows \"Buy in installments with TorobPay\". Reset restores the WordPress site title."
+msgstr ""
+
+#: includes/slider-slides-page.php:646
+#: includes/torobpay-slider.php:2741
+msgid "Installment purchase"
+msgstr ""
+
+#: includes/slider-slides-page.php:648
+msgid " from "
+msgstr ""
+
+#: includes/slider-slides-page.php:652
+#: assets/js/torobpay-slider-admin.js:996
+msgid "Edit store name"
+msgstr ""
+
+#: includes/slider-slides-page.php:658
+#: includes/torobpay-slider.php:2743
+msgid "with TorobPay"
+msgstr ""
+
+#: includes/slider-slides-page.php:662
+msgid "Reset to site name"
+msgstr ""
+
+#: includes/slider-slides-page.php:670
+msgid "Store name"
+msgstr ""
+
+#: includes/slider-slides-page.php:693
+msgid "Fixed slides"
+msgstr ""
+
+#: includes/slider-slides-page.php:696
+msgid "This slide text is fixed and cannot be edited or deleted, but you can adjust its appearance and behavior. This slide appears in all display locations and via shortcode."
+msgstr ""
+
+#: includes/slider-slides-page.php:716
+msgid "Custom slides"
+msgstr ""
+
+#: includes/slider-slides-page.php:719
+msgid "Build your own slides. For each slide you can choose which display locations (hooks) it appears in; without a location selected, it is shown only via shortcode."
+msgstr ""
+
+#: includes/slider-slides-page.php:723
+#: includes/slider-slides-page.php:736
+msgid "Add slide"
+msgstr ""
+
+#: includes/torobpay-admin-responsive.php:156
+#: includes/torobpay-slider.php:179
+#: includes/torobpay-slider.php:189
+#: includes/torobpay-slider.php:205
+#: includes/torobpay-slider.php:2012
+#: includes/widget-settings-page.php:1037
+#: includes/widget-settings-page.php:1054
+#: includes/widget-settings-page.php:1823
+msgid "px"
+msgstr ""
+
+#: includes/torobpay-api-helpers.php:72
+msgid "Invalid response from server"
+msgstr ""
+
+#: includes/torobpay-api-helpers.php:93
+#: assets/js/admin-order-actions.js:288
+msgid "Cancel"
+msgstr ""
+
+#: includes/torobpay-api-helpers.php:96
+msgid "Check payment status"
+msgstr ""
+
+#. translators: %s: operation type label
+#: includes/torobpay-api-helpers.php:105
+#, php-format
+msgid "%s order operation completed successfully"
+msgstr ""
+
+#. translators: 1: operation type, 2: error message
+#: includes/torobpay-api-helpers.php:118
+#: includes/torobpay-api-helpers.php:151
+#, php-format
+msgid "%1$s order operation failed: %2$s"
+msgstr ""
+
+#. translators: %s: operation type label
+#: includes/torobpay-api-helpers.php:134
+#, php-format
+msgid "%s order operation failed: Invalid response from server"
+msgstr ""
+
+#: includes/torobpay-api-helpers.php:143
+msgid "Unknown error response from server"
+msgstr ""
+
+#. translators: %s: parameter name
+#: includes/torobpay-campaign-rest.php:442
+#, php-format
+msgid "Invalid %s datetime. Use ISO-8601 (RFC3339)."
+msgstr ""
+
+#: includes/torobpay-campaign-rest.php:470
+#: includes/torobpay-campaign-rest.php:481
+msgid "Invalid authentication credentials."
+msgstr ""
+
+#: includes/torobpay-campaign-rest.php:489
+msgid "Campaign data sharing is disabled for this store."
+msgstr ""
+
+#: includes/torobpay-campaign-rest.php:515
+msgid "TorobPay authentication failed. Please check your TorobPay credentials in settings."
+msgstr ""
+
+#: includes/torobpay-campaign-rest.php:541
+msgid "Invalid date range."
+msgstr ""
+
+#: includes/torobpay-campaign-rest.php:549
+msgid "The after datetime must be before or equal to before."
+msgstr ""
+
+#: includes/torobpay-campaign.php:45
+msgid "Could not update campaign status with TorobPay."
+msgstr ""
+
+#. translators: %s: error detail from the TorobPay API or WordPress HTTP API
+#: includes/torobpay-campaign.php:71
+#, php-format
+msgid "Could not update campaign status: %s"
+msgstr ""
+
+#: includes/torobpay-campaign.php:657
+msgid "Could not load campaign files from TorobPay."
+msgstr ""
+
+#. translators: %s: error detail from the TorobPay API or WordPress HTTP API
+#: includes/torobpay-campaign.php:708
+#, php-format
+msgid "Could not load campaign files: %s"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:22
+msgid "TorobPay plugin guide"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:275
+msgid "Free SMS from TorobPay"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:276
+msgid "TorobPay sends dedicated SMS to your customers at no cost, and encourages them to place orders on your site."
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:283
+msgid "Enable campaign data sharing"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:284
+msgid "TorobPay periodically fetches paid orders from your store. Refunded and cancelled orders are not included."
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:291
+msgid "Campaign files"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:292
+msgid "Download campaign files when they are ready."
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:293
+#: includes/torobpay-dashboard-widget.php:372
+#: includes/torobpay-dashboard-widget.php:402
+#: includes/torobpay-dashboard-widget.php:412
+msgid "Enable it from"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:312
+msgid "TorobPay promo slider"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:313
+msgid "Promo slider to inform shoppers about installment purchases; the TorobPay slide and your custom slides can appear in several store locations (via hook selection) or anywhere via shortcode."
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:314
+msgid "You can also embed one or more slides in other slider plugins such as Revolution Slider via shortcode."
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:323
+msgid "TorobPay slide + custom slides"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:324
+msgid "The TorobPay slide is always shown; you can add more slides with text, buttons, and animated backgrounds."
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:331
+msgid "Multiple display locations and shortcode"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:332
+msgid "Place the slider on WooCommerce hooks (e.g. above the shop) or using"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:332
+msgid "and"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:332
+msgid "on any page."
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:339
+msgid "Autoplay and full control"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:340
+msgid "Autoplay, pause on hover, arrows, and dots are configurable from"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:341
+#: includes/torobpay-dashboard-widget.php:402
+msgid "Slider settings"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:341
+msgid "; separate display for desktop, tablet, and mobile is also supported."
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:360
+msgid "With the"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:360
+msgid "plugin you can enable installment payments and with the visual elements below, inform shoppers and increase your sales."
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:370
+msgid "Badge (label)"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:371
+msgid "A small label on the product image showing the item is available for installment purchase."
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:372
+#: includes/widget-settings-page.php:515
+msgid "Badge settings"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:381
+msgid "A scrolling bar on the page that tells shoppers about installment payment."
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:382
+msgid "Configure it in"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:382
+#: includes/widget-settings-page.php:520
+msgid "Marquee settings"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:390
+msgid "Product widget"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:391
+msgid "A box on the product page showing installment details to shoppers and improving conversion. It can also display TorobPay's special discount."
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:392
+msgid "Configure it from"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:392
+#: includes/widget-settings-page.php:510
+msgid "Widget settings"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:400
+msgid "Promo slider"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:401
+msgid "A customizable promo slider with text and images on store pages that draws shopper attention."
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:410
+msgid "Top page bar"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:411
+msgid "A promo bar at the top of the site with rotating text informing visitors about installment purchases."
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:412
+#: includes/widget-settings-page.php:525
+msgid "Top bar settings"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:428
+msgid "Edit order items"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:429
+msgid "You can now edit installment order items directly from the dashboard."
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:430
+msgid "Change quantities, prices, and products and sync automatically with TorobPay."
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:440
+msgid "Order item edit window"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:441
+msgid "Change product quantities, add or remove items, and adjust discount and tax in one integrated operation without manually changing order status."
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:449
+msgid "Automatic sync"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:450
+msgid "All changes sync automatically with TorobPay after saving — click \"Edit and sync items\" on the order page or TorobPay orders page."
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:460
+msgid "Previous"
+msgstr ""
+
+#: includes/torobpay-dashboard-widget.php:465
+msgid "Next"
+msgstr ""
+
+#: includes/torobpay-display-helpers.php:12
+msgid "Classic"
+msgstr ""
+
+#: includes/torobpay-display-helpers.php:13
+msgid "Standard card with logo beside text"
+msgstr ""
+
+#: includes/torobpay-display-helpers.php:33
+msgid "Mint"
+msgstr ""
+
+#: includes/torobpay-display-helpers.php:34
+msgid "Soft green background with brand accent bar"
+msgstr ""
+
+#: includes/torobpay-display-helpers.php:56
+msgid "Vertical"
+msgstr ""
+
+#: includes/torobpay-display-helpers.php:57
+msgid "Logo on top, text below, centered"
+msgstr ""
+
+#: includes/torobpay-display-helpers.php:79
+msgid "Compact"
+msgstr ""
+
+#: includes/torobpay-display-helpers.php:80
+msgid "Narrow chip with small logo and tighter spacing"
+msgstr ""
+
+#: includes/torobpay-display-helpers.php:249
+#: includes/widget-settings-page.php:320
+#: assets/js/badge-compatibility.js:254
+#: assets/js/widget-settings.js:1084
+msgid "Buy in installments with TorobPay — no fees"
+msgstr ""
+
+#: includes/torobpay-eligibility.php:297
+msgid "TorobPay could not be reached. Try again."
+msgstr ""
+
+#: includes/torobpay-eligibility.php:313
+msgid "The contract is still inactive."
+msgstr ""
+
+#: includes/torobpay-eligibility.php:315
+msgid "The account is inactive, so the contract was not re-checked."
+msgstr ""
+
+#: includes/torobpay-eligibility.php:317
+msgid "The contract could not be confirmed."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:53
+#: includes/torobpay-error-codes.php:326
+msgid "TorobPay account is inactive"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:54
+msgid "Your TorobPay account is inactive. Please contact TorobPay support."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:61
+msgid "Your store contract has expired"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:62
+msgid "To renew the contract, open the TorobPay panel, go to the Store information menu, and click “Register a new contract”. Or contact TorobPay support."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:69
+msgid "TorobPay authentication failed"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:70
+msgid "TorobPay did not accept the stored credentials. Please review the gateway settings."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:77
+msgid "Invalid authentication credentials"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:78
+msgid "Invalid login details. Please check the TorobPay merchant ID and key in settings."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:85
+msgid "Incorrect username or password"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:86
+msgid "Incorrect username or password. Please check the settings."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:115
+msgid "Order amount was not sent"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:116
+msgid "TorobPay did not receive an order amount."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:124
+msgid "Cart amount outside the TorobPay range"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:125
+msgid "TorobPay accepts orders between 200,000 and 1,000,000,000 Rial."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:138
+msgid "TorobPay rejected the order details"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:139
+msgid "TorobPay rejected the order details. Check the customer address, postal code and mobile number."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:145
+msgid "The order could not be created"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:146
+msgid "The order could not be created."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:157
+msgid "Invalid payment token"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:158
+msgid "The payment token is not valid."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:164
+msgid "Order not found at TorobPay"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:165
+msgid "No TorobPay order matches this payment token."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:171
+#: includes/torobpay-error-codes.php:185
+msgid "Amount cannot be increased"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:172
+msgid "New amount must be less than the original amount."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:178
+msgid "Amount must be greater than zero"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:179
+msgid "New amount must be greater than zero."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:186
+msgid "New payable amount cannot exceed the previous amount after discount removal."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:192
+msgid "Orders with discounts cannot be updated"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:193
+msgid "Orders with discounts cannot be updated."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:199
+msgid "Order belongs to another merchant"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:200
+msgid "This payment token does not belong to your TorobPay account."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:206
+msgid "Order status cannot be changed"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:207
+msgid "Order status cannot be changed."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:213
+msgid "Editing window has expired"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:214
+msgid "The 30-day window to edit or cancel this order has expired and it can no longer be changed."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:220
+msgid "Too late to revert this payment"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:221
+msgid "More than 30 minutes have passed since payment, so it can no longer be reverted. Cancel the order instead."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:237
+msgid "Campaign status request was incomplete"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:238
+msgid "The campaign status could not be updated because the enabled flag was missing from the request."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:249
+msgid "Invalid store domain"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:250
+msgid "Invalid store domain."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:256
+msgid "Store not found"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:257
+msgid "Store was not found in TorobPay. Make sure registration is complete in the TorobPay panel."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:263
+msgid "Store verification failed"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:264
+msgid "Store verification failed. Registration may not be complete or approved yet."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:270
+msgid "Confirmation token mismatch"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:271
+msgid "Confirmation token does not match the submitted value. Please try again."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:277
+msgid "Invalid verification URL"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:278
+msgid "Invalid store verification URL."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:284
+msgid "TorobPay account not found"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:285
+msgid "TorobPay account was not found. Check your account status in the TorobPay panel."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:291
+msgid "Invalid account details request"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:292
+msgid "TorobPay rejected the account-details request because the submitted data was invalid."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:298
+msgid "Automatic fetch already used"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:299
+msgid "Automatic account fetch already ran once, so automatic fetch was stopped. Enter details manually from the TorobPay panel."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:305
+msgid "Automatic activation unavailable"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:306
+msgid "Automatic activation is not available for your account. After registration is approved, activate manually in the TorobPay panel by fetching gateway credentials."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:312
+msgid "Registration under review"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:313
+msgid "Your TorobPay registration is under review. If approved, your gateway will be activated automatically when possible."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:319
+msgid "Registration was not approved"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:320
+msgid "Your TorobPay registration was not approved. Click this link to see why your request was rejected."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:327
+msgid "Your TorobPay merchant account is inactive. Please contact TorobPay support."
+msgstr ""
+
+#: includes/torobpay-error-codes.php:409
+msgid "Open TorobPay panel"
+msgstr ""
+
+#: includes/torobpay-error-codes.php:415
+#: support-page.php:61
+msgid "Contact support"
+msgstr ""
+
+#: includes/torobpay-instore-catalog.php:143
+msgid "Could not reserve stock for this order."
+msgstr ""
+
+#: includes/torobpay-instore-result.php:181
+msgid "This payment page is not valid."
+msgstr ""
+
+#: includes/torobpay-instore-result.php:182
+#: includes/torobpay-instore-result.php:271
+#: includes/torobpay-instore-result.php:491
+msgid "Payment was not completed"
+msgstr ""
+
+#: includes/torobpay-instore-result.php:213
+msgid "The retry request could not be verified. Please try again."
+msgstr ""
+
+#: includes/torobpay-instore-result.php:225
+#: includes/torobpay-instore-result.php:232
+#: includes/torobpay-instore.php:117
+msgid "This order can no longer accept payment."
+msgstr ""
+
+#: includes/torobpay-instore-result.php:268
+#: includes/torobpay-instore-result.php:490
+#: assets/js/admin-instore.js:378
+msgid "Payment successful"
+msgstr ""
+
+#: includes/torobpay-instore-result.php:415
+msgid "Order created"
+msgstr ""
+
+#: includes/torobpay-instore-result.php:425
+msgid "Completed"
+msgstr ""
+
+#: includes/torobpay-instore-result.php:461
+msgid "Your installment due dates"
+msgstr ""
+
+#: includes/torobpay-instore-result.php:464
+msgid "Payment status"
+msgstr ""
+
+#. translators: %s: store name
+#: includes/torobpay-instore-result.php:537
+#, php-format
+msgid "Purchase from %s"
+msgstr ""
+
+#: includes/torobpay-instore-result.php:546
+msgid "Total:"
+msgstr ""
+
+#. translators: %s: order number
+#: includes/torobpay-instore-result.php:556
+#, php-format
+msgid "Order #%s"
+msgstr ""
+
+#: includes/torobpay-instore-result.php:583
+msgid "Try payment again"
+msgstr ""
+
+#: includes/torobpay-instore-result.php:618
+#: includes/torobpay-widget.php:141
+#: includes/widget-settings-page.php:965
+msgid "4 installments. No fee, checks, or guarantor."
+msgstr ""
+
+#: includes/torobpay-instore-watch.php:142
+#: includes/torobpay-instore-watch.php:151
+msgid "A new payment QR cannot be created for this order."
+msgstr ""
+
+#: includes/torobpay-instore-watch.php:257
+msgid "TorobPay gateway is not available."
+msgstr ""
+
+#: includes/torobpay-instore.php:114
+#: assets/js/admin-instore.js:257
+#: assets/js/admin-instore.js:317
+msgid "Waiting for the customer to pay…"
+msgstr ""
+
+#: includes/torobpay-instore.php:115
+msgid "Payment received. This in-store order is complete."
+msgstr ""
+
+#: includes/torobpay-instore.php:116
+msgid "Payment was not completed. You can retry and show a new QR code."
+msgstr ""
+
+#: includes/torobpay-instore.php:127
+msgid "Your in-store purchase was paid successfully."
+msgstr ""
+
+#: includes/torobpay-instore.php:136
+msgid "Your in-store payment was not completed. You can try again."
+msgstr ""
+
+#: includes/torobpay-jalali.php:236
+msgid "Farvardin"
+msgstr ""
+
+#: includes/torobpay-jalali.php:237
+msgid "Ordibehesht"
+msgstr ""
+
+#: includes/torobpay-jalali.php:238
+msgid "Khordad"
+msgstr ""
+
+#: includes/torobpay-jalali.php:239
+msgid "Tir"
+msgstr ""
+
+#: includes/torobpay-jalali.php:240
+msgid "Mordad"
+msgstr ""
+
+#: includes/torobpay-jalali.php:241
+msgid "Shahrivar"
+msgstr ""
+
+#: includes/torobpay-jalali.php:242
+msgid "Mehr"
+msgstr ""
+
+#: includes/torobpay-jalali.php:243
+msgid "Aban"
+msgstr ""
+
+#: includes/torobpay-jalali.php:244
+msgid "Azar"
+msgstr ""
+
+#: includes/torobpay-jalali.php:245
+msgid "Dey"
+msgstr ""
+
+#: includes/torobpay-jalali.php:246
+msgid "Bahman"
+msgstr ""
+
+#: includes/torobpay-jalali.php:247
+msgid "Esfand"
+msgstr ""
+
+#: includes/torobpay-jalali.php:370
+msgid "Today"
+msgstr ""
+
+#: includes/torobpay-jalali.php:387
+msgid "Sunday"
+msgstr ""
+
+#: includes/torobpay-jalali.php:388
+msgid "Monday"
+msgstr ""
+
+#: includes/torobpay-jalali.php:389
+msgid "Tuesday"
+msgstr ""
+
+#: includes/torobpay-jalali.php:390
+msgid "Wednesday"
+msgstr ""
+
+#: includes/torobpay-jalali.php:391
+msgid "Thursday"
+msgstr ""
+
+#: includes/torobpay-jalali.php:392
+msgid "Friday"
+msgstr ""
+
+#: includes/torobpay-jalali.php:393
+msgid "Saturday"
+msgstr ""
+
+#. translators: 1: weekday name, 2: Jalali day and month such as "10 Mehr".
+#: includes/torobpay-jalali.php:421
+#, php-format
+msgid "Until 12 at night %1$s %2$s"
+msgstr ""
+
+#. translators: %s: formatted installment price HTML
+#: includes/torobpay-marquee.php:85
+#: includes/torobpay-widget.php:601
+#: assets/js/badge-compatibility.js:227
+#: assets/js/badge-compatibility.js:229
+#: assets/js/badge-compatibility.js:255
+#, php-format,js-format
+msgid "Each installment %s"
+msgstr ""
+
+#: includes/torobpay-marquee.php:87
+#: includes/torobpay-widget.php:603
+#: assets/js/badge-compatibility.js:227
+#: assets/js/badge-compatibility.js:229
+#: assets/js/badge-compatibility.js:255
+msgid "Installment payment"
+msgstr ""
+
+#: includes/torobpay-order-payment.php:568
+msgid "Payment token was not found for this order"
+msgstr ""
+
+#: includes/torobpay-order-payment.php:593
+#: assets/js/admin-order-actions.js:73
+#: assets/js/admin-order-actions.js:762
+#: assets/js/admin-order-actions.js:1200
+msgid "Error checking payment status. Please try again."
+msgstr ""
+
+#: includes/torobpay-order-payment.php:608
+msgid "Settlement with TorobPay failed. Please try again."
+msgstr ""
+
+#: includes/torobpay-order-payment.php:629
+msgid "Error finalizing payment status. Please try again."
+msgstr ""
+
+#: includes/torobpay-order-payment.php:649
+msgid "This order is not paid yet and cannot be edited or refunded."
+msgstr ""
+
+#: includes/torobpay-order-payment.php:656
+msgid "This order is cancelled or failed and cannot be edited or refunded."
+msgstr ""
+
+#: includes/torobpay-order-payment.php:663
+msgid "Payment status is unknown. Please contact support."
+msgstr ""
+
+#: includes/torobpay-order-payment.php:693
+msgid "TorobPay: Payment token was not found for this order. Cancel/refund was not performed in TorobPay."
+msgstr ""
+
+#: includes/torobpay-order-payment.php:703
+msgid "TorobPay: Order cancellation"
+msgstr ""
+
+#: includes/torobpay-order-payment.php:705
+msgid "was already performed and a duplicate was prevented"
+msgstr ""
+
+#. translators: %s: WooCommerce order status label
+#: includes/torobpay-order-payment.php:792
+#, php-format
+msgid "Payment was settled in TorobPay but WooCommerce did not change the order status from \"%s\"."
+msgstr ""
+
+#: includes/torobpay-order-payment.php:879
+msgid "TorobPay: Payment was settled in TorobPay but WooCommerce did not mark the order as paid. The order was placed On hold to prevent automatic cancellation. Please change the status to Processing or Completed."
+msgstr ""
+
+#: includes/torobpay-order-payment.php:888
+msgid "Payment was settled in TorobPay but WooCommerce did not move the order from Pending payment to a paid status. The order was placed On hold to prevent automatic cancellation."
+msgstr ""
+
+#: includes/torobpay-order-payment.php:1075
+#: includes/torobpay-order-payment.php:1160
+#: support-page.php:133
+msgid "TorobPay: Transaction was successful."
+msgstr ""
+
+#: includes/torobpay-order-payment.php:1173
+msgid "TorobPay: Settlement failed. Please check the payment status in the TorobPay panel."
+msgstr ""
+
+#: includes/torobpay-payment-retry-control.php:95
+msgid "This order has already entered the payment gateway and cannot be paid again."
+msgstr ""
+
+#: includes/torobpay-payment-retry-control.php:179
+#: includes/torobpay-payment-retry-control.php:201
+msgid "Order cancelled due to a payment retry attempt"
+msgstr ""
+
+#: includes/torobpay-payment-retry-control.php:211
+msgid "This order has already entered the payment gateway. Creating a new order..."
+msgstr ""
+
+#: includes/torobpay-payment-retry-control.php:213
+msgid "If you are not redirected automatically, please click \"Place order\"."
+msgstr ""
+
+#. translators: %s: percentage number without the percent sign
+#: includes/torobpay-pdp-promo.php:312
+#, php-format
+msgid "%s%% discount"
+msgstr ""
+
+#. translators: %s: formatted discount amount from wc_price()
+#: includes/torobpay-pdp-promo.php:323
+#, php-format
+msgid "%s discount"
+msgstr ""
+
+#. translators: %s: formatted amount cap from wc_price(). Persian: تا سقف مبلغ %s
+#: includes/torobpay-pdp-promo.php:349
+#, php-format
+msgid "Up to %s"
+msgstr ""
+
+#. translators: %s: formatted minimum order total from wc_price()
+#: includes/torobpay-pdp-promo.php:356
+#, php-format
+msgid "Minimum purchase: %s"
+msgstr ""
+
+#: includes/torobpay-pdp-promo.php:416
+#: assets/js/widget-settings.js:801
+msgid "Special TorobPay discount"
+msgstr ""
+
+#: includes/torobpay-pdp-promo.php:499
+msgid "Special discount"
+msgstr ""
+
+#: includes/torobpay-pdp-promo.php:500
+msgid "After adding the item to the cart, select TorobPay at checkout, then enter the discount code on TorobPay when paying the first installment."
+msgstr ""
+
+#: includes/torobpay-pdp-promo.php:501
+msgid "Do not enter this code on the store website."
+msgstr ""
+
+#: includes/torobpay-pdp-promo.php:504
+msgid "Discount code:"
+msgstr ""
+
+#: includes/torobpay-pdp-promo.php:508
+msgid "Copy code"
+msgstr ""
+
+#: includes/torobpay-pdp-promo.php:509
+msgid "Got it"
+msgstr ""
+
+#. translators: 1: rial amount sent in the token request, 2: rial amount returned by the token API
+#: includes/torobpay-price-integrity.php:69
+#, php-format
+msgid "TorobPay stopped this payment because the stored token amount did not match the amount sent. Sent: %1$s. Stored: %2$s."
+msgstr ""
+
+#: includes/torobpay-price-integrity.php:84
+msgid "missing"
+msgstr ""
+
+#: includes/torobpay-provision.php:59
+msgid "Could not retrieve TorobPay account details."
+msgstr ""
+
+#: includes/torobpay-provision.php:131
+msgid "Link"
+msgstr ""
+
+#: includes/torobpay-provision.php:134
+msgid "Your TorobPay registration was not approved. To see why, "
+msgstr ""
+
+#: includes/torobpay-provision.php:136
+msgid " click here."
+msgstr ""
+
+#: includes/torobpay-provision.php:859
+msgid "Store verification URL is not ready yet. Please try again in a moment."
+msgstr ""
+
+#: includes/torobpay-provision.php:907
+msgid "Invalid response received from TorobPay."
+msgstr ""
+
+#: includes/torobpay-provision.php:914
+msgid "Invalid response received from TorobPay. (HTTP "
+msgstr ""
+
+#: includes/torobpay-provision.php:919
+msgid "Store URL could not be detected."
+msgstr ""
+
+#: includes/torobpay-provision.php:945
+#: includes/torobpay-provision.php:1613
+msgid "TorobPay account details were retrieved successfully."
+msgstr ""
+
+#: includes/torobpay-provision.php:1101
+msgid "A valid provision runner token is required."
+msgstr ""
+
+#: includes/torobpay-provision.php:1407
+msgid "Account details were already retrieved and are locked."
+msgstr ""
+
+#: includes/torobpay-provision.php:1504
+#: assets/js/admin-gateway.js:86
+msgid "Fetching…"
+msgstr ""
+
+#: includes/torobpay-provision.php:1505
+msgid "Fetching account details failed."
+msgstr ""
+
+#: includes/torobpay-provision.php:1616
+msgid "Automatic account fetch failed over the past 30 days and will not retry automatically. Use the manual fetch button and check your account in the TorobPay panel."
+msgstr ""
+
+#: includes/torobpay-provision.php:1628
+msgid "Automatic TorobPay account fetch did not complete. If registration is incomplete or pending approval, details will be fetched automatically after approval."
+msgstr ""
+
+#. translators: %s: WooCommerce order status
+#: includes/torobpay-reconcile.php:244
+#, php-format
+msgid "Order status is \"%s\" but payment is still active in TorobPay."
+msgstr ""
+
+#: includes/torobpay-reconcile.php:302
+msgid "The TorobPay edit/cancel window has expired and this payment can no longer be changed. First remove refunds recorded via the WooCommerce Refund button, then manually restore the order status to a paid status (e.g. Processing or Completed) to align with TorobPay."
+msgstr ""
+
+#: includes/torobpay-reconcile.php:372
+msgid "Incomplete settlement"
+msgstr ""
+
+#: includes/torobpay-reconcile.php:373
+msgid "Payment is confirmed but final settlement has not completed. TorobPay usually completes this automatically; opening this alert also triggers one more attempt to complete the operation."
+msgstr ""
+
+#: includes/torobpay-reconcile.php:378
+msgid "Unconfirmed cancellation"
+msgstr ""
+
+#: includes/torobpay-reconcile.php:379
+msgid "Order cancel/refund was recorded but payment cancellation was not confirmed in TorobPay. If funds were received, use Refund; if payment bounced, use Mark as failed."
+msgstr ""
+
+#: includes/torobpay-reconcile.php:384
+msgid "Order locked in TorobPay"
+msgstr ""
+
+#: includes/torobpay-reconcile.php:385
+msgid "The TorobPay edit/cancel window has expired and this payment can no longer be changed. Manually restore the WooCommerce order status to a paid status (e.g. Processing or Completed) to align with TorobPay."
+msgstr ""
+
+#: includes/torobpay-reconcile.php:390
+msgid "Unconfirmed payment"
+msgstr ""
+
+#: includes/torobpay-reconcile.php:391
+msgid "The order is marked paid in WooCommerce but the latest TorobPay status does not confirm it. Opening this alert refreshes status from TorobPay; manually correct the order status if needed."
+msgstr ""
+
+#: includes/torobpay-reconcile.php:396
+msgid "Refund mismatch"
+msgstr ""
+
+#: includes/torobpay-reconcile.php:397
+msgid "TorobPay recorded this payment as cancelled/failed. If no funds were received, mark the order as Failed."
+msgstr ""
+
+#: includes/torobpay-reconcile.php:402
+msgid "Pending mismatch"
+msgstr ""
+
+#: includes/torobpay-reconcile.php:403
+msgid "The order is marked paid in WooCommerce but TorobPay is still Pending. Opening this alert refreshes status from TorobPay; manually correct the order status if needed."
+msgstr ""
+
+#: includes/torobpay-reconcile.php:408
+msgid "Settlement mismatch"
+msgstr ""
+
+#: includes/torobpay-reconcile.php:409
+msgid "Payment is settled in TorobPay but the order is not paid in WooCommerce. Manually change the order status to Processing or Completed. If you are editing items, you may ignore this message; a local WooCommerce refund can also cause this report."
+msgstr ""
+
+#: includes/torobpay-reconcile.php:414
+msgid "Incomplete item edit"
+msgstr ""
+
+#: includes/torobpay-reconcile.php:415
+msgid "Payment is settled in TorobPay and the order is temporarily On hold for item editing. Resume editing and save/cancel so the order status can be restored."
+msgstr ""
+
+#: includes/torobpay-reconcile.php:420
+msgid "Paid order on hold"
+msgstr ""
+
+#: includes/torobpay-reconcile.php:421
+msgid "Payment is settled in TorobPay but the WooCommerce order is still On hold. If this hold is not intentional, change the order status to Processing or Completed."
+msgstr ""
+
+#: includes/torobpay-reconcile.php:426
+msgid "Item refund without TorobPay"
+msgstr ""
+
+#: includes/torobpay-reconcile.php:427
+msgid "An amount or items were refunded via the WooCommerce Refund button (on the order page), but the TorobPay payment is unchanged. Remove those refunds and use the TorobPay Refund button instead."
+msgstr ""
+
+#: includes/torobpay-reconcile.php:434
+#: assets/js/admin-order-actions.js:1061
+#: assets/js/admin-order-actions.js:1089
+msgid "Needs review"
+msgstr ""
+
+#: includes/torobpay-reconcile.php:435
+msgid "This order payment status needs review. Opening this alert reads status from TorobPay; manually correct the order status if needed."
+msgstr ""
+
+#: includes/torobpay-reconcile.php:459
+msgid "Verified (awaiting settlement)"
+msgstr ""
+
+#: includes/torobpay-reconcile.php:465
+msgid "Settled (successful payment)"
+msgstr ""
+
+#: includes/torobpay-reconcile.php:471
+msgid "Cancelled/Failed"
+msgstr ""
+
+#: includes/torobpay-reconcile.php:483
+msgid "Unknown"
+msgstr ""
+
+#: includes/torobpay-reconcile.php:628
+msgid "TorobPay: Payment was confirmed but final settlement did not complete; the order was set to \"On hold\" pending review. "
+msgstr ""
+
+#. translators: %s: restored WooCommerce order status
+#: includes/torobpay-reconcile.php:696
+#, php-format
+msgid "TorobPay: A paid order was incorrectly changed to \"Pending payment\" and was automatically restored to \"%s\"."
+msgstr ""
+
+#. translators: %s: WooCommerce order status
+#: includes/torobpay-reconcile.php:738
+#: includes/torobpay-reconcile.php:755
+#, php-format
+msgid "Order status changed to \"%s\" but payment is still active in TorobPay."
+msgstr ""
+
+#. translators: 1: WooCommerce order status, 2: TorobPay payment status
+#: includes/torobpay-reconcile.php:772
+#, php-format
+msgid "Order changed to \"%1$s\" but the latest TorobPay payment status is \"%2$s\"."
+msgstr ""
+
+#: includes/torobpay-settings-helpers.php:29
+#: assets/js/admin-order-actions.js:335
+msgid "Toman"
+msgstr ""
+
+#: includes/torobpay-settings-helpers.php:30
+msgid "Iranian Toman"
+msgstr ""
+
+#: includes/torobpay-slider.php:91
+msgid "Light green"
+msgstr ""
+
+#: includes/torobpay-slider.php:92
+msgid "Dark green"
+msgstr ""
+
+#: includes/torobpay-slider.php:93
+msgid "Light green gradient"
+msgstr ""
+
+#: includes/torobpay-slider.php:94
+msgid "Dark green gradient"
+msgstr ""
+
+#: includes/torobpay-slider.php:95
+msgid "Soft light"
+msgstr ""
+
+#: includes/torobpay-slider.php:96
+msgid "Duo"
+msgstr ""
+
+#: includes/torobpay-slider.php:109
+#: includes/torobpay-slider.php:135
+msgid "Top right"
+msgstr ""
+
+#: includes/torobpay-slider.php:110
+#: includes/torobpay-slider.php:134
+msgid "Top center"
+msgstr ""
+
+#: includes/torobpay-slider.php:111
+#: includes/torobpay-slider.php:133
+msgid "Top left"
+msgstr ""
+
+#: includes/torobpay-slider.php:112
+#: includes/torobpay-slider.php:137
+msgid "Middle right"
+msgstr ""
+
+#: includes/torobpay-slider.php:113
+#: includes/torobpay-slider.php:128
+msgid "Center"
+msgstr ""
+
+#: includes/torobpay-slider.php:114
+#: includes/torobpay-slider.php:136
+msgid "Middle left"
+msgstr ""
+
+#: includes/torobpay-slider.php:115
+#: includes/torobpay-slider.php:140
+msgid "Bottom right"
+msgstr ""
+
+#: includes/torobpay-slider.php:116
+#: includes/torobpay-slider.php:139
+msgid "Bottom center"
+msgstr ""
+
+#: includes/torobpay-slider.php:117
+#: includes/torobpay-slider.php:138
+msgid "Bottom left"
+msgstr ""
+
+#: includes/torobpay-slider.php:129
+#: includes/widget-settings-page.php:1017
+#: includes/widget-settings-page.php:1399
+msgid "Top"
+msgstr ""
+
+#: includes/torobpay-slider.php:130
+#: includes/widget-settings-page.php:1018
+#: includes/widget-settings-page.php:1401
+msgid "Bottom"
+msgstr ""
+
+#: includes/torobpay-slider.php:131
+#: includes/widget-settings-page.php:1005
+msgid "Left"
+msgstr ""
+
+#: includes/torobpay-slider.php:132
+#: includes/widget-settings-page.php:1004
+msgid "Right"
+msgstr ""
+
+#: includes/torobpay-slider.php:181
+msgid "TorobPay icon size"
+msgstr ""
+
+#: includes/torobpay-slider.php:182
+msgid "TorobPay logo size on this slide (empty = default)."
+msgstr ""
+
+#: includes/torobpay-slider.php:191
+#: includes/widget-settings-page.php:707
+msgid "Title font size"
+msgstr ""
+
+#: includes/torobpay-slider.php:192
+msgid "Title font size (empty = default)."
+msgstr ""
+
+#: includes/torobpay-slider.php:198
+#: includes/widget-settings-page.php:721
+msgid "Title font weight"
+msgstr ""
+
+#: includes/torobpay-slider.php:199
+msgid "Title font weight (empty = default)."
+msgstr ""
+
+#: includes/torobpay-slider.php:207
+#: includes/widget-settings-page.php:739
+msgid "Description font size"
+msgstr ""
+
+#: includes/torobpay-slider.php:208
+msgid "Description font size (empty = default)."
+msgstr ""
+
+#: includes/torobpay-slider.php:213
+#: includes/widget-settings-page.php:753
+msgid "Description font weight"
+msgstr ""
+
+#: includes/torobpay-slider.php:214
+msgid "Description font weight (empty = default)."
+msgstr ""
+
+#: includes/torobpay-slider.php:220
+#: includes/torobpay-slider.php:228
+#: includes/widget-settings-page.php:879
+#: includes/widget-settings-page.php:1037
+#: includes/widget-settings-page.php:1054
+msgid "Percent"
+msgstr ""
+
+#: includes/torobpay-slider.php:222
+msgid "Background icon size"
+msgstr ""
+
+#: includes/torobpay-slider.php:223
+msgid "Decorative icon scale (percent). Empty = slide default. Lower = smaller, higher = larger."
+msgstr ""
+
+#: includes/torobpay-slider.php:230
+msgid "Aurora blob size"
+msgstr ""
+
+#: includes/torobpay-slider.php:231
+msgid "Aurora light blob scale (percent). Empty = slide default. Lower = smaller, higher = larger."
+msgstr ""
+
+#: includes/torobpay-slider.php:288
+#: includes/widget-settings-page.php:726
+#: includes/widget-settings-page.php:758
+#: includes/widget-settings-page.php:1137
+#: includes/widget-settings-page.php:1269
+#: includes/widget-settings-page.php:1642
+msgid "Light (300)"
+msgstr ""
+
+#: includes/torobpay-slider.php:289
+#: includes/widget-settings-page.php:727
+#: includes/widget-settings-page.php:759
+#: includes/widget-settings-page.php:1138
+#: includes/widget-settings-page.php:1270
+#: includes/widget-settings-page.php:1643
+msgid "Regular (400)"
+msgstr ""
+
+#: includes/torobpay-slider.php:290
+#: includes/widget-settings-page.php:728
+#: includes/widget-settings-page.php:760
+#: includes/widget-settings-page.php:1139
+#: includes/widget-settings-page.php:1271
+#: includes/widget-settings-page.php:1644
+msgid "Medium (500)"
+msgstr ""
+
+#: includes/torobpay-slider.php:291
+#: includes/widget-settings-page.php:729
+#: includes/widget-settings-page.php:761
+#: includes/widget-settings-page.php:1140
+#: includes/widget-settings-page.php:1272
+#: includes/widget-settings-page.php:1645
+msgid "Semi-bold (600)"
+msgstr ""
+
+#: includes/torobpay-slider.php:292
+#: includes/widget-settings-page.php:730
+#: includes/widget-settings-page.php:762
+#: includes/widget-settings-page.php:1141
+#: includes/widget-settings-page.php:1273
+#: includes/widget-settings-page.php:1646
+msgid "Bold (700)"
+msgstr ""
+
+#: includes/torobpay-slider.php:293
+#: includes/widget-settings-page.php:731
+#: includes/widget-settings-page.php:763
+#: includes/widget-settings-page.php:1142
+#: includes/widget-settings-page.php:1274
+#: includes/widget-settings-page.php:1647
+msgid "Extra bold (800)"
+msgstr ""
+
+#. translators: %s: shop or store name
+#: includes/torobpay-slider.php:529
+#, php-format
+msgid "Buy in installments from %s with TorobPay"
+msgstr ""
+
+#: includes/torobpay-slider.php:532
+#: includes/torobpay-topbar.php:198
+#: assets/js/torobpay-slider-admin.js:989
+msgid "Buy in installments with TorobPay"
+msgstr ""
+
+#: includes/torobpay-slider.php:540
+msgid "4 installments, no fees, no guarantor, no checks"
+msgstr ""
+
+#: includes/torobpay-slider.php:1009
+msgid "Start of shop content (default)"
+msgstr ""
+
+#: includes/torobpay-slider.php:1010
+msgid "End of shop content"
+msgstr ""
+
+#: includes/torobpay-slider.php:1011
+msgid "Above product list"
+msgstr ""
+
+#: includes/torobpay-slider.php:1012
+msgid "Below product list"
+msgstr ""
+
+#: includes/torobpay-slider.php:1013
+msgid "Above product page"
+msgstr ""
+
+#: includes/torobpay-slider.php:1014
+msgid "Below product page"
+msgstr ""
+
+#: includes/torobpay-slider.php:1015
+msgid "Above cart page"
+msgstr ""
+
+#: includes/torobpay-slider.php:1016
+msgid "Above checkout page"
+msgstr ""
+
+#: includes/torobpay-slider.php:1017
+msgid "Start of site body (all pages)"
+msgstr ""
+
+#: includes/torobpay-slider.php:1776
+msgid "This display location is disabled for this device."
+msgstr ""
+
+#: includes/torobpay-slider.php:1939
+msgid "Active"
+msgstr ""
+
+#: includes/torobpay-slider.php:1940
+msgid "Remove display location"
+msgstr ""
+
+#: includes/torobpay-slider.php:1944
+#: includes/widget-settings-page.php:1541
+msgid "Display location"
+msgstr ""
+
+#: includes/torobpay-slider.php:1944
+msgid "Changing the display location applies suggested defaults automatically."
+msgstr ""
+
+#: includes/torobpay-slider.php:1950
+#: includes/widget-settings-page.php:810
+msgid "Custom…"
+msgstr ""
+
+#: includes/torobpay-slider.php:1954
+#: includes/widget-settings-page.php:817
+msgid "Custom hook"
+msgstr ""
+
+#: includes/torobpay-slider.php:1954
+msgid "For theme hooks, set dimensions appropriate to the placement."
+msgstr ""
+
+#: includes/torobpay-slider.php:1960
+msgid "Example: storefront_before_content"
+msgstr ""
+
+#: includes/torobpay-slider.php:1963
+#: includes/widget-settings-page.php:832
+msgid "Display priority"
+msgstr ""
+
+#: includes/torobpay-slider.php:1963
+msgid "WordPress hook priority (lower number runs earlier). If multiple plugins or elements share a hook, this number controls display order. Default: 10"
+msgstr ""
+
+#: includes/torobpay-slider.php:1977
+msgid "Behavior"
+msgstr ""
+
+#: includes/torobpay-slider.php:1979
+msgid "Autoplay"
+msgstr ""
+
+#: includes/torobpay-slider.php:1981
+msgid "Arrows"
+msgstr ""
+
+#: includes/torobpay-slider.php:1983
+msgid "Navigation dots"
+msgstr ""
+
+#: includes/torobpay-slider.php:1985
+msgid "Pause on hover"
+msgstr ""
+
+#: includes/torobpay-slider.php:1993
+msgid "Height"
+msgstr ""
+
+#: includes/torobpay-slider.php:1994
+msgid "Slider height — px, percent of parent (%), or viewport height (vh)"
+msgstr ""
+
+#: includes/torobpay-slider.php:2003
+msgid "Max width"
+msgstr ""
+
+#: includes/torobpay-slider.php:2004
+msgid "Maximum slider width — px or percent of parent (%)"
+msgstr ""
+
+#: includes/torobpay-slider.php:2010
+msgid "Corner border radius"
+msgstr ""
+
+#: includes/torobpay-slider.php:2071
+msgid "Select slide image"
+msgstr ""
+
+#: includes/torobpay-slider.php:2072
+#: assets/js/torobpay-slider-admin.js:60
+msgid "Use this image"
+msgstr ""
+
+#: includes/torobpay-slider.php:2073
+msgid "Delete this slide?"
+msgstr ""
+
+#: includes/torobpay-slider.php:2074
+msgid "Delete this display location?"
+msgstr ""
+
+#: includes/torobpay-slider.php:2075
+msgid "This display location (hook) is already selected. Please choose another."
+msgstr ""
+
+#: includes/torobpay-slider.php:2076
+msgid "All default locations are in use. To add a new one, choose Custom."
+msgstr ""
+
+#: includes/torobpay-slider.php:2078
+#: assets/js/torobpay-slider-admin.js:178
+msgid "New display location"
+msgstr ""
+
+#: includes/torobpay-slider.php:2079
+#: assets/js/torobpay-slider-admin.js:1450
+#: assets/js/torobpay-slider-admin.js:1458
+msgid "Shortcode copied"
+msgstr ""
+
+#. translators: %d: 1-based slide number
+#: includes/torobpay-slider.php:2331
+#, php-format
+msgid "Slide %d"
+msgstr ""
+
+#: includes/torobpay-slider.php:2344
+msgid "Previous slide"
+msgstr ""
+
+#: includes/torobpay-slider.php:2347
+msgid "Next slide"
+msgstr ""
+
+#: includes/torobpay-slider.php:2720
+msgid "No fees"
+msgstr ""
+
+#: includes/torobpay-slider.php:2721
+#: includes/widget-settings-page.php:603
+msgid "4 installments"
+msgstr ""
+
+#: includes/torobpay-slider.php:2722
+msgid "No checks"
+msgstr ""
+
+#: includes/torobpay-slider.php:2723
+msgid "No guarantor"
+msgstr ""
+
+#. translators: %s: shop or store name
+#: includes/torobpay-slider.php:2736
+#, php-format
+msgid "Buy in installments from %s"
+msgstr ""
+
+#: includes/torobpay-topbar.php:199
+msgid "4 installments, no fees"
+msgstr ""
+
+#: includes/torobpay-topbar.php:196
+msgid "Initial credit of up to 30 million tomans"
+msgstr ""
+
+#: includes/torobpay-topbar.php:200
+msgid "No guarantor, no check"
+msgstr ""
+
+#: includes/torobpay-utils.php:193
+msgid "This plugin requires WooCommerce and was deactivated until it is installed. "
+msgstr ""
+
+#. translators: %s: WooCommerce plugin install URL
+#: includes/torobpay-utils.php:196
+#, php-format
+msgid "Please <a href=\"%s\">Install and activate WooCommerce</a>."
+msgstr ""
+
+#: includes/torobpay-utils.php:271
+msgid "TorobPay: Product stock was restored:"
+msgstr ""
+
+#: includes/torobpay-utils.php:273
+msgid "Restock amount:"
+msgstr ""
+
+#: includes/torobpay-utils.php:274
+msgid "Stock before:"
+msgstr ""
+
+#: includes/torobpay-utils.php:275
+msgid "New stock:"
+msgstr ""
+
+#. translators: %s: formatted installment price HTML from wc_price()
+#: includes/torobpay-widget.php:114
+#, php-format
+msgid "Each installment with TorobPay: %s"
+msgstr ""
+
+#: includes/widget-settings-page.php:120
+msgid "Settings saved successfully."
+msgstr ""
+
+#: includes/widget-settings-page.php:205
+msgid "Settings were restored to defaults."
+msgstr ""
+
+#: includes/widget-settings-page.php:297
+msgid "After add-to-cart form (default)"
+msgstr ""
+
+#: includes/widget-settings-page.php:298
+msgid "In product summary"
+msgstr ""
+
+#: includes/widget-settings-page.php:299
+msgid "After product summary"
+msgstr ""
+
+#: includes/widget-settings-page.php:300
+msgid "Before add-to-cart form"
+msgstr ""
+
+#: includes/widget-settings-page.php:301
+msgid "After product meta"
+msgstr ""
+
+#: includes/widget-settings-page.php:302
+msgid "After share buttons"
+msgstr ""
+
+#: includes/widget-settings-page.php:389
+msgid "Loading visual settings…"
+msgstr ""
+
+#: includes/widget-settings-page.php:425
+#: assets/js/widget-settings.js:1407
+msgid " is disabled"
+msgstr ""
+
+#: includes/widget-settings-page.php:435
+msgid "Manage TorobPay element visibility and appearance"
+msgstr ""
+
+#: includes/widget-settings-page.php:435
+msgid "Preparing…"
+msgstr ""
+
+#. translators: %s: HTML link to TorobPay gateway settings
+#: includes/widget-settings-page.php:439
+#, php-format
+msgid "Manage widget, badge, marquee, slider, and top bar visibility from this page. Each element's visual settings are in the sections below. For gateway connection and payment settings, go to %s."
+msgstr ""
+
+#: includes/widget-settings-page.php:440
+msgid "TorobPay gateway settings"
+msgstr ""
+
+#: includes/widget-settings-page.php:450
+msgid "Auto-show TorobPay widget"
+msgstr ""
+
+#: includes/widget-settings-page.php:451
+msgid "When disabled, you can still use the [torobpay_widget] shortcode where you want."
+msgstr ""
+
+#: includes/widget-settings-page.php:457
+msgid "Show TorobPay badge"
+msgstr ""
+
+#: includes/widget-settings-page.php:458
+msgid "Show or hide the TorobPay badge on product lists"
+msgstr ""
+
+#: includes/widget-settings-page.php:464
+msgid "Show TorobPay marquee"
+msgstr ""
+
+#: includes/widget-settings-page.php:465
+msgid "Show or hide the TorobPay marquee on product lists"
+msgstr ""
+
+#: includes/widget-settings-page.php:471
+msgid "Show TorobPay top bar"
+msgstr ""
+
+#: includes/widget-settings-page.php:472
+msgid "Show or hide the TorobPay promo bar at the top of the site. When disabled, you can still use [torobpay_topbar]."
+msgstr ""
+
+#: includes/widget-settings-page.php:478
+msgid "Show TorobPay slider"
+msgstr ""
+
+#: includes/widget-settings-page.php:479
+msgid "Show or hide the TorobPay promo slider. When disabled, you can still use [torobpay_slider]."
+msgstr ""
+
+#: includes/widget-settings-page.php:484
+msgid "Manage TorobPay element visibility"
+msgstr ""
+
+#: includes/widget-settings-page.php:541
+msgid "Visual settings sections"
+msgstr ""
+
+#: includes/widget-settings-page.php:575
+msgid "Ready-made styles"
+msgstr ""
+
+#: includes/widget-settings-page.php:576
+msgid "Select a style to apply the suggested layout and colors. You can then adjust colors and typography manually."
+msgstr ""
+
+#: includes/widget-settings-page.php:577
+msgid "Widget presets"
+msgstr ""
+
+#: includes/widget-settings-page.php:602
+msgid "Each installment with TorobPay"
+msgstr ""
+
+#: includes/widget-settings-page.php:616
+#: includes/widget-settings-page.php:1062
+#: includes/widget-settings-page.php:1219
+msgid "Color settings"
+msgstr ""
+
+#: includes/widget-settings-page.php:621
+#: includes/widget-settings-page.php:1067
+#: includes/widget-settings-page.php:1224
+msgid "Background color"
+msgstr ""
+
+#: includes/widget-settings-page.php:622
+msgid "TorobPay widget background color"
+msgstr ""
+
+#: includes/widget-settings-page.php:635
+msgid "Border color"
+msgstr ""
+
+#: includes/widget-settings-page.php:636
+msgid "Widget border color"
+msgstr ""
+
+#: includes/widget-settings-page.php:649
+#: includes/widget-settings-page.php:1081
+#: includes/widget-settings-page.php:1244
+msgid "Text color"
+msgstr ""
+
+#: includes/widget-settings-page.php:650
+msgid "Widget text color"
+msgstr ""
+
+#: includes/widget-settings-page.php:664
+msgid "Border settings"
+msgstr ""
+
+#: includes/widget-settings-page.php:670
+msgid "Border width"
+msgstr ""
+
+#: includes/widget-settings-page.php:671
+msgid "Widget border width (0 to 20 px)"
+msgstr ""
+
+#: includes/widget-settings-page.php:686
+#: includes/widget-settings-page.php:1096
+msgid "Border radius"
+msgstr ""
+
+#: includes/widget-settings-page.php:687
+msgid "Widget corner radius (0 to 999 px; high values create a pill shape)"
+msgstr ""
+
+#: includes/widget-settings-page.php:701
+#: includes/widget-settings-page.php:1112
+#: includes/widget-settings-page.php:1258
+#: includes/widget-settings-page.php:1616
+msgid "Typography settings"
+msgstr ""
+
+#: includes/widget-settings-page.php:708
+msgid "Widget title font size (10 to 30 px)"
+msgstr ""
+
+#: includes/widget-settings-page.php:722
+msgid "Widget title font weight"
+msgstr ""
+
+#: includes/widget-settings-page.php:740
+msgid "Widget description font size (8 to 24 px)"
+msgstr ""
+
+#: includes/widget-settings-page.php:754
+msgid "Widget description font weight"
+msgstr ""
+
+#: includes/widget-settings-page.php:771
+#: includes/widget-settings-page.php:1150
+msgid "Logo settings"
+msgstr ""
+
+#: includes/widget-settings-page.php:776
+msgid "Logo animation"
+msgstr ""
+
+#: includes/widget-settings-page.php:777
+msgid "Looping animation for the TorobPay logo"
+msgstr ""
+
+#: includes/widget-settings-page.php:781
+msgid "Light sweep"
+msgstr ""
+
+#: includes/widget-settings-page.php:782
+msgid "Ping"
+msgstr ""
+
+#: includes/widget-settings-page.php:783
+msgid "Pulse"
+msgstr ""
+
+#: includes/widget-settings-page.php:784
+msgid "Wobble"
+msgstr ""
+
+#: includes/widget-settings-page.php:785
+msgid "Bounce"
+msgstr ""
+
+#: includes/widget-settings-page.php:786
+msgid "Status dot"
+msgstr ""
+
+#: includes/widget-settings-page.php:795
+msgid "Display position settings"
+msgstr ""
+
+#: includes/widget-settings-page.php:800
+msgid "Widget display location"
+msgstr ""
+
+#: includes/widget-settings-page.php:801
+msgid "Choose where to show the widget on the product page. If your theme has issues, try other options."
+msgstr ""
+
+#: includes/widget-settings-page.php:818
+msgid "Your WooCommerce or theme hook name (e.g. woocommerce_after_single_product)"
+msgstr ""
+
+#: includes/widget-settings-page.php:826
+msgid "Example: my_theme_after_price"
+msgstr ""
+
+#: includes/widget-settings-page.php:833
+msgid "Hook priority (lower number = higher priority). Default: 9"
+msgstr ""
+
+#: includes/widget-settings-page.php:848
+msgid "Special discount code"
+msgstr ""
+
+#: includes/widget-settings-page.php:849
+msgid "Show a TorobPay gateway discount code on the product-page widget. Only the code is required. Amount, percent, minimum purchase or amount cap, and expiry are optional display fields and do not change the cart total. Shoppers enter the code on the TorobPay payment page, not in the store coupon field."
+msgstr ""
+
+#: includes/widget-settings-page.php:854
+msgid "Show discount code"
+msgstr ""
+
+#: includes/widget-settings-page.php:859
+msgid "Show the code on the product widget"
+msgstr ""
+
+#: includes/widget-settings-page.php:865
+msgid "Discount code"
+msgstr ""
+
+#: includes/widget-settings-page.php:869
+msgid "Required when the discount is shown."
+msgstr ""
+
+#: includes/widget-settings-page.php:874
+msgid "Discount display (optional)"
+msgstr ""
+
+#: includes/widget-settings-page.php:878
+msgid "Amount"
+msgstr ""
+
+#: includes/widget-settings-page.php:885
+msgid "Discount value (optional)"
+msgstr ""
+
+#: includes/widget-settings-page.php:889
+#: includes/widget-settings-page.php:1239
+#: assets/js/widget-settings.js:844
+msgid "%"
+msgstr ""
+
+#: includes/widget-settings-page.php:890
+msgid "Shown in the lightbox only. Not applied to the WooCommerce cart."
+msgstr ""
+
+#: includes/widget-settings-page.php:897
+#: assets/js/widget-settings.js:852
+msgid "Amount cap (optional)"
+msgstr ""
+
+#: includes/widget-settings-page.php:898
+#: assets/js/widget-settings.js:853
+msgid "Minimum purchase (optional)"
+msgstr ""
+
+#: includes/widget-settings-page.php:904
+msgid "The percent is calculated on this amount even if the order total is higher."
+msgstr ""
+
+#: includes/widget-settings-page.php:909
+msgid "Expires (optional)"
+msgstr ""
+
+#: includes/widget-settings-page.php:920
+msgid "Date"
+msgstr ""
+
+#: includes/widget-settings-page.php:926
+msgid "Site timezone. The offer lasts until 12 at night on this date, for example Until 12 at night Friday 10 Mehr. Leave empty for no expiry."
+msgstr ""
+
+#: includes/widget-settings-page.php:931
+msgid "Discount style"
+msgstr ""
+
+#: includes/widget-settings-page.php:932
+msgid "Marquee is a scrolling bar along the bottom of the widget. It pauses while the pointer is over the widget. Simple keeps the label and code still."
+msgstr ""
+
+#: includes/widget-settings-page.php:937
+msgid "Simple"
+msgstr ""
+
+#: includes/widget-settings-page.php:945
+msgid "Widget preview"
+msgstr ""
+
+#: includes/widget-settings-page.php:964
+#: includes/widget-settings-page.php:1512
+msgid "Each installment with TorobPay 250,000 Toman"
+msgstr ""
+
+#: includes/widget-settings-page.php:982
+msgid "Using the widget elsewhere"
+msgstr ""
+
+#: includes/widget-settings-page.php:983
+msgid "If the widget does not display well in your theme or you want it in a specific place, use the shortcode below:"
+msgstr ""
+
+#: includes/widget-settings-page.php:985
+msgid "Place this shortcode on any product page or in your product template to show the TorobPay widget with your settings."
+msgstr ""
+
+#: includes/widget-settings-page.php:994
+msgid "Position settings"
+msgstr ""
+
+#: includes/widget-settings-page.php:999
+msgid "Horizontal position"
+msgstr ""
+
+#: includes/widget-settings-page.php:1000
+msgid "Badge position on right or left of product"
+msgstr ""
+
+#: includes/widget-settings-page.php:1012
+msgid "Vertical position"
+msgstr ""
+
+#: includes/widget-settings-page.php:1013
+msgid "Badge position at top or bottom of product"
+msgstr ""
+
+#: includes/widget-settings-page.php:1026
+msgid "Horizontal spacing"
+msgstr ""
+
+#: includes/widget-settings-page.php:1027
+msgid "Badge offset from right or left edge (same unit for all screens)"
+msgstr ""
+
+#: includes/widget-settings-page.php:1043
+msgid "Vertical spacing"
+msgstr ""
+
+#: includes/widget-settings-page.php:1044
+msgid "Badge offset from top or bottom edge (same unit for all screens)"
+msgstr ""
+
+#: includes/widget-settings-page.php:1068
+msgid "Badge background color"
+msgstr ""
+
+#: includes/widget-settings-page.php:1082
+msgid "Badge text color"
+msgstr ""
+
+#: includes/widget-settings-page.php:1097
+msgid "Badge corner radius (0 to 50 px)"
+msgstr ""
+
+#: includes/widget-settings-page.php:1118
+#: includes/widget-settings-page.php:1286
+#: includes/widget-settings-page.php:1622
+msgid "Font size"
+msgstr ""
+
+#: includes/widget-settings-page.php:1119
+msgid "Badge text font size (8 to 24 px)"
+msgstr ""
+
+#: includes/widget-settings-page.php:1132
+#: includes/widget-settings-page.php:1263
+#: includes/widget-settings-page.php:1635
+msgid "Font weight"
+msgstr ""
+
+#: includes/widget-settings-page.php:1133
+msgid "Badge text font weight"
+msgstr ""
+
+#: includes/widget-settings-page.php:1156
+msgid "Logo height"
+msgstr ""
+
+#: includes/widget-settings-page.php:1157
+msgid "Badge logo height (10 to 48 px)"
+msgstr ""
+
+#: includes/widget-settings-page.php:1176
+#: includes/widget-settings-page.php:1488
+msgid "Compatibility mode"
+msgstr ""
+
+#: includes/widget-settings-page.php:1177
+#: includes/widget-settings-page.php:1489
+msgid "Beta"
+msgstr ""
+
+#: includes/widget-settings-page.php:1178
+msgid "Enable only if the badge does not appear in your theme. Clear the cache after enabling."
+msgstr ""
+
+#: includes/widget-settings-page.php:1186
+msgid "Enable compatibility mode"
+msgstr ""
+
+#: includes/widget-settings-page.php:1193
+msgid "Badge preview"
+msgstr ""
+
+#: includes/widget-settings-page.php:1204
+msgid "Each installment 250,000 Toman"
+msgstr ""
+
+#: includes/widget-settings-page.php:1208
+#: includes/widget-settings-page.php:1530
+msgid "Sample product"
+msgstr ""
+
+#: includes/widget-settings-page.php:1209
+#: includes/widget-settings-page.php:1531
+msgid "1,000,000 Toman"
+msgstr ""
+
+#: includes/widget-settings-page.php:1225
+msgid "Bar glass background color and opacity (0 = fully transparent, 100 = fully opaque)"
+msgstr ""
+
+#: includes/widget-settings-page.php:1233
+msgid "Opacity:"
+msgstr ""
+
+#: includes/widget-settings-page.php:1245
+msgid "Marquee text color"
+msgstr ""
+
+#: includes/widget-settings-page.php:1287
+msgid "Marquee text font size (8–24 px)"
+msgstr ""
+
+#: includes/widget-settings-page.php:1300
+msgid "Icon size"
+msgstr ""
+
+#: includes/widget-settings-page.php:1301
+msgid "Marquee logo icon height (8–48 px)"
+msgstr ""
+
+#: includes/widget-settings-page.php:1315
+msgid "Dimension and position settings"
+msgstr ""
+
+#: includes/widget-settings-page.php:1321
+#: includes/widget-settings-page.php:1577
+msgid "Bar height"
+msgstr ""
+
+#: includes/widget-settings-page.php:1322
+msgid "Marquee bar height — px or percent of image height (%)"
+msgstr ""
+
+#: includes/widget-settings-page.php:1338
+msgid "Top-left corner radius"
+msgstr ""
+
+#: includes/widget-settings-page.php:1339
+msgid "Top-left bar corner radius in px"
+msgstr ""
+
+#: includes/widget-settings-page.php:1352
+msgid "Top-right corner radius"
+msgstr ""
+
+#: includes/widget-settings-page.php:1353
+msgid "Top-right bar corner radius in px"
+msgstr ""
+
+#: includes/widget-settings-page.php:1366
+msgid "Bottom-left corner radius"
+msgstr ""
+
+#: includes/widget-settings-page.php:1367
+msgid "Bottom-left bar corner radius in px"
+msgstr ""
+
+#: includes/widget-settings-page.php:1380
+msgid "Bottom-right corner radius"
+msgstr ""
+
+#: includes/widget-settings-page.php:1381
+msgid "Bottom-right bar corner radius in px"
+msgstr ""
+
+#: includes/widget-settings-page.php:1394
+msgid "Vertical text alignment"
+msgstr ""
+
+#: includes/widget-settings-page.php:1395
+msgid "Vertical alignment of text and icon in the bar — padding is applied toward the selected alignment"
+msgstr ""
+
+#: includes/widget-settings-page.php:1400
+msgid "Middle (default)"
+msgstr ""
+
+#: includes/widget-settings-page.php:1404
+msgid "Padding:"
+msgstr ""
+
+#: includes/widget-settings-page.php:1417
+#: includes/widget-settings-page.php:1799
+msgid "Bar position"
+msgstr ""
+
+#: includes/widget-settings-page.php:1418
+msgid "Bar position relative to image (top or bottom)"
+msgstr ""
+
+#: includes/widget-settings-page.php:1422
+msgid "Bottom of image"
+msgstr ""
+
+#: includes/widget-settings-page.php:1423
+msgid "Top of image"
+msgstr ""
+
+#: includes/widget-settings-page.php:1430
+msgid "Edge offset"
+msgstr ""
+
+#: includes/widget-settings-page.php:1431
+msgid "Bar offset from top or bottom of image (0 = flush with edge)"
+msgstr ""
+
+#: includes/widget-settings-page.php:1449
+msgid "Scroll settings"
+msgstr ""
+
+#: includes/widget-settings-page.php:1454
+msgid "Scroll speed"
+msgstr ""
+
+#: includes/widget-settings-page.php:1455
+msgid "Full scroll cycle duration in seconds (lower = faster)"
+msgstr ""
+
+#: includes/widget-settings-page.php:1463
+#: includes/widget-settings-page.php:1704
+msgid "seconds"
+msgstr ""
+
+#: includes/widget-settings-page.php:1469
+msgid "Bar z-order relative to other elements on the product image"
+msgstr ""
+
+#: includes/widget-settings-page.php:1490
+msgid "Enable only if the marquee does not appear in the correct place in your theme. The bar is then injected into the product image via JavaScript."
+msgstr ""
+
+#: includes/widget-settings-page.php:1494
+msgid "Enable this if the marquee does not appear in the correct place in your theme."
+msgstr ""
+
+#: includes/widget-settings-page.php:1501
+msgid "Marquee preview"
+msgstr ""
+
+#: includes/widget-settings-page.php:1546
+msgid "Placement mode"
+msgstr ""
+
+#: includes/widget-settings-page.php:1547
+msgid "Automatic: the bar is injected at the top of the body tag (sticky mode supported). Manual: a simple bar for shortcode display; your theme controls stickiness and position."
+msgstr ""
+
+#: includes/widget-settings-page.php:1547
+msgid "Top bar display location"
+msgstr ""
+
+#: includes/widget-settings-page.php:1553
+msgid "Automatic: inject at top of"
+msgstr ""
+
+#: includes/widget-settings-page.php:1553
+msgid "(default)"
+msgstr ""
+
+#: includes/widget-settings-page.php:1557
+msgid "Manual: shortcode only in theme header or page builder"
+msgstr ""
+
+#: includes/widget-settings-page.php:1565
+msgid "Using the top bar in the theme header"
+msgstr ""
+
+#: includes/widget-settings-page.php:1566
+msgid "To place the bar in the theme header, use the shortcode below in an Elementor header widget or any page builder that supports shortcodes:"
+msgstr ""
+
+#: includes/widget-settings-page.php:1568
+msgid "Place this shortcode at the top of the header area. The bar renders inline (without sticky mode and without changing html spacing) so you can control header stickiness, layering, and effects with your theme. Select manual mode above to disable automatic injection."
+msgstr ""
+
+#: includes/widget-settings-page.php:1571
+msgid "Dimension settings"
+msgstr ""
+
+#: includes/widget-settings-page.php:1578
+msgid "Top site bar height (20 to 80 px)"
+msgstr ""
+
+#: includes/widget-settings-page.php:1589
+msgid "Text area width"
+msgstr ""
+
+#: includes/widget-settings-page.php:1590
+msgid "Max width of rotating text area (100 to 1200 px)"
+msgstr ""
+
+#: includes/widget-settings-page.php:1602
+msgid "Logo size"
+msgstr ""
+
+#: includes/widget-settings-page.php:1603
+msgid "TorobPay logo height in bar (16 to 48 px)"
+msgstr ""
+
+#: includes/widget-settings-page.php:1623
+msgid "Bar text font size (10 to 24 px)"
+msgstr ""
+
+#: includes/widget-settings-page.php:1636
+msgid "Bar text font weight"
+msgstr ""
+
+#: includes/widget-settings-page.php:1659
+msgid "Animation settings"
+msgstr ""
+
+#: includes/widget-settings-page.php:1664
+msgid "Animation type"
+msgstr ""
+
+#: includes/widget-settings-page.php:1665
+msgid "Top bar rotating text display effect"
+msgstr ""
+
+#: includes/widget-settings-page.php:1665
+msgid "Top bar animation type"
+msgstr ""
+
+#: includes/widget-settings-page.php:1671
+msgid "Move slide up"
+msgstr ""
+
+#: includes/widget-settings-page.php:1672
+msgid "Move slide down"
+msgstr ""
+
+#: includes/widget-settings-page.php:1673
+msgid "Fade in"
+msgstr ""
+
+#: includes/widget-settings-page.php:1674
+msgid "3D rotate"
+msgstr ""
+
+#: includes/widget-settings-page.php:1676
+msgid "Focus (blur to sharp)"
+msgstr ""
+
+#: includes/widget-settings-page.php:1677
+msgid "Fern"
+msgstr ""
+
+#: includes/widget-settings-page.php:1678
+msgid "Side-to-side motion"
+msgstr ""
+
+#: includes/widget-settings-page.php:1689
+msgid "Custom sentence"
+msgstr ""
+
+#: includes/widget-settings-page.php:1690
+msgid "Adds a line after the built-in top bar messages, including the side-to-side animation."
+msgstr ""
+
+#: includes/widget-settings-page.php:1690
+msgid "Custom top bar sentence"
+msgstr ""
+
+#: includes/widget-settings-page.php:1694
+msgid "Optional. Shown after the built-in messages."
+msgstr ""
+
+#: includes/widget-settings-page.php:1699
+msgid "Rotation speed"
+msgstr ""
+
+#: includes/widget-settings-page.php:1700
+msgid "Full cycle duration for three rotating texts (2 to 20 seconds)"
+msgstr ""
+
+#: includes/widget-settings-page.php:1700
+msgid "Text rotation speed"
+msgstr ""
+
+#: includes/widget-settings-page.php:1710
+msgid "Dynamic graphic effect in the top bar background (payment-related icons). \"None\" keeps a plain background."
+msgstr ""
+
+#: includes/widget-settings-page.php:1710
+msgid "Top bar background animation"
+msgstr ""
+
+#: includes/widget-settings-page.php:1716
+msgid "None (plain)"
+msgstr ""
+
+#: includes/widget-settings-page.php:1717
+msgid "Perlin noise (floating icons with mask)"
+msgstr ""
+
+#: includes/widget-settings-page.php:1718
+msgid "Icon rain (mouse-reactive)"
+msgstr ""
+
+#: includes/widget-settings-page.php:1719
+msgid "Gentle float (floating icons)"
+msgstr ""
+
+#: includes/widget-settings-page.php:1720
+msgid "Aurora (soft light blobs)"
+msgstr ""
+
+#: includes/widget-settings-page.php:1727
+msgid "Payment-related icons move in the bar background. Automatically disabled for users who enable reduced motion in their browser or OS."
+msgstr ""
+
+#: includes/widget-settings-page.php:1732
+msgid "Icon density"
+msgstr ""
+
+#: includes/widget-settings-page.php:1733
+msgid "Number of icons shown in the background. Has no effect in Aurora mode."
+msgstr ""
+
+#: includes/widget-settings-page.php:1733
+msgid "Background icon density"
+msgstr ""
+
+#: includes/widget-settings-page.php:1742
+msgid "Very dense"
+msgstr ""
+
+#: includes/widget-settings-page.php:1753
+msgid "Motion speed"
+msgstr ""
+
+#: includes/widget-settings-page.php:1754
+msgid "Background icon motion speed (1 slow to 10 fast). Has no effect in Aurora mode."
+msgstr ""
+
+#: includes/widget-settings-page.php:1754
+msgid "Background motion speed"
+msgstr ""
+
+#: includes/widget-settings-page.php:1763
+msgid "Top bar background logo"
+msgstr ""
+
+#: includes/widget-settings-page.php:1793
+msgid "Behavior settings"
+msgstr ""
+
+#: includes/widget-settings-page.php:1794
+msgid "Applies only in automatic mode."
+msgstr ""
+
+#: includes/widget-settings-page.php:1800
+msgid "Normal: scrolls with the page. Sticky: like the WordPress admin bar, stays at the top and reserves space above the site."
+msgstr ""
+
+#: includes/widget-settings-page.php:1800
+msgid "Top bar position"
+msgstr ""
+
+#: includes/widget-settings-page.php:1806
+msgid "Normal (scrolls with the page)"
+msgstr ""
+
+#: includes/widget-settings-page.php:1807
+msgid "Sticky — like the WordPress admin bar"
+msgstr ""
+
+#: includes/widget-settings-page.php:1818
+#: includes/widget-settings-page.php:1819
+msgid "Top offset"
+msgstr ""
+
+#: includes/widget-settings-page.php:1819
+msgid "Extra offset from top of page, in addition to the WordPress admin bar (0 to 400 px)"
+msgstr ""
+
+#: includes/widget-settings-page.php:1828
+#: includes/widget-settings-page.php:1829
+msgid "Theme sticky header"
+msgstr ""
+
+#: includes/widget-settings-page.php:1829
+msgid "Optional: if your theme sticky menu overlaps the TorobPay bar, enter its CSS selector to position the bar lower."
+msgstr ""
+
+#: includes/widget-settings-page.php:1837
+msgid "Layer (z-index)"
+msgstr ""
+
+#: includes/widget-settings-page.php:1838
+msgid "Sticky bar z-index. If it overlaps WordPress admin submenus, set below 99999 (default: 9990)."
+msgstr ""
+
+#: includes/widget-settings-page.php:1838
+msgid "z-index layer"
+msgstr ""
+
+#: includes/widget-settings-page.php:1860
+msgid "Save settings"
+msgstr ""
+
+#: includes/widget-settings-page.php:1861
+msgid "Reset to defaults"
+msgstr ""
+
+#: includes/widget-settings-page.php:1861
+msgid "Are you sure you want to reset all element settings to their defaults?"
+msgstr ""
+
+#: support-page.php:54
+msgid "TorobPay support"
+msgstr ""
+
+#: support-page.php:63
+msgid "For support and guidance, contact us using the options below:"
+msgstr ""
+
+#: support-page.php:64
+msgid "Bale support"
+msgstr ""
+
+#: support-page.php:68
+msgid "Direct message on Bale"
+msgstr ""
+
+#: support-page.php:72
+msgid "Join Bale channel"
+msgstr ""
+
+#: support-page.php:80
+msgid "Useful links"
+msgstr ""
+
+#: support-page.php:85
+#: support-page.php:134
+msgid "TorobPay merchant panel"
+msgstr ""
+
+#: support-page.php:86
+msgid "Manage orders and track transactions"
+msgstr ""
+
+#: support-page.php:88
+msgid "Go to panel"
+msgstr ""
+
+#: support-page.php:92
+msgid "TorobPay website"
+msgstr ""
+
+#: support-page.php:93
+msgid "Official TorobPay page"
+msgstr ""
+
+#: support-page.php:95
+msgid "View website"
+msgstr ""
+
+#: support-page.php:104
+msgid "Frequently asked questions"
+msgstr ""
+
+#: support-page.php:109
+msgid "How do I use in-store selling?"
+msgstr ""
+
+#: support-page.php:113
+msgid "In-store selling lets a customer pay with TorobPay installments while they are in your shop. The Add in-store order button appears on TorobPay > Orders when TorobPay has enabled this feature for your store."
+msgstr ""
+
+#: support-page.php:115
+msgid "Open TorobPay > Orders and click \"Add in-store order\"."
+msgstr ""
+
+#: support-page.php:116
+msgid "Enter the customer's mobile number. The name is optional."
+msgstr ""
+
+#: support-page.php:117
+msgid "Add products by searching the name or SKU, or enter a total amount instead of products. A discount coupon can be used when you add products."
+msgstr ""
+
+#: support-page.php:118
+msgid "Click \"Create order\"."
+msgstr ""
+
+#: support-page.php:119
+msgid "Show the customer the QR code, or copy the payment link. TorobPay also sends the payment link by SMS; the QR code is a backup. The window waits until the customer pays."
+msgstr ""
+
+#: support-page.php:120
+msgid "If the payment is not completed, click \"Retry payment\" to show a new QR code."
+msgstr ""
+
+#: support-page.php:121
+msgid "You can show the QR again later from the orders list with \"Show payment QR\". In-store orders are marked \"In-store\"."
+msgstr ""
+
+#: support-page.php:128
+msgid "How do I know an order was successful?"
+msgstr ""
+
+#: support-page.php:132
+msgid "Open the order. If the order notes contain \"TorobPay: Transaction was successful.\", the order was registered successfully."
+msgstr ""
+
+#: support-page.php:134
+msgid "You can also check the order status in the"
+msgstr ""
+
+#: support-page.php:134
+msgid "."
+msgstr ""
+
+#: support-page.php:140
+msgid "How do I change items in an order?"
+msgstr ""
+
+#: support-page.php:146
+msgid "Edit and sync lets you change and sync registered order data with TorobPay. Do not change the entire order status to cancelled."
+msgstr ""
+
+#: support-page.php:149
+msgid "New method (recommended): use the edit and sync window"
+msgstr ""
+
+#: support-page.php:151
+msgid "Open the order page and click \"Edit and sync items\"."
+msgstr ""
+
+#: support-page.php:152
+msgid "In the window that opens, make your changes to order costs."
+msgstr ""
+
+#: support-page.php:153
+msgid "You can also remove or add items; to add a product, search by name, select it from results, and click +."
+msgstr ""
+
+#: support-page.php:154
+msgid "After changes, click \"Save and sync\". On success, the difference between the original and new order amount is refunded to the customer."
+msgstr ""
+
+#: support-page.php:156
+msgid "Edit/sync button on order page"
+msgstr ""
+
+#: support-page.php:157
+msgid "Order edit/sync window"
+msgstr ""
+
+#: support-page.php:158
+msgid "Confirm order sync"
+msgstr ""
+
+#: support-page.php:160
+msgid "Legacy method (still supported): change order status"
+msgstr ""
+
+#: support-page.php:162
+msgid "First set the order status to On hold."
+msgstr ""
+
+#: support-page.php:163
+msgid "Then change the desired product(s)."
+msgstr ""
+
+#: support-page.php:164
+msgid "Then set the order status to Processing or Completed."
+msgstr ""
+
+#: support-page.php:166
+msgid "After applying changes you should see the message below in order notes. If you get an error or do not see it, contact Telegram support."
+msgstr ""
+
+#: support-page.php:167
+msgid "Change TorobPay order"
+msgstr ""
+
+#: support-page.php:171
+msgid "Important:"
+msgstr ""
+
+#: support-page.php:171
+msgid "In both methods, only changes that reduce the total order amount can be synced. Otherwise your changes will not be recorded in TorobPay."
+msgstr ""
+
+#: support-page.php:178
+msgid "Where do I review TorobPay orders?"
+msgstr ""
+
+#: support-page.php:182
+msgid "From TorobPay > Orders in the menu, you can view TorobPay orders."
+msgstr ""
+
+#: support-page.php:189
+msgid "How do I cancel an order if I approve the cancellation?"
+msgstr ""
+
+#: support-page.php:193
+msgid "Open the order and click TorobPay refund, or set the order status to Cancelled or Refunded."
+msgstr ""
+
+#: support-page.php:194
+#: support-page.php:196
+msgid "TorobPay order refund"
+msgstr ""
+
+#: support-page.php:195
+msgid "Or from TorobPay > Orders click Refund. After cancellation you should see the message below in order notes. (Contact Telegram support if you see an error or the message does not appear.)"
+msgstr ""
+
+#: support-page.php:202
+msgid "How is the refund amount returned to the customer when an order is changed or cancelled?"
+msgstr ""
+
+#: support-page.php:206
+msgid "When an order is changed or cancelled, TorobPay refunds the amount to the customer within 48 hours."
+msgstr ""
+
+#: support-page.php:207
+msgid "Refunds must always be processed by TorobPay; the store must not pay the customer directly (even if part or all of the order was settled with the store)."
+msgstr ""
+
+#: torobpay-for-woocommerce.php:242
+msgid "HTTP Requests Manager is active. If TorobPay API calls are blocked, enable “Allow TorobPay API host in the HTTP Requests Manager plugin” under Advanced settings and save."
+msgstr ""
+
+#: assets/js/admin-gateway.js:94
+#: assets/js/admin-gateway.js:129
+msgid "Error"
+msgstr ""
+
+#: assets/js/admin-instore.js:23
+msgid "Enter an amount instead of adding products."
+msgstr ""
+
+#: assets/js/admin-instore.js:30
+msgid "Tax"
+msgstr ""
+
+#: assets/js/admin-instore.js:47
+msgid "Customer phone number"
+msgstr ""
+
+#: assets/js/admin-instore.js:52
+msgid "Total amount (optional)"
+msgstr ""
+
+#: assets/js/admin-instore.js:58
+msgid "Customer name (optional)"
+msgstr ""
+
+#: assets/js/admin-instore.js:62
+msgid "Discount coupon code"
+msgstr ""
+
+#: assets/js/admin-instore.js:70
+#: assets/js/admin-order-actions.js:247
+msgid "Qty"
+msgstr ""
+
+#: assets/js/admin-instore.js:71
+#: assets/js/admin-instore.js:94
+#: assets/js/admin-order-actions.js:248
+msgid "Total"
+msgstr ""
+
+#: assets/js/admin-instore.js:76
+#: assets/js/admin-instore.js:222
+msgid "No products added yet. Search below to add items, or enter a total amount instead."
+msgstr ""
+
+#: assets/js/admin-instore.js:82
+#: assets/js/admin-order-actions.js:255
+msgid "Search product (name or SKU)…"
+msgstr ""
+
+#: assets/js/admin-instore.js:83
+#: assets/js/admin-order-actions.js:256
+#: assets/js/admin-ui.js:256
+#: assets/js/admin-ui.js:278
+msgid "Add product"
+msgstr ""
+
+#: assets/js/admin-instore.js:101
+msgid "An SMS with the payment link has been sent to the customer. This QR code is a backup if they need another way to pay."
+msgstr ""
+
+#: assets/js/admin-instore.js:107
+msgid "Copy link"
+msgstr ""
+
+#: assets/js/admin-instore.js:112
+msgid "Create order"
+msgstr ""
+
+#: assets/js/admin-instore.js:113
+msgid "Retry payment"
+msgstr ""
+
+#: assets/js/admin-instore.js:199
+#: assets/js/admin-order-actions.js:134
+msgid "Server connection error."
+msgstr ""
+
+#: assets/js/admin-instore.js:389
+msgid "Payment unavailable"
+msgstr ""
+
+#: assets/js/admin-instore.js:400
+#: assets/js/admin-instore.js:769
+msgid "Payment not completed"
+msgstr ""
+
+#: assets/js/admin-instore.js:439
+#: assets/js/admin-instore.js:447
+#: assets/js/admin-instore.js:461
+msgid "Could not load the payment QR."
+msgstr ""
+
+#: assets/js/admin-instore.js:472
+msgid "Scan to pay"
+msgstr ""
+
+#: assets/js/admin-instore.js:473
+msgid "Order #"
+msgstr ""
+
+#: assets/js/admin-instore.js:534
+msgid "Could not preview totals."
+msgstr ""
+
+#: assets/js/admin-instore.js:590
+#: assets/js/admin-order-actions.js:488
+#: assets/js/admin-order-actions.js:648
+#: assets/js/admin-order-actions.js:813
+msgid "Remove"
+msgstr ""
+
+#: assets/js/admin-instore.js:644
+#: assets/js/admin-order-actions.js:535
+msgid "Searching..."
+msgstr ""
+
+#: assets/js/admin-instore.js:805
+#: assets/js/admin-instore.js:812
+msgid "Payment link copied."
+msgstr ""
+
+#: assets/js/admin-notification-center.js:132
+msgid "No notifications in this category."
+msgstr ""
+
+#: assets/js/admin-order-actions.js:20
+#: assets/js/admin-order-actions.js:1155
+msgid "Are you sure you want to refund this order?"
+msgstr ""
+
+#: assets/js/admin-order-actions.js:35
+#: assets/js/admin-order-actions.js:751
+#: assets/js/admin-order-actions.js:1171
+msgid "Payment status was not confirmed."
+msgstr ""
+
+#: assets/js/admin-order-actions.js:59
+#: assets/js/admin-order-actions.js:67
+msgid "Order refund failed. Please try again."
+msgstr ""
+
+#: assets/js/admin-order-actions.js:147
+msgid " (Blocked / unauthorized)"
+msgstr ""
+
+#: assets/js/admin-order-actions.js:150
+msgid " (Internal server error)"
+msgstr ""
+
+#: assets/js/admin-order-actions.js:153
+msgid " (Connection lost)"
+msgstr ""
+
+#. translators: 1: new order amount, 2: original order amount
+#: assets/js/admin-order-actions.js:221
+#, js-format
+msgid "New amount (%1$s) must be less than the original order amount (%2$s)."
+msgstr ""
+
+#: assets/js/admin-order-actions.js:231
+msgid "Edit order items "
+msgstr ""
+
+#: assets/js/admin-order-actions.js:238
+msgid "Resuming a previous incomplete edit; you can apply new changes or cancel."
+msgstr ""
+
+#: assets/js/admin-order-actions.js:246
+msgid "Unit price ("
+msgstr ""
+
+#: assets/js/admin-order-actions.js:263
+msgid "Discount ("
+msgstr ""
+
+#: assets/js/admin-order-actions.js:267
+msgid "Shipping ("
+msgstr ""
+
+#: assets/js/admin-order-actions.js:272
+msgid "Tax ("
+msgstr ""
+
+#: assets/js/admin-order-actions.js:272
+msgid "This order had no tax; it will stay tax-free."
+msgstr ""
+
+#: assets/js/admin-order-actions.js:276
+msgid "Original total ("
+msgstr ""
+
+#: assets/js/admin-order-actions.js:280
+msgid "New total ("
+msgstr ""
+
+#: assets/js/admin-order-actions.js:287
+msgid "Save and sync"
+msgstr ""
+
+#: assets/js/admin-order-actions.js:333
+#: assets/js/admin-order-actions.js:338
+msgid "Rial"
+msgstr ""
+
+#: assets/js/admin-order-actions.js:434
+msgid "Error calculating tax."
+msgstr ""
+
+#: assets/js/admin-order-actions.js:554
+msgid "Search error."
+msgstr ""
+
+#: assets/js/admin-order-actions.js:597
+msgid "Restoring order data..."
+msgstr ""
+
+#: assets/js/admin-order-actions.js:626
+msgid "Error reloading items."
+msgstr ""
+
+#: assets/js/admin-order-actions.js:718
+msgid "Error loading items."
+msgstr ""
+
+#: assets/js/admin-order-actions.js:797
+msgid "Restore"
+msgstr ""
+
+#: assets/js/admin-order-actions.js:827
+msgid "At least one item must remain in the order."
+msgstr ""
+
+#: assets/js/admin-order-actions.js:993
+msgid "Refund"
+msgstr ""
+
+#: assets/js/admin-order-actions.js:996
+msgid "Mark order as failed"
+msgstr ""
+
+#: assets/js/admin-order-actions.js:999
+msgid "Resume edit"
+msgstr ""
+
+#: assets/js/admin-order-actions.js:1002
+msgid "Dismiss warning"
+msgstr ""
+
+#: assets/js/admin-order-actions.js:1029
+#: assets/js/admin-order-actions.js:1045
+msgid "Could not update status."
+msgstr ""
+
+#: assets/js/admin-order-actions.js:1033
+msgid "Checking status with TorobPay…"
+msgstr ""
+
+#: assets/js/admin-order-actions.js:1050
+msgid "Status updated."
+msgstr ""
+
+#: assets/js/admin-order-actions.js:1057
+msgid "No mismatch found."
+msgstr ""
+
+#: assets/js/admin-order-actions.js:1074
+msgid "Status update failed."
+msgstr ""
+
+#: assets/js/admin-order-actions.js:1083
+msgid " — Order #"
+msgstr ""
+
+#: assets/js/admin-order-actions.js:1159
+msgid "Checking payment status…"
+msgstr ""
+
+#: assets/js/admin-order-actions.js:1174
+msgid "Submitting refund…"
+msgstr ""
+
+#: assets/js/admin-order-actions.js:1189
+#: assets/js/admin-order-actions.js:1194
+msgid "Order refund failed."
+msgstr ""
+
+#: assets/js/admin-order-actions.js:1209
+msgid "The order will be marked as \"Failed\". Continue?"
+msgstr ""
+
+#: assets/js/admin-order-actions.js:1213
+msgid "Marking as failed…"
+msgstr ""
+
+#: assets/js/admin-order-actions.js:1224
+#: assets/js/admin-order-actions.js:1273
+msgid "Done."
+msgstr ""
+
+#: assets/js/admin-order-actions.js:1228
+msgid "Status change failed."
+msgstr ""
+
+#: assets/js/admin-order-actions.js:1233
+msgid "Status change failed. Please try again."
+msgstr ""
+
+#: assets/js/admin-order-actions.js:1247
+msgid "The \"Resume edit\" button was not found on this page. Open the order page and continue editing from there."
+msgstr ""
+
+#: assets/js/admin-order-actions.js:1262
+msgid "Dismissing warning…"
+msgstr ""
+
+#: assets/js/admin-order-actions.js:1277
+msgid "Failed."
+msgstr ""
+
+#: assets/js/admin-order-actions.js:1282
+msgid "Error. Please try again."
+msgstr ""
+
+#: assets/js/admin-orders-table.js:112
+msgid "Please select at least one order."
+msgstr ""
+
+#. translators: %d: number of selected products
+#: assets/js/admin-ui.js:259
+#, js-format
+msgid "Add %d selected products"
+msgstr ""
+
+#: assets/js/admin-ui.js:303
+msgid "No products found."
+msgstr ""
+
+#: assets/js/admin-ui.js:496
+msgid "Keyboard shortcuts"
+msgstr ""
+
+#: assets/js/admin-ui.js:507
+msgid "Move highlight"
+msgstr ""
+
+#: assets/js/admin-ui.js:508
+msgid "Check or uncheck"
+msgstr ""
+
+#: assets/js/admin-ui.js:509
+msgid "Add highlighted product"
+msgstr ""
+
+#: assets/js/admin-ui.js:510
+msgid "Add checked products"
+msgstr ""
+
+#: assets/js/admin-ui.js:511
+msgid "Check all results"
+msgstr ""
+
+#: assets/js/admin-ui.js:512
+msgid "Close the list"
+msgstr ""
+
+#: assets/js/admin-ui.js:513
+msgid "Go to add when items are checked"
+msgstr ""
+
+#: assets/js/blocks/torobpay-blocks.js:75
+msgid "Mobile number is required."
+msgstr ""
+
+#: assets/js/blocks/torobpay-blocks.js:83
+msgid "Postal code is required."
+msgstr ""
+
+#: assets/js/pdp-promo.js:95
+msgid "Copied"
+msgstr ""
+
+#: assets/js/torobpay-slider-admin.js:86
+#: assets/js/widget-settings.js:1447
+msgid "Select background logo"
+msgstr ""
+
+#: assets/js/torobpay-slider-admin.js:87
+#: assets/js/widget-settings.js:1448
+msgid "Use this logo"
+msgstr ""
+
+#: assets/js/torobpay-slider-admin.js:95
+#: assets/js/widget-settings.js:1455
+msgid "Only PNG or SVG files are allowed."
+msgstr ""
+
+#: assets/js/torobpay-slider-admin.js:489
+#: assets/js/torobpay-slider-admin.js:753
+msgid "Location "
+msgstr ""
+
+#: assets/js/torobpay-slider-admin.js:799
+#: assets/js/torobpay-slider-admin.js:800
+msgid "Stop preview"
+msgstr ""
+
+#: assets/js/torobpay-slider-admin.js:992
+msgid "Buy in installments from "
+msgstr ""
+
+#: assets/js/torobpay-slider-admin.js:992
+msgid " with TorobPay"
+msgstr ""
+
+#: assets/js/torobpay-slider-admin.js:1004
+msgid "Clear name"
+msgstr ""
+
+#: assets/js/torobpay-slider-admin.js:1342
+msgid "At least one display location must remain."
+msgstr ""
+
+#: assets/js/torobpay-slider-admin.js:1460
+msgid "Automatic copy failed — select the text manually."
+msgstr ""
+
+#: assets/js/widget-settings.js:490
+msgid "This CSS applies on all screen sizes."
+msgstr ""
+
+#: assets/js/widget-settings.js:493
+#: assets/js/widget-settings.js:496
+msgid "Applies only on screens smaller than "
+msgstr ""
+
+#: assets/js/widget-settings.js:493
+#: assets/js/widget-settings.js:496
+msgid "px."
+msgstr ""
+
+#: assets/js/widget-settings.js:1298
+msgid "Saving…"
+msgstr ""
+
+#: assets/js/widget-settings.js:1324
+msgid "✓ Saved"
+msgstr ""
+
+#: assets/js/widget-settings.js:1327
+msgid "Error saving"
+msgstr ""
+
+#: assets/js/widget-settings.js:1339
+msgid "Connection error"
+msgstr ""
+
+#: assets/js/widget-settings.js:1389
+msgid "Showing the widget, badge, and marquee informs shoppers about fee-free installment payments and can improve conversion."
+msgstr ""

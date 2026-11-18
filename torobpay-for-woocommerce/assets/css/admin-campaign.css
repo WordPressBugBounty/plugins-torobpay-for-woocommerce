@@ -1,0 +1,527 @@
+/**
+ * Campaign participation page.
+ *
+ * Invite (disabled) and status (enabled) layouts for TorobPay → Join campaign.
+ */
+
+.trb-campaign-page {
+	--trb-campaign-green: #2e8e20;
+	--trb-campaign-green-hover: #267a1b;
+	--trb-campaign-green-soft: #eef9ea;
+	--trb-campaign-green-line: #d8edd4;
+	--trb-campaign-text: #1d2327;
+	--trb-campaign-muted: #646970;
+	--trb-campaign-line: #e6e7e9;
+	--trb-campaign-radius: 16px;
+	--trb-campaign-shadow: 0 4px 18px rgba(16, 24, 40, 0.08);
+	max-width: 800px;
+	margin-top: 8px;
+}
+
+.trb-campaign-page.is-enabled {
+	max-width: 640px;
+}
+
+.trb-campaign-page .wp-heading-inline {
+	display: block;
+	margin-bottom: 16px;
+	font-size: 22px;
+	font-weight: 700;
+}
+
+.trb-campaign-card {
+	background: #fff;
+	border: 1px solid var(--trb-campaign-line);
+	border-radius: var(--trb-campaign-radius);
+	box-shadow: none;
+	box-sizing: border-box;
+}
+
+.trb-campaign-page .dashicons {
+	width: 35px;
+	height: 35px;
+	font-size: 35px;
+	line-height: 1;
+	flex-shrink: 0;
+	color: var(--trb-campaign-green);
+}
+
+.trb-campaign-active {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+/* ── Invite ── */
+
+.trb-campaign-invite {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	padding: 24px 28px 28px;
+}
+
+.trb-campaign-invite-row--main {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	padding: 16px 18px 18px;
+	background: #f5f7f3;
+	border-radius: 12px;
+	box-shadow: none;
+}
+
+.trb-campaign-hero {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px;
+}
+
+.rtl .trb-campaign-hero {
+	flex-direction: row-reverse;
+}
+
+.trb-campaign-hero-copy {
+	text-align: center;
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.trb-campaign-hero-title {
+	margin: 0 0 12px;
+	padding: 0;
+	border: 0;
+	font-size: 26px;
+	font-weight: 800 !important;
+	line-height: 1.4;
+	color: var(--trb-campaign-text);
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.trb-campaign-hero-accent {
+	color: var(--trb-campaign-green);
+}
+
+.trb-campaign-hero-lead {
+	margin: 0;
+	color: var(--trb-campaign-muted);
+	font-size: 13px;
+	line-height: 1.85;
+}
+
+.trb-campaign-hero-art {
+	flex: 0 0 280px;
+	width: 280px;
+	max-width: 44%;
+	height: auto;
+	display: block;
+	object-fit: contain;
+}
+
+.trb-campaign-features {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 0;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	background: #fff;
+	border: 1px solid #f0f1f2;
+	border-radius: 12px;
+	box-shadow: var(--trb-campaign-shadow);
+}
+
+.trb-campaign-feature {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	margin: 0;
+	padding: 0 16px;
+	border-inline-end: 1px solid var(--trb-campaign-line);
+	color: var(--trb-campaign-text);
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.45;
+}
+
+ul.trb-campaign-features {
+	padding: 20px;
+}
+
+.trb-campaign-feature span {
+	white-space: pre-line;
+	line-height: 1.7;
+}
+
+.trb-campaign-feature:nth-child(1) {
+	justify-content: left;
+	text-align: left;
+}
+
+.trb-campaign-feature:nth-child(2) {
+	justify-content: center;
+	text-align: center;
+}
+
+.trb-campaign-feature:nth-child(3) {
+	justify-content: right;
+	text-align: right;
+}
+
+.trb-campaign-feature:last-child {
+	border-inline-end: 0;
+}
+
+.trb-campaign-activate-form {
+	display: flex;
+	justify-content: center;
+	margin: 0;
+	padding: 4px 0;
+}
+
+.trb-campaign-page .trb-campaign-activate {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	min-height: 44px;
+	padding: 10px 28px;
+	border: 0 !important;
+	border-radius: 10px;
+	background: var(--trb-campaign-green) !important;
+	color: #fff !important;
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 1.2;
+	cursor: pointer;
+	box-shadow: none !important;
+	text-decoration: none;
+	text-shadow: none;
+}
+
+.trb-campaign-page .trb-campaign-activate .dashicons {
+	width: 18px;
+	height: 18px;
+	font-size: 18px;
+	color: #fff;
+}
+
+.trb-campaign-page .trb-campaign-activate:hover,
+.trb-campaign-page .trb-campaign-activate:focus {
+	background: var(--trb-campaign-green-hover) !important;
+	color: #fff !important;
+}
+
+.trb-campaign-page .trb-campaign-activate:focus {
+	outline: 2px solid var(--trb-campaign-green);
+	outline-offset: 2px;
+}
+
+.trb-campaign-page .trb-campaign-activate:disabled {
+	opacity: 0.55;
+	cursor: not-allowed;
+}
+
+.trb-campaign-privacy {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+	padding: 14px 18px;
+	background: #f6f7f7;
+	border: 1px solid var(--trb-campaign-line);
+	border-radius: 12px;
+	box-shadow: none;
+	color: var(--trb-campaign-muted);
+}
+
+.trb-campaign-privacy .dashicons {
+	width: 35px;
+	height: 35px;
+	font-size: 35px;
+	margin-top: auto;
+	margin-bottom: auto;
+	color: #8c8f94;
+}
+
+.trb-campaign-privacy p {
+	margin: 0;
+	font-size: 12px;
+	line-height: 1.8;
+}
+
+/* ── Active ── */
+
+.trb-campaign-card-head {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 18px 20px 8px;
+}
+
+.trb-campaign-card-head h2 {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 15px;
+	font-weight: 700;
+	line-height: 1.4;
+	color: var(--trb-campaign-text);
+}
+
+.trb-campaign-card-icon .dashicons {
+	width: 22px;
+	height: 22px;
+	font-size: 22px;
+}
+
+.trb-campaign-active-form {
+	margin: 0;
+	padding: 0 20px;
+}
+
+.trb-campaign-active-banner {
+	margin: 8px 0 4px;
+	padding: 14px 16px 16px;
+	background: var(--trb-campaign-green-soft);
+	border: 1px solid var(--trb-campaign-green-line);
+	border-radius: 12px;
+	box-shadow: none;
+}
+
+.trb-campaign-active-banner-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+}
+
+.trb-campaign-active-banner-row strong {
+	color: var(--trb-campaign-green);
+	font-size: 14px;
+	font-weight: 700;
+}
+
+.trb-campaign-active-banner p {
+	margin: 8px 0 0;
+	color: var(--trb-campaign-text);
+	font-size: 13px;
+	line-height: 1.8;
+	font-weight: 400;
+}
+
+.trb-campaign-page .trb-campaign-switch {
+	position: relative;
+	width: 44px;
+	height: 24px;
+	padding: 0;
+	border: 0 !important;
+	border-radius: 999px;
+	background: var(--trb-campaign-green) !important;
+	cursor: pointer;
+	flex-shrink: 0;
+	box-shadow: none !important;
+}
+
+.trb-campaign-page .trb-campaign-switch:focus {
+	outline: 2px solid var(--trb-campaign-green);
+	outline-offset: 2px;
+}
+
+.trb-campaign-switch-thumb {
+	position: absolute;
+	top: 3px;
+	inset-inline-end: 3px;
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	background: #fff;
+}
+
+.trb-campaign-meta {
+	padding: 4px 20px 8px;
+}
+
+.trb-campaign-meta-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 14px 0;
+	border-bottom: 1px solid var(--trb-campaign-line);
+}
+
+.trb-campaign-meta-row:last-child {
+	border-bottom: 0;
+}
+
+.trb-campaign-meta-label {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	color: var(--trb-campaign-text);
+	font-size: 13px;
+}
+
+.trb-campaign-meta-label .dashicons {
+	width: 18px;
+	height: 18px;
+	font-size: 18px;
+	color: #8c8f94;
+}
+
+.trb-campaign-meta-value {
+	color: var(--trb-campaign-muted);
+	font-size: 13px;
+	font-weight: 500;
+	text-align: end;
+	white-space: nowrap;
+}
+
+.trb-campaign-card-lead {
+	margin: 0;
+	padding: 0 20px 12px;
+	color: var(--trb-campaign-muted);
+	font-size: 13px;
+	line-height: 1.8;
+}
+
+.trb-campaign-empty {
+	margin: 0 20px 20px;
+	padding: 16px;
+	background: #f6f7f7;
+	border-radius: 10px;
+	color: var(--trb-campaign-muted);
+	font-size: 13px;
+}
+
+.trb-campaign-empty--error {
+	background: #fcf0f1;
+	color: var(--trb-campaign-text);
+}
+
+.trb-campaign-downloads {
+	list-style: none;
+	margin: 0 20px 20px;
+	padding: 4px 12px;
+	border: 1px solid var(--trb-campaign-line);
+	border-radius: 12px;
+	box-shadow: none;
+}
+
+.trb-campaign-download-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 12px 4px;
+	border-bottom: 1px solid var(--trb-campaign-line);
+}
+
+.trb-campaign-download-row:last-child {
+	border-bottom: 0;
+}
+
+.trb-campaign-page .trb-campaign-download-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 6px 12px;
+	border: 1px solid var(--trb-campaign-green);
+	border-radius: 8px;
+	background: #fff;
+	color: var(--trb-campaign-green);
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.3;
+	text-decoration: none;
+	box-shadow: none;
+}
+
+.trb-campaign-page .trb-campaign-download-btn .dashicons {
+	width: 16px;
+	height: 16px;
+	font-size: 16px;
+}
+
+.trb-campaign-page .trb-campaign-download-btn:hover,
+.trb-campaign-page .trb-campaign-download-btn:focus {
+	background: var(--trb-campaign-green-soft);
+	color: var(--trb-campaign-green-hover);
+	border-color: var(--trb-campaign-green-hover);
+}
+
+.trb-campaign-download-date {
+	color: var(--trb-campaign-muted);
+	font-size: 13px;
+	white-space: nowrap;
+}
+
+.trb-campaign-processing {
+	color: var(--trb-campaign-muted);
+	font-size: 13px;
+	font-style: italic;
+}
+
+@media screen and (max-width: 782px) {
+	.trb-campaign-invite {
+		padding: 16px;
+		gap: 16px;
+	}
+
+	.trb-campaign-hero,
+	.rtl .trb-campaign-hero {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.trb-campaign-hero-title {
+		font-size: 22px;
+	}
+
+	.trb-campaign-hero-art {
+		width: min(240px, 70%);
+		max-width: 240px;
+		flex-basis: auto;
+		margin-inline: auto;
+	}
+
+	.trb-campaign-features,
+	ul.trb-campaign-features {
+		grid-template-columns: 1fr;
+		padding: 4px 16px;
+	}
+
+	.trb-campaign-feature,
+	.trb-campaign-feature:nth-child(1),
+	.trb-campaign-feature:nth-child(2),
+	.trb-campaign-feature:nth-child(3) {
+		justify-content: flex-start;
+		text-align: start;
+		gap: 12px;
+		padding: 14px 0;
+		border-inline-end: 0;
+		border-bottom: 1px solid var(--trb-campaign-line);
+	}
+
+	.trb-campaign-feature:last-child {
+		border-bottom: 0;
+	}
+
+	.trb-campaign-card-head,
+	.trb-campaign-card-lead,
+	.trb-campaign-active-form,
+	.trb-campaign-meta {
+		padding-inline: 16px;
+	}
+
+	.trb-campaign-downloads {
+		margin-inline: 16px;
+	}
+
+	.trb-campaign-download-row {
+		flex-wrap: wrap;
+	}
+}

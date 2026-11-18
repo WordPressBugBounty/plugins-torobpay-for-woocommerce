@@ -1,0 +1,742 @@
+.torobpay-widget {
+    /* Base styles - colors and dimensions will be set via inline CSS from admin settings */
+    --torobpay-widget-bg: #ffffff;
+    --torobpay-widget-border: #ebecf2;
+    --torobpay-widget-text: #1a1c23;
+    --torobpay-widget-accent: #9CE76A;
+    --torobpay-widget-accent-dark: #003D01;
+    --torobpay-widget-radius: 16px;
+    --torobpay-widget-border-width: 1px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    margin: 10px 0;
+    transition: opacity 200ms ease-in-out, box-shadow 150ms ease-in-out, transform 150ms ease-in-out;
+    border-style: solid;
+    /* Default fallback styles (will be overridden by inline CSS) */
+    border-radius: 16px;
+    border: 1px solid var(--torobpay-widget-border);
+    background-color: var(--torobpay-widget-bg);
+    color: var(--torobpay-widget-text);
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    box-sizing: border-box;
+}
+
+.torobpay-widget:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);
+    transform: translateY(-1px);
+}
+
+.torobpay-widget:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* --- Layout presets ----------------------------------------------------- */
+
+/* classic: default row (logo start, text end) — no extra rules needed */
+
+.torobpay-widget--mint {
+    padding-inline-start: 20px;
+    overflow: hidden;
+}
+
+.torobpay-widget--mint::before {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: 5px;
+    background: linear-gradient(180deg, var(--torobpay-widget-accent) 0%, var(--torobpay-widget-accent-dark) 100%);
+    pointer-events: none;
+}
+
+.torobpay-widget--mint .torobpay-widget-title {
+    letter-spacing: -0.2px;
+}
+
+.torobpay-widget--stacked {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    padding: 20px 16px;
+}
+
+.torobpay-widget--stacked .torobpay-widget-media {
+    order: 0;
+}
+
+.torobpay-widget--stacked .torobpay-widget-content {
+    order: 1;
+    width: 100%;
+}
+
+.torobpay-widget--stacked .torobpay-widget-image {
+    width: 72px;
+}
+
+.torobpay-widget--stacked .torobpay-widget-title {
+    margin-bottom: 4px;
+}
+
+.torobpay-widget--compact {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    align-items: center;
+    column-gap: 8px;
+    row-gap: 0;
+    padding: 8px 14px 8px 10px;
+    width: auto;
+    max-width: 100%;
+}
+
+.torobpay-widget--compact .torobpay-widget-media {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    align-self: center;
+}
+
+.torobpay-widget--compact .torobpay-widget-content {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+}
+
+.torobpay-widget--compact .torobpay-widget-image {
+    width: 36px;
+    border-radius: 10px;
+}
+
+.torobpay-widget--compact .torobpay-widget-title {
+    line-height: 140%;
+    margin-bottom: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.torobpay-widget--compact .torobpay-widget-description {
+    line-height: 140%;
+    opacity: 0.85;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.torobpay-widget--compact .torobpay-widget-media.torobpay-logo-light-sweep {
+    border-radius: 10px;
+}
+
+.torobpay-widget-promo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 8px;
+    width: 100%;
+    margin: 8px 0 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: start;
+    cursor: pointer;
+    line-height: 1.4;
+}
+
+.torobpay-widget-promo:hover .torobpay-widget-promo-code,
+.torobpay-widget-promo:focus-visible .torobpay-widget-promo-code {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.torobpay-widget-promo:focus-visible {
+    outline: 2px solid var(--torobpay-widget-accent-dark);
+    outline-offset: 2px;
+    border-radius: 6px;
+}
+
+.torobpay-widget-promo-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--torobpay-widget-text);
+}
+
+.torobpay-widget-promo-code {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 4px 11px 4px 8px;
+    border: 0;
+    border-radius: 4px;
+    background-color: var(--torobpay-widget-accent);
+    background-image:
+        radial-gradient(circle at 0 50%, var(--torobpay-widget-bg) 4.5px, transparent 4.75px),
+        radial-gradient(circle at 100% 50%, var(--torobpay-widget-bg) 4.5px, transparent 4.75px),
+        repeating-linear-gradient(
+            to bottom,
+            rgba(0, 61, 1, 0.38) 0 1.5px,
+            transparent 1.5px 3.5px
+        );
+    background-size: auto, auto, 1px calc(100% - 6px);
+    background-position: 0 50%, 100% 50%, 24px 50%;
+    background-repeat: no-repeat;
+    color: var(--torobpay-widget-accent-dark);
+    box-shadow: none;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 12px;
+    font-weight: 700;
+    font-style: normal;
+    letter-spacing: 0.04em;
+    line-height: 1.25;
+    direction: ltr;
+    unicode-bidi: isolate;
+    vertical-align: middle;
+}
+
+.torobpay-widget-promo-code::before {
+    content: '%';
+    flex-shrink: 0;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0;
+}
+
+.torobpay-widget--compact.has-torobpay-promo {
+    grid-template-rows: auto auto auto;
+}
+
+.torobpay-widget--compact .torobpay-widget-promo {
+    grid-column: 1 / -1;
+    margin-top: 6px;
+}
+
+.torobpay-widget--compact .torobpay-widget-promo-label,
+.torobpay-widget--compact .torobpay-widget-promo-code {
+    white-space: nowrap;
+}
+
+.torobpay-widget--compact .torobpay-widget-promo-code {
+    border: 1px solid var(--torobpay-widget-accent-dark);
+}
+
+.torobpay-widget--stacked .torobpay-widget-promo {
+    justify-content: center;
+}
+
+/* Discount marquee: scrolling bar along the bottom of the widget. */
+.torobpay-widget.torobpay-promo-marquee {
+    /* Clip to the inner corner (radius minus border width) so a thick stroke does not leave a gap.
+       clip (after hidden) also clips transformed descendants; older browsers keep hidden. */
+    overflow: hidden;
+    overflow: clip;
+    padding-bottom: 42px;
+}
+
+.torobpay-widget--compact.torobpay-promo-marquee {
+    grid-template-rows: auto auto;
+    padding-bottom: 34px;
+}
+
+.torobpay-widget--stacked.torobpay-promo-marquee {
+    padding-bottom: 46px;
+}
+
+/* Side accent moves to the top so it does not meet the bottom bar. */
+.torobpay-widget--mint.torobpay-promo-marquee {
+    padding-inline-start: 16px;
+}
+
+.torobpay-widget--mint.torobpay-promo-marquee::before {
+    inset: 0 0 auto 0;
+    width: auto;
+    height: 5px;
+    background: linear-gradient(90deg, var(--torobpay-widget-accent) 0%, var(--torobpay-widget-accent-dark) 100%);
+}
+
+/* Shell fills the padding box. The widget clips it to the inner corner radius. */
+.torobpay-widget-promo--marquee {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: block;
+    width: auto;
+    margin: 0;
+    overflow: hidden;
+    color: var(--torobpay-widget-accent-dark);
+    border-radius: 0;
+    line-height: 26px;
+    direction: ltr;
+    pointer-events: none;
+}
+
+.torobpay-widget-promo--marquee:focus-visible {
+    outline: none;
+}
+
+.torobpay-widget--compact .torobpay-widget-promo--marquee {
+    grid-column: auto;
+    grid-row: auto;
+    margin: 0;
+}
+
+.torobpay-widget-promo-track {
+    --torobpay-promo-inner-radius: max(0px, calc(var(--torobpay-widget-radius, 16px) - var(--torobpay-widget-border-width, 1px)));
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    display: flex;
+    align-items: stretch;
+    height: 26px;
+    background: var(--torobpay-widget-accent);
+    pointer-events: auto;
+    /* The bar paints its own bottom curve. Hover translates the widget, and that
+       layer can stop the widget's overflow from clipping this bar to the radius. */
+    overflow: hidden;
+    overflow: clip;
+    border-end-start-radius: var(--torobpay-promo-inner-radius);
+    border-end-end-radius: var(--torobpay-promo-inner-radius);
+    clip-path: inset(0 round 0 0 var(--torobpay-promo-inner-radius) var(--torobpay-promo-inner-radius));
+}
+
+.torobpay-widget-promo-set {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: space-around;
+    min-width: 100%;
+    height: 100%;
+    animation: torobpay-promo-marquee-scroll 16s linear infinite;
+}
+
+.torobpay-widget-promo--marquee .torobpay-widget-promo-item {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 20px;
+    height: 100%;
+    padding-inline: 10px;
+    white-space: nowrap;
+    direction: rtl;
+}
+
+.torobpay-widget-promo--marquee .torobpay-widget-promo-item::before {
+    content: '•';
+    opacity: 0.45;
+}
+
+.torobpay-widget-promo--marquee .torobpay-widget-promo-label {
+    color: var(--torobpay-widget-accent-dark);
+    font-weight: 700;
+}
+
+.torobpay-widget-promo--marquee .torobpay-widget-promo-code {
+    gap: 3px;
+    height: 16px;
+    padding: 1px 6px 1px 5px;
+    border: 0;
+    border-radius: 4px;
+    background: var(--torobpay-widget-accent-dark);
+    background-image: none;
+    color: var(--torobpay-widget-accent);
+    box-shadow: none;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    line-height: 14px;
+}
+
+.torobpay-widget-promo--marquee .torobpay-widget-promo-code::before {
+    color: var(--torobpay-widget-accent);
+    font-size: 11px;
+    opacity: 0.85;
+}
+
+.torobpay-widget-promo--marquee:hover .torobpay-widget-promo-code,
+.torobpay-widget-promo--marquee:focus-visible .torobpay-widget-promo-code {
+    box-shadow: none;
+}
+
+.torobpay-widget:hover .torobpay-widget-promo-set,
+.torobpay-widget-promo--marquee:focus-visible .torobpay-widget-promo-set {
+    animation-play-state: paused;
+}
+
+.torobpay-widget-promo--marquee:focus-visible .torobpay-widget-promo-track {
+    box-shadow: inset 0 0 0 2px var(--torobpay-widget-accent-dark);
+}
+
+@keyframes torobpay-promo-marquee-scroll {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .torobpay-widget-promo-set {
+        animation: none !important;
+        justify-content: center;
+    }
+
+    .torobpay-widget-promo-set[aria-hidden="true"],
+    .torobpay-widget-promo--marquee .torobpay-widget-promo-item[aria-hidden="true"] {
+        display: none;
+    }
+}
+
+@keyframes torobpay-shake {
+    0%, 100% { transform: translateX(0); }
+    20%       { transform: translateX(-6px); }
+    40%       { transform: translateX(6px); }
+    60%       { transform: translateX(-4px); }
+    80%       { transform: translateX(4px); }
+}
+
+.torobpay-widget-highlight {
+    animation: torobpay-shake 0.45s ease-in-out;
+    outline: 2px solid #ff6b35;
+    outline-offset: 2px;
+}
+
+.torobpay-widget-image {
+    width: 60px;
+    height: auto;
+    border-radius: 15px;
+    display: block;
+}
+
+.torobpay-widget-media { display: flex; align-items: center; }
+
+.torobpay-widget-content {
+    /* Default text color (will be overridden by inline CSS from admin settings) */
+    color: #1a1c23;
+}
+
+.torobpay-widget-title {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 180%;
+    margin-bottom: 2px;
+}
+
+.torobpay-widget-description {
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 180%;
+    letter-spacing: -0.36px;
+}
+
+/* Container transition and loading state */
+#torobpay-variation-widget-container {
+    opacity: 1;
+    transition: opacity 200ms ease-in-out;
+}
+
+#torobpay-variation-widget-container.torobpay-loading,
+.torobpay-widget.torobpay-loading {
+    opacity: 0.5;
+    pointer-events: none;
+}
+/* Logo animation keyframes */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes wobble {
+    0%, 100% {
+        transform: translateX(0%);
+    }
+    15% {
+        transform: translateX(-25%) rotate(-5deg);
+    }
+    30% {
+        transform: translateX(20%) rotate(3deg);
+    }
+    45% {
+        transform: translateX(-15%) rotate(-3deg);
+    }
+    60% {
+        transform: translateX(10%) rotate(2deg);
+    }
+    75% {
+        transform: translateX(-5%) rotate(-1deg);
+    }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-15px);
+    }
+    60% {
+        transform: translateY(-7px);
+    }
+}
+
+@keyframes ping {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(156, 231, 106, 0.45);
+    }
+    70% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 18px rgba(156, 231, 106, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(156, 231, 106, 0);
+    }
+}
+
+/* Animation classes */
+.torobpay-logo-pulse {
+    animation: pulse 1s ease-in-out infinite;
+}
+
+.torobpay-logo-wobble {
+    animation: wobble 1.2s ease-in-out infinite;
+}
+
+.torobpay-logo-bounce {
+    animation: bounce 1.2s ease-in-out infinite;
+}
+
+.torobpay-logo-ping {
+    animation: ping 1.6s ease-out infinite;
+}
+
+.torobpay-widget-media.torobpay-logo-light-sweep {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+}
+
+.torobpay-widget-media.torobpay-logo-light-sweep::after {
+    content: '';
+    position: absolute;
+    top: -35%;
+    left: 0;
+    width: 60%;
+    height: 170%;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.75) 50%, rgba(255, 255, 255, 0) 100%);
+    transform: translateX(0) rotate(25deg);
+    opacity: 0;
+    pointer-events: none;
+    animation: torobpay-light-sweep 1.8s ease-in-out infinite;
+}
+
+.torobpay-widget-status-indicator {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 18px;
+    height: 18px;
+    pointer-events: none;
+}
+
+.torobpay-widget-status-indicator .torobpay-status-heartbeat,
+.torobpay-widget-status-indicator .torobpay-status-dot {
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+}
+
+.torobpay-widget-status-indicator .torobpay-status-dot {
+    background: #9ce76a;
+}
+
+.torobpay-widget-status-indicator .torobpay-status-heartbeat {
+    background: #9ce76a;
+    opacity: 0.7;
+    animation: torobpay-status-ping 1.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes torobpay-status-ping {
+    0% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+    75% {
+        transform: scale(2.1);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(2.3);
+        opacity: 0;
+    }
+}
+
+@keyframes torobpay-light-sweep {
+    0% {
+        transform: translateX(-120%) rotate(25deg);
+        opacity: 0;
+    }
+    30% {
+        opacity: 0.85;
+    }
+    60% {
+        transform: translateX(160%) rotate(25deg);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(160%) rotate(25deg);
+        opacity: 0;
+    }
+}
+
+/* Ensure product containers and WoodMart columns anchor the badge per item */
+.products .product,
+li.product,
+.wc-block-grid__product,
+.wp-block-post,
+.xts-products .xts-col {
+    position: relative !important;
+}
+
+.torobpay-product-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 99;
+    direction: rtl;
+    margin: 0;
+    pointer-events: none;
+}
+
+/* Re-enable pointer events on the inner element for hover effects */
+.torobpay-product-badge-inner {
+    pointer-events: auto;
+}
+
+.torobpay-product-badge-inner {
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    padding: 0;
+    border: 1px solid #9ce76a;
+    border-radius: 999px;
+    background-color: #ffffff;
+    transition: padding 300ms ease, box-shadow 300ms ease;
+    overflow: hidden;
+}
+
+.torobpay-product-badge-icon {
+    width: auto !important;
+    height: 24px !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+    display: block !important;
+    transition: transform 300ms ease;
+    /* Prevent theme overrides */
+    max-width: none !important;
+    min-width: 0 !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    object-fit: contain !important;
+}
+
+.torobpay-product-badge-text {
+    max-width: 0;
+    opacity: 0;
+    margin-left: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: max-width 300ms ease, opacity 300ms ease, margin-left 300ms ease, margin-right 300ms ease;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* wc_price() wraps figures in .amount; themes like Woodmart style that class globally. */
+.torobpay-product-badge .amount,
+.torobpay-product-badge .woocommerce-Price-amount,
+.torobpay-product-badge .woocommerce-Price-currencySymbol,
+.torobpay-widget .amount,
+.torobpay-widget .woocommerce-Price-amount,
+.torobpay-widget .woocommerce-Price-currencySymbol {
+    color: inherit;
+    font-weight: inherit;
+}
+
+.torobpay-product-badge:hover .torobpay-product-badge-inner {
+    box-shadow: 0 6px 16px rgba(0, 61, 1, 0.12);
+}
+
+.torobpay-product-badge:hover .torobpay-product-badge-text {
+    max-width: 240px;
+    opacity: 1;
+    margin-right: 5px;
+    margin-left: 9px;
+}
+
+/* Compatibility Mode specific styles */
+.torobpay-compat-badge {
+    /* Ensure badge stays positioned even if container changes */
+    position: absolute !important;
+    z-index: 999 !important;
+}
+
+/* Additional compatibility for common theme/builder patterns */
+.product-thumbnail,
+.product-image,
+.product-img,
+.woocommerce-loop-product__link,
+a.woocommerce-LoopProduct-link {
+    position: relative !important;
+}
+
+/* Elementor specific */
+.elementor-widget-wc-products .product,
+.elementor-product {
+    position: relative !important;
+}
+
+/* Common grid systems */
+.product-item,
+.product-card,
+.woo-product,
+.product-grid-item {
+    position: relative !important;
+}
+
+/* Crocoblock / JetEngine listing grids (Listing Grid + JetWooBuilder).
+   Anchor the absolutely-positioned badge to the card and keep image
+   wrappers from clipping it. */
+.jet-listing-grid__item,
+.jet-woo-products__item,
+.jet-woo-builder-archive-product {
+    position: relative !important;
+}
+
+.jet-listing-grid__item .elementor-widget-image,
+.jet-listing-grid__item .jet-listing-dynamic-field,
+.jet-woo-products__item .jet-woo-product-thumbnail,
+.jet-woo-products__item .product-image {
+    overflow: visible !important;
+}
+
+/* Ensure image containers don't clip the badge */
+.product-thumbnail,
+.product-image,
+.product-img {
+    overflow: visible !important;
+}
+

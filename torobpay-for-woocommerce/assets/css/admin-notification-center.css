@@ -1,0 +1,610 @@
+/**
+ * TorobPay Notification Center — Admin Bar + Panel Styles
+ */
+
+/* ─── Admin bar parent node ───────────────────────────────────────── */
+
+#wpadminbar #wp-admin-bar-torobpay-notifications > .ab-item {
+    display: flex !important;
+    align-items: center;
+    gap: 5px;
+    padding: 0 8px !important;
+    cursor: pointer;
+}
+
+/* Logo icon wrapper — PNG is painted on :before via wp_add_inline_style (absolute URL). */
+#wpadminbar #wp-admin-bar-torobpay-notifications > .ab-item .ab-icon,
+#wpadminbar #wp-admin-bar-torobpay-notifications > .ab-item .torobpay-notif-logo-wrap {
+    float: none !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 20px !important;
+    height: 20px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: none !important;
+}
+
+#wpadminbar #wp-admin-bar-torobpay-notifications.has-attention-notice .torobpay-notif-logo-wrap {
+    animation: torobpay-logo-pulse-notice 1.5s ease-in-out infinite;
+}
+
+#wpadminbar #wp-admin-bar-torobpay-notifications.has-attention-critical .torobpay-notif-logo-wrap {
+    animation: torobpay-logo-pulse-critical 1s ease-in-out infinite;
+}
+
+@keyframes torobpay-logo-pulse-notice {
+    0%, 100% { filter: drop-shadow(0 0 0px rgba(155, 231, 106, 0));   opacity: 0.85; }
+    50%      { filter: drop-shadow(0 0 5px rgba(155, 231, 106, 0.85)); opacity: 1;    }
+}
+
+@keyframes torobpay-logo-pulse-critical {
+    0%, 100% { filter: drop-shadow(0 0 0px rgba(220, 50, 50, 0));   opacity: 0.85; }
+    50%      { filter: drop-shadow(0 0 6px rgba(220, 50, 50, 0.85)); opacity: 1;    }
+}
+
+.torobpay-notif-label {
+    font-size: 13px;
+    line-height: 1;
+}
+
+/* Badge circle ── */
+
+#wpadminbar #wp-admin-bar-torobpay-notifications .torobpay-notif-badge {
+    display: none;
+    width: 20px !important;
+    min-width: 20px !important;
+    max-width: 20px !important;
+    height: 20px !important;
+    min-height: 20px !important;
+    padding: 0;
+    border-radius: 999px !important;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    color: #fff;
+    flex: 0 0 20px;
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: background 0.2s ease;
+    background: #8c8f94; /* default grey until tier is applied */
+    /* Use flex so the number is perfectly centred in the circle */
+    align-items: center;
+    justify-content: center;
+}
+
+/* Render badge when it has a count */
+#wpadminbar #wp-admin-bar-torobpay-notifications .torobpay-notif-badge {
+    display: inline-flex;
+}
+
+/* Tier: critical (update available) → red + pulse */
+#wpadminbar #wp-admin-bar-torobpay-notifications.has-attention-critical .torobpay-notif-badge {
+    background: #dc3232;
+    animation: torobpay-notif-pulse 1.5s ease-in-out infinite;
+}
+
+/* Tier: notice (unfinished edits, etc.) → warning orange */
+#wpadminbar #wp-admin-bar-torobpay-notifications.has-attention-notice .torobpay-notif-badge {
+    background: #dba600;
+    color: #3d2800;
+}
+
+@keyframes torobpay-notif-pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(220, 50, 50, 0.55); }
+    60%  { box-shadow: 0 0 0 7px rgba(220, 50, 50, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(220, 50, 50, 0); }
+}
+
+/* Highlight the parent node when it has attention */
+#wpadminbar #wp-admin-bar-torobpay-notifications.has-attention-critical > .ab-item,
+#wpadminbar #wp-admin-bar-torobpay-notifications.has-attention-notice > .ab-item {
+    font-weight: 600;
+}
+
+/* Submenu items — dashicon spacing */
+#wpadminbar #wp-admin-bar-torobpay-notifications .ab-submenu .ab-item {
+    display: flex !important;
+    align-items: center;
+    gap: 5px;
+}
+
+#wpadminbar #wp-admin-bar-torobpay-notifications .ab-submenu .dashicons {
+    font: normal 15px/1 dashicons !important;
+    font-family: dashicons !important;
+    font-style: normal !important;
+    font-weight: 400 !important;
+    width: 15px !important;
+    height: 15px !important;
+    display: inline-block;
+    text-transform: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    opacity: 0.8;
+}
+
+/* ─── Notification panel (modal size override) ─────────────────────── */
+
+.torobpay-notification-panel {
+    width: 700px !important;
+    max-width: 95vw !important;
+    max-height: 80vh !important;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Override the default 800px modal width from admin-order.css */
+.torobpay-notification-panel.torobpay-modal {
+    width: 700px;
+}
+
+.torobpay-notification-panel .torobpay-modal-body {
+    overflow-y: auto;
+    flex: 1;
+    padding: 10px 12px;
+}
+
+/* Header icon — slightly larger than default for the notification panel */
+.torobpay-notification-panel .torobpay-modal-title-icon {
+    width: 20px !important;
+    height: 20px !important;
+}
+
+/* ─── Notification items — self-contained styling ─────────────────────
+   Keep promo/tag/CTA styles here so the panel remains fully styled on
+   any admin screen where admin-shared.css is not loaded.
+   ─────────────────────────────────────────────────────────────────── */
+
+.torobpay-notification-item.torobpay-promo-notice {
+    position: relative;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 14px 16px 14px 10px;
+    box-sizing: border-box;
+    background: #f0fde8;
+    border: 1px solid #c3f09a;
+    border-right: 3px solid #9CE76A;
+    border-radius: 6px;
+    margin: 0 0 8px;
+    max-width: none;
+}
+
+.torobpay-notification-item.torobpay-promo-notice:last-child {
+    margin-bottom: 0;
+}
+
+.torobpay-notification-item.torobpay-promo-notice--warning {
+    background: #fffbf0;
+    border-color: #f5df8a;
+    border-right-color: #dba600;
+}
+
+.torobpay-notification-item.torobpay-promo-notice--error {
+    background: #fff4f4;
+    border-color: #f5c6c6;
+    border-right-color: #d63638;
+}
+
+/* Icon */
+.torobpay-notification-item .torobpay-promo-notice-icon {
+    flex-shrink: 0;
+    font-size: 22px !important;
+    width: 22px !important;
+    height: 22px !important;
+    color: #003D01;
+    margin-top: 1px;
+}
+
+.torobpay-notification-item.torobpay-promo-notice--warning .torobpay-promo-notice-icon {
+    color: #7a5200;
+}
+
+.torobpay-notification-item.torobpay-promo-notice--error .torobpay-promo-notice-icon {
+    color: #8a1f1f;
+}
+
+/* Body wrapper */
+.torobpay-notification-item .torobpay-promo-notice-body {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Title */
+.torobpay-notification-title {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #003D01;
+    margin-bottom: 4px;
+}
+
+.torobpay-notification-item.torobpay-promo-notice--warning .torobpay-notification-title {
+    color: #7a5200;
+}
+
+.torobpay-notification-item.torobpay-promo-notice--error .torobpay-notification-title {
+    color: #8a1f1f;
+}
+
+/* Body text */
+.torobpay-notification-body {
+    font-size: 12px;
+    color: inherit;
+    line-height: 1.5;
+    margin: 0 0 4px;
+}
+
+.torobpay-notification-body p {
+    margin: 0 0 10px;
+    color: #1a1c23;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.torobpay-notification-body .torobpay-promo-notice-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.torobpay-notification-body .torobpay-promo-notice-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    background: #fff;
+    border: 1px solid #e5b8b8;
+    border-radius: 20px;
+    color: #8a1f1f;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.torobpay-notification-body .torobpay-promo-notice-tag .dashicons {
+    font-size: 14px !important;
+    width: 14px !important;
+    height: 14px !important;
+    color: #d63638;
+}
+
+.torobpay-notification-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.torobpay-notification-recheck {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 12px;
+    border-radius: 4px;
+    border: 1px solid #c3c4c7;
+    background: #fff;
+    color: #1d2327;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.4;
+    cursor: pointer;
+}
+
+.torobpay-notification-recheck:hover {
+    border-color: #8c8f94;
+    background: #f6f7f7;
+}
+
+.torobpay-notification-recheck:disabled {
+    opacity: 0.65;
+    cursor: wait;
+}
+
+.torobpay-recheck-result {
+    margin: 8px 0 0;
+    font-size: 12px;
+}
+
+/* CTA action link */
+.torobpay-notification-action.torobpay-promo-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none !important;
+    background: #003D01;
+    color: #fff !important;
+    transition: background 0.15s ease;
+}
+
+.torobpay-notification-item.torobpay-promo-notice--warning .torobpay-notification-action.torobpay-promo-cta {
+    background: #7a5200;
+}
+
+.torobpay-notification-item.torobpay-promo-notice--warning .torobpay-notification-action.torobpay-promo-cta:hover {
+    background: #9a6800;
+}
+
+.torobpay-notification-item.torobpay-promo-notice--error .torobpay-notification-action.torobpay-promo-cta {
+    background: #8a1f1f;
+}
+
+.torobpay-notification-item.torobpay-promo-notice--error .torobpay-notification-action.torobpay-promo-cta:hover {
+    background: #a00;
+}
+
+.torobpay-notification-action .dashicons {
+    font-size: 14px !important;
+    width: 14px !important;
+    height: 14px !important;
+    vertical-align: middle;
+    color: #fff !important;
+}
+
+/* Dismiss button */
+.torobpay-notification-dismiss {
+    flex-shrink: 0;
+    align-self: flex-start;
+    position: static !important;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px;
+    color: inherit;
+    opacity: 0.5;
+    transition: opacity 0.15s ease;
+    margin-right: 2px;
+}
+
+.torobpay-notification-dismiss:hover {
+    opacity: 1;
+}
+
+/* ─── Empty-state ──────────────────────────────────────────────────── */
+
+.torobpay-no-notifications {
+    padding: 36px 20px;
+    text-align: center;
+    color: #50575e;
+}
+
+.torobpay-no-notifications .dashicons {
+    font-size: 40px !important;
+    width: 40px !important;
+    height: 40px !important;
+    color: #9CE76A;
+    display: block;
+    margin: 0 auto 14px;
+}
+
+.torobpay-no-notifications p {
+    margin: 0;
+    font-size: 14px;
+}
+
+/* ─── Dismissed-but-active section ────────────────────────────────── */
+
+.torobpay-dismissed-section {
+    margin-top: 12px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    padding-top: 6px;
+}
+
+.torobpay-dismissed-summary {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #777;
+    padding: 4px 2px;
+    list-style: none;
+    user-select: none;
+}
+.torobpay-dismissed-summary::-webkit-details-marker { display: none; }
+.torobpay-dismissed-summary::marker               { display: none; }
+
+.torobpay-dismissed-summary .dashicons {
+    font-size: 14px !important;
+    width: 14px !important;
+    height: 14px !important;
+    opacity: 0.55;
+}
+
+.torobpay-dismissed-count {
+    opacity: 0.65;
+}
+
+.torobpay-dismissed-list {
+    padding-top: 6px;
+}
+
+/* Dismissed items — mute the copy, not the restore control.
+   Opacity/filter on the card would also fade the restore button and
+   can break hit-testing of its absolutely positioned descendants. */
+.torobpay-notification-dismissed {
+    background: #f6f7f7 !important;
+    border-color: #dcdcde !important;
+    border-right-color: #c3c4c7 !important;
+}
+.torobpay-notification-dismissed .torobpay-promo-notice-icon,
+.torobpay-notification-dismissed .torobpay-notification-content {
+    opacity: 0.6;
+    filter: grayscale(40%);
+    transition: opacity 0.15s ease, filter 0.15s ease;
+}
+.torobpay-notification-dismissed:hover .torobpay-promo-notice-icon,
+.torobpay-notification-dismissed:hover .torobpay-notification-content {
+    opacity: 0.9;
+    filter: grayscale(0%);
+}
+
+/* Restore button — same flex slot as dismiss, not overlaid on the CTA */
+.torobpay-notification-restore {
+    flex-shrink: 0;
+    align-self: flex-start;
+    position: static;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    color: #2e7d32 !important;
+    transition: background 0.15s ease;
+}
+.torobpay-notification-restore:hover {
+    background: rgba(46, 125, 50, 0.1);
+}
+.torobpay-notification-restore .dashicons {
+    font-size: 16px !important;
+    width: 16px !important;
+    height: 16px !important;
+}
+
+/* ─── Updater check modal (footer) ──────────────────────────────────── */
+
+.torobpay-modal-footer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border-top: 1px solid #e0e0e0;
+    background: #f9f9f9;
+    border-radius: 0 0 8px 8px;
+    flex-wrap: wrap;
+}
+
+/* ─── Admin-bar submenu: category count bubble ─────────────────────── */
+
+#wpadminbar #wp-admin-bar-torobpay-notifications .ab-submenu .ab-item {
+    min-width: 220px;
+}
+
+#wpadminbar #wp-admin-bar-torobpay-notifications .torobpay-notif-cat-label {
+    flex: 1 1 auto;
+}
+
+#wpadminbar #wp-admin-bar-torobpay-notifications .torobpay-notif-cat-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    margin-inline-start: auto;
+    border-radius: 999px;
+    background: #dba600;
+    color: #3d2800;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    box-sizing: border-box;
+}
+
+#wpadminbar #wp-admin-bar-torobpay-notifications .torobpay-notif-cat-item--critical .torobpay-notif-cat-count {
+    background: #dc3232;
+    color: #fff;
+}
+
+/* ─── Modal category filter bar ─────────────────────────────────────── */
+
+.torobpay-notif-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 2px 2px 12px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.torobpay-notif-filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 12px;
+    border: 1px solid #c3c4c7;
+    border-radius: 999px;
+    background: #fff;
+    color: #50575e;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.torobpay-notif-filter-chip:hover {
+    border-color: #9CE76A;
+    color: #003D01;
+}
+
+.torobpay-notif-filter-chip.is-active {
+    background: #003D01;
+    border-color: #003D01;
+    color: #fff;
+}
+
+.torobpay-notif-filter-chip--critical:not(.is-active) {
+    border-color: #f5c6c6;
+    color: #8a1f1f;
+}
+
+.torobpay-notif-filter-chip .dashicons {
+    font-size: 14px !important;
+    width: 14px !important;
+    height: 14px !important;
+}
+
+.torobpay-notif-filter-chip-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.08);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    box-sizing: border-box;
+}
+
+.torobpay-notif-filter-chip.is-active .torobpay-notif-filter-chip-count {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+/* Filtered empty-state */
+.torobpay-filter-empty {
+    padding: 30px 20px;
+    text-align: center;
+    color: #50575e;
+}
+
+.torobpay-filter-empty .dashicons {
+    font-size: 36px !important;
+    width: 36px !important;
+    height: 36px !important;
+    color: #9CE76A;
+    display: block;
+    margin: 0 auto 12px;
+}
+
+.torobpay-filter-empty p {
+    margin: 0;
+    font-size: 13px;
+}
+

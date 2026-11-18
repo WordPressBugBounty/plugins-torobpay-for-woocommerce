@@ -1,0 +1,787 @@
+/* Dimensions/visibility via CSS custom properties from torobpay_slider_build_inline_css(). */
+
+.torobpay-slider {
+    position: relative;
+    width: 100%;
+    max-width: var(--torobpay-slider-maxw, 1200px);
+    margin: 16px auto;
+    border-radius: var(--torobpay-slider-radius, 14px);
+    overflow: hidden;
+    box-sizing: border-box;
+    direction: rtl;
+    font-family: inherit;
+}
+
+.torobpay-slider-viewport {
+    position: relative;
+    width: 100%;
+    height: var(--torobpay-slider-h, 220px);
+    overflow: hidden;
+    perspective: 1200px;
+    /* Size container: hero scales proportionally instead of reflowing. */
+    container-type: size;
+    container-name: torobpaySlider;
+}
+
+.torobpay-slider-track {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+}
+
+.torobpay-slider-slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+}
+
+.torobpay-slider-slide.is-active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    z-index: 2;
+}
+
+.torobpay-slider-slide--anim-slide {
+    transform: translateX(-40px);
+}
+.torobpay-slider-slide--anim-slide.is-active {
+    transform: translateX(0);
+}
+
+.torobpay-slider-slide--anim-fade {
+    transform: none;
+}
+
+.torobpay-slider-slide--anim-zoom {
+    transform: scale(1.08);
+}
+.torobpay-slider-slide--anim-zoom.is-active {
+    transform: scale(1);
+}
+
+/* Flip rotates the foreground only so decorative backgrounds stay flat. */
+.torobpay-slider-foreground {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+}
+.torobpay-slider-slide--anim-flip .torobpay-slider-foreground {
+    transform: rotateX(-90deg);
+    transform-origin: center center;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+}
+.torobpay-slider-slide--anim-flip.is-active .torobpay-slider-foreground {
+    transform: rotateX(0deg);
+}
+.torobpay-slider-slide--anim-flip.is-leaving .torobpay-slider-foreground {
+    transform: rotateX(90deg);
+}
+
+.torobpay-slider-slide--mint {
+    background-color: #9CE76A;
+}
+.torobpay-slider-slide--forest {
+    background: radial-gradient(ellipse 120% 100% at 30% 40%, #0d5c12 0%, #003D01 70%);
+}
+.torobpay-slider-slide--mint-gradient {
+    background-image: linear-gradient(135deg, #9CE76A 0%, #d8ffb8 100%);
+}
+.torobpay-slider-slide--forest-gradient {
+    background-image: linear-gradient(135deg, #003D01 0%, #126b18 45%, #2fa832 100%);
+}
+.torobpay-slider-slide--soft {
+    background-color: #f4fff0;
+}
+.torobpay-slider-slide--duo {
+    background: linear-gradient(128deg, #003D01 0%, #0b5520 32%, #3a9c32 70%, #9CE76A 100%);
+}
+
+.torobpay-slider-slide--dark {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* Image slides: preset colour shows through as a fallback behind the photo. */
+.torobpay-slider-backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.torobpay-slider-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    pointer-events: none;
+    user-select: none;
+}
+
+.torobpay-slider-slide--has-image[data-bg-anim="clover"] .torobpay-slider-bg {
+    background: transparent;
+}
+
+.torobpay-slider-slide--mint .torobpay-slider-content,
+.torobpay-slider-slide--mint-gradient .torobpay-slider-content,
+.torobpay-slider-slide--soft .torobpay-slider-content {
+    color: #003D01;
+}
+.torobpay-slider-slide--forest .torobpay-slider-content:not(.torobpay-slider-hero),
+.torobpay-slider-slide--forest-gradient .torobpay-slider-content:not(.torobpay-slider-hero),
+.torobpay-slider-slide--duo .torobpay-slider-content:not(.torobpay-slider-hero) {
+    color: #ffffff;
+}
+
+.torobpay-slider-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(90deg, rgba(0, 61, 1, 0.62) 0%, rgba(0, 61, 1, 0.18) 60%, rgba(0, 61, 1, 0) 100%);
+    pointer-events: none;
+}
+
+/* Image slides: preset tints the readability overlay (طرح پس‌زمینه). */
+.torobpay-slider-slide--has-image.torobpay-slider-slide--mint .torobpay-slider-overlay,
+.torobpay-slider-slide--has-image.torobpay-slider-slide--mint-gradient .torobpay-slider-overlay {
+    background: linear-gradient(90deg, rgba(156, 231, 106, 0.78) 0%, rgba(156, 231, 106, 0.28) 58%, rgba(156, 231, 106, 0) 100%);
+}
+.torobpay-slider-slide--has-image.torobpay-slider-slide--forest .torobpay-slider-overlay,
+.torobpay-slider-slide--has-image.torobpay-slider-slide--forest-gradient .torobpay-slider-overlay {
+    background: linear-gradient(90deg, rgba(0, 61, 1, 0.72) 0%, rgba(0, 61, 1, 0.22) 58%, rgba(0, 61, 1, 0) 100%);
+}
+.torobpay-slider-slide--has-image.torobpay-slider-slide--soft .torobpay-slider-overlay {
+    background: linear-gradient(90deg, rgba(244, 255, 240, 0.82) 0%, rgba(244, 255, 240, 0.32) 58%, rgba(244, 255, 240, 0) 100%);
+}
+.torobpay-slider-slide--has-image.torobpay-slider-slide--duo .torobpay-slider-overlay {
+    background: linear-gradient(90deg, rgba(0, 61, 1, 0.68) 0%, rgba(58, 156, 50, 0.35) 45%, rgba(156, 231, 106, 0.08) 100%);
+}
+
+/* Decorative bg: above photo/preset, below content (canvas or aurora blobs). */
+.torobpay-slider-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none;
+}
+.torobpay-slider-bg canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.torobpay-slider-bg-blob {
+    position: absolute;
+    top: 50%;
+    left: -20%;
+    width: 45%;
+    height: 220%;
+    border-radius: 50%;
+    filter: blur(46px);
+    opacity: 0.55;
+    will-change: left, transform, opacity;
+    mix-blend-mode: soft-light;
+    transform: translateY(-50%) scale(var(--torobpay-bg-aurora-scale, 0.55));
+}
+.torobpay-slider-bg-blob:nth-child(1) {
+    background: radial-gradient(circle at center, #ffffff 0%, rgba(255, 255, 255, 0) 70%);
+    animation: torobpay-slider-aurora-1 15s ease-in-out infinite;
+}
+.torobpay-slider-bg-blob:nth-child(2) {
+    background: radial-gradient(circle at center, #003D01 0%, rgba(0, 61, 1, 0) 70%);
+    opacity: 0.4;
+    animation: torobpay-slider-aurora-2 19s ease-in-out infinite;
+}
+.torobpay-slider-slide--dark .torobpay-slider-bg-blob:nth-child(2) {
+    background: radial-gradient(circle at center, #9CE76A 0%, rgba(156, 231, 106, 0) 70%);
+    opacity: 0.35;
+}
+.torobpay-slider-bg-blob:nth-child(3) {
+    background: radial-gradient(circle at center, #d8ffb8 0%, rgba(216, 255, 184, 0) 70%);
+    animation: torobpay-slider-aurora-3 13s ease-in-out infinite;
+}
+
+@keyframes torobpay-slider-aurora-1 {
+    0%   { left: -25%; opacity: 0.4; }
+    50%  { left: 65%; opacity: 0.75; }
+    100% { left: 120%; opacity: 0.4; }
+}
+@keyframes torobpay-slider-aurora-2 {
+    0%   { left: 120%; opacity: 0.3; }
+    50%  { left: 45%; opacity: 0.5; }
+    100% { left: -25%; opacity: 0.3; }
+}
+@keyframes torobpay-slider-aurora-3 {
+    0%   { left: 30%; opacity: 0.4; }
+    50%  { left: 90%; opacity: 0.7; }
+    100% { left: 30%; opacity: 0.4; }
+}
+
+/* Clover field: em sizes share the hero's container-query font-size. */
+.torobpay-slider-slide[data-bg-anim="clover"] .torobpay-slider-bg {
+    font-size: calc(min(1.45cqw, 4.6cqh) * var(--torobpay-bg-icon-scale, 1));
+    background: radial-gradient(ellipse 130% 130% at 50% 0%, #aaf179 0%, #54c039 100%);
+    overflow: visible;
+}
+
+.torobpay-slider-clover-wrap {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    will-change: transform;
+    animation: torobpay-slider-clover-float 11s ease-in-out infinite;
+}
+
+.torobpay-slider-clover {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+}
+
+@keyframes torobpay-slider-clover-float {
+    0%   { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+    25%  { transform: translate3d(-1em, -1.4em, 0) scale(1.05) rotate(-5deg); }
+    50%  { transform: translate3d(1.4em, -3em, 0) scale(1.08) rotate(4deg); }
+    75%  { transform: translate3d(0.5em, -1.2em, 0) scale(1.04) rotate(-3deg); }
+    100% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+}
+
+.torobpay-slider-clover-wrap--1 {
+    width: 9.4em;
+    height: 9.4em;
+    top: -7%; right: 4%;
+    opacity: 1;
+    animation-duration: 9s;
+}
+.torobpay-slider-clover-wrap--1 .torobpay-slider-clover {
+    transform: rotate(122deg);
+}
+
+.torobpay-slider-clover-wrap--2 {
+    width: 10.8em;
+    height: 10.8em;
+    top: 59%; right: 19%;
+    opacity: 1;
+    animation-duration: 12s; animation-delay: -3s;
+}
+.torobpay-slider-clover-wrap--2 .torobpay-slider-clover {
+    transform: rotate(133deg);
+}
+
+.torobpay-slider-clover-wrap--3 {
+    width: 6.1em;
+    height: 6.1em;
+    top: 6%; right: 33%;
+    opacity: 1;
+    animation-duration: 15s; animation-delay: -2s;
+}
+.torobpay-slider-clover-wrap--3 .torobpay-slider-clover {
+    transform: rotate(164deg);
+}
+
+.torobpay-slider-clover-wrap--4 {
+    width: 11em;
+    height: 11em;
+    top: 5%; left: 30%;
+    opacity: 1;
+    animation-duration: 13s; animation-delay: -8s;
+}
+.torobpay-slider-clover-wrap--4 .torobpay-slider-clover {
+    transform: rotate(66deg);
+}
+
+.torobpay-slider-clover-wrap--5 {
+    width: 15.9em;
+    height: 15.9em;
+    bottom: -18%; left: -2%;
+    opacity: 1;
+    animation-duration: 18s; animation-delay: -10s;
+}
+.torobpay-slider-clover-wrap--5 .torobpay-slider-clover {
+    transform: rotate(-33deg);
+}
+
+/* Mandatory hero slide: one cq-based font-size; children sized in em. */
+.torobpay-slider-slide--hero .torobpay-slider-content.torobpay-slider-hero {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 3em;
+    padding: 0 4em;
+    font-size: min(1.45cqw, 4.6cqh);
+}
+
+/* Hero padding floors at 52px so content clears prev/next arrows. */
+.torobpay-slider--has-arrows .torobpay-slider-slide--hero .torobpay-slider-content.torobpay-slider-hero {
+    padding-right: max(4em, 52px);
+    padding-left: max(1.5em, 52px);
+}
+
+/*
+ * Short hero: keep the row layout and spread intro/logo.
+ * Height wins over width — stacking needs vertical room, so a wide-but-short
+ * container (e.g. 768×300) must not fall into the narrow stacked view.
+ */
+@container torobpaySlider (max-height: 350px) {
+    .torobpay-slider-slide--hero .torobpay-slider-content.torobpay-slider-hero {
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+        gap: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        font-size: min(1.45cqw, 4.6cqh);
+    }
+}
+
+.torobpay-slider-hero-intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.1em;
+    text-align: center;
+    min-width: 0;
+    flex: 0 1 auto;
+}
+
+.torobpay-slider-hero-parts {
+    width: 12em;
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.torobpay-slider-hero-title {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15em;
+}
+
+.torobpay-slider-hero-line {
+    font-weight: 800;
+    font-size: 2.3em;
+    line-height: 1.22;
+    color: #003D01;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.torobpay-slider-hero-logo {
+    position: relative;
+    flex: 0 0 auto;
+    width: 16em;
+    height: 16em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.torobpay-slider-hero-mark {
+    position: relative;
+    z-index: 3;
+    width: 64%;
+    height: 64%;
+    object-fit: contain;
+    filter: drop-shadow(0 0.4em 1.1em rgba(0, 61, 1, 0.22));
+    animation: torobpay-slider-hero-bob 6s ease-in-out infinite;
+}
+
+@keyframes torobpay-slider-hero-bob {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-0.4em); }
+}
+
+.torobpay-slider-hero-badge {
+    position: absolute;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.55em 1.05em;
+    border-radius: 999px;
+    background: #d8f7bf;
+    color: #1f5e1f;
+    font-size: 1.05em;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+    box-shadow: 0 0.3em 1em rgba(0, 61, 1, 0.12);
+    animation: torobpay-slider-badge-glow 4s ease-in-out infinite;
+    animation-delay: calc(var(--torobpay-badge-i, 0) * 1s);
+}
+
+/* Badges tuck under the logo (mark z-index: 3). */
+.torobpay-slider-hero-badge--top    { top: 11%;    right: 51%; }
+.torobpay-slider-hero-badge--right  { top: 30%;   right: -4%; }
+.torobpay-slider-hero-badge--left   { top: 52%;   left: -11%; }
+.torobpay-slider-hero-badge--bottom { bottom: 14%; right: 3%; }
+
+/* Narrow + tall enough: stack intro above logo. Skip when short (see above). */
+@container torobpaySlider (max-width: 768px) and (min-height: 351px) {
+    .torobpay-slider-slide--hero .torobpay-slider-content.torobpay-slider-hero {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2em;
+        padding: 1em max(3em, 52px) 2.2em;
+        font-size: min(4.5cqw, 2.5cqh);
+    }
+
+    .torobpay-slider--has-arrows .torobpay-slider-slide--hero .torobpay-slider-content.torobpay-slider-hero {
+        padding-left: max(3em, 52px);
+        padding-right: max(3em, 52px);
+    }
+
+    .torobpay-slider-hero-intro {
+        align-items: center;
+        text-align: center;
+        flex: 0 0 auto;
+        width: 100%;
+    }
+
+    .torobpay-slider-hero-parts {
+        width: min(12em, 88%);
+        margin-inline: auto;
+    }
+
+    .torobpay-slider-hero-title {
+        align-items: center;
+    }
+
+    .torobpay-slider-hero-logo {
+        margin-left: 0;
+        width: 12em;
+        height: 12em;
+        flex-shrink: 0;
+    }
+
+    .torobpay-slider-hero-badge {
+        font-size: 1.3em;
+    }
+
+    .torobpay-slider-hero-badge--top {
+        top: 7%;
+        right: 54%;
+    }
+
+    .torobpay-slider-hero-badge--right {
+        top: 25%;
+        right: -26%;
+    }
+
+    .torobpay-slider-hero-badge--left {
+        top: 52%;
+        left: -36%;
+    }
+
+    .torobpay-slider-hero-badge--bottom {
+        bottom: 9%;
+        right: -29%;
+    }
+}
+
+@keyframes torobpay-slider-badge-glow {
+    0% {
+        box-shadow: 0 0.3em 1em rgba(0, 61, 1, 0.12);
+        background: #d8f7bf;
+        transform: translateY(0) scale(1);
+    }
+    10% {
+        box-shadow: 0 0 0 0.3em rgba(156, 231, 106, 0.55), 0 0.7em 1.6em rgba(0, 61, 1, 0.24);
+        background: #eaffd6;
+        transform: translateY(-0.15em) scale(1.05);
+    }
+    28% {
+        box-shadow: 0 0.3em 1em rgba(0, 61, 1, 0.12);
+        background: #d8f7bf;
+        transform: translateY(0) scale(1);
+    }
+    100% {
+        box-shadow: 0 0.3em 1em rgba(0, 61, 1, 0.12);
+        background: #d8f7bf;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.torobpay-slider-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 22px 28px;
+}
+
+/* Content padding clears 38px arrows offset 12px from each edge. */
+.torobpay-slider--has-arrows .torobpay-slider-content {
+    padding-left: 64px;
+    padding-right: 64px;
+}
+
+.torobpay-slider-brand {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    margin-bottom: 2px;
+    opacity: 0.95;
+}
+
+.torobpay-slider-heading {
+    font-size: clamp(18px, 2.4vw, 30px);
+    font-weight: 800;
+    line-height: 1.25;
+    margin: 0;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+.torobpay-slider-slide--dark .torobpay-slider-heading {
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+}
+.torobpay-slider-slide--dark .torobpay-slider-subtext {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.torobpay-slider-subtext {
+    font-size: clamp(12px, 1.5vw, 16px);
+    font-weight: 500;
+    line-height: 1.6;
+    margin: 0;
+    max-width: 46ch;
+    opacity: 0.95;
+}
+
+.torobpay-slider-cta {
+    align-self: flex-start;
+    margin-top: 6px;
+    display: inline-block;
+    padding: 9px 22px;
+    border-radius: 999px;
+    background: #003D01;
+    color: #9CE76A !important;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: filter 0.2s ease;
+}
+.torobpay-slider-cta:hover {
+    filter: brightness(1.12);
+}
+
+.torobpay-slider-slide--forest .torobpay-slider-cta,
+.torobpay-slider-slide--forest-gradient .torobpay-slider-cta,
+.torobpay-slider-slide--duo .torobpay-slider-cta {
+    background: #9CE76A;
+    color: #003D01 !important;
+}
+
+.torobpay-slider-pos-top-right .torobpay-slider-content,
+.torobpay-slider-pos-top-center .torobpay-slider-content,
+.torobpay-slider-pos-top-left .torobpay-slider-content {
+    justify-content: flex-start;
+}
+.torobpay-slider-pos-middle-right .torobpay-slider-content,
+.torobpay-slider-pos-middle-center .torobpay-slider-content,
+.torobpay-slider-pos-middle-left .torobpay-slider-content {
+    justify-content: center;
+}
+.torobpay-slider-pos-bottom-right .torobpay-slider-content,
+.torobpay-slider-pos-bottom-center .torobpay-slider-content,
+.torobpay-slider-pos-bottom-left .torobpay-slider-content {
+    justify-content: flex-end;
+}
+
+.torobpay-slider-pos-top-right .torobpay-slider-content,
+.torobpay-slider-pos-middle-right .torobpay-slider-content,
+.torobpay-slider-pos-bottom-right .torobpay-slider-content {
+    align-items: flex-start;
+    text-align: right;
+}
+.torobpay-slider-pos-top-center .torobpay-slider-content,
+.torobpay-slider-pos-middle-center .torobpay-slider-content,
+.torobpay-slider-pos-bottom-center .torobpay-slider-content {
+    align-items: center;
+    text-align: center;
+}
+.torobpay-slider-pos-top-left .torobpay-slider-content,
+.torobpay-slider-pos-middle-left .torobpay-slider-content,
+.torobpay-slider-pos-bottom-left .torobpay-slider-content {
+    align-items: flex-end;
+    text-align: left;
+}
+.torobpay-slider-pos-top-center .torobpay-slider-cta,
+.torobpay-slider-pos-middle-center .torobpay-slider-cta,
+.torobpay-slider-pos-bottom-center .torobpay-slider-cta {
+    align-self: center;
+}
+.torobpay-slider-pos-top-left .torobpay-slider-cta,
+.torobpay-slider-pos-middle-left .torobpay-slider-cta,
+.torobpay-slider-pos-bottom-left .torobpay-slider-cta {
+    align-self: flex-end;
+}
+
+.torobpay-slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.85);
+    color: #003D01;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.2s ease;
+}
+.torobpay-slider-arrow:hover {
+    background: #ffffff;
+}
+.torobpay-slider-arrow .dashicons {
+    width: 22px;
+    height: 22px;
+    font-size: 22px;
+    line-height: 1;
+}
+.torobpay-slider-prev {
+    right: 12px;
+}
+.torobpay-slider-next {
+    left: 12px;
+}
+
+.torobpay-slider-dots {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 12px;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+}
+.torobpay-slider-dot {
+    width: 9px;
+    height: 9px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.55);
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+.torobpay-slider-dot.is-active {
+    background: #ffffff;
+    transform: scale(1.25);
+}
+
+/* prefers-reduced-motion: static slides, no decorative bg animation. */
+@media (prefers-reduced-motion: reduce) {
+    .torobpay-slider-slide {
+        transition: opacity 0.2s linear !important;
+        transform: none !important;
+    }
+    .torobpay-slider-slide--anim-flip .torobpay-slider-foreground {
+        transition: none !important;
+        transform: none !important;
+    }
+    .torobpay-slider-bg {
+        display: none !important;
+    }
+    .torobpay-slider-hero-mark,
+    .torobpay-slider-hero-badge {
+        animation: none !important;
+    }
+}
+
+/* Non-hero slides only; hero scales via container queries at all widths. */
+@media (max-width: 768px) {
+    .torobpay-slider-content:not(.torobpay-slider-hero) {
+        padding: 16px 18px;
+    }
+    .torobpay-slider--has-arrows .torobpay-slider-content:not(.torobpay-slider-hero) {
+        padding-left: 52px;
+        padding-right: 52px;
+    }
+    .torobpay-slider-subtext {
+        max-width: 100%;
+    }
+}
+
+/* [torobpay_slide] embed: single slide, no carousel. */
+.torobpay-slide-embed {
+    position: relative;
+    width: 100%;
+    height: var(--torobpay-slider-h, 220px);
+    max-width: 100%;
+    margin: 0;
+    border-radius: var(--torobpay-slider-radius, 14px);
+    overflow: hidden;
+    box-sizing: border-box;
+    direction: rtl;
+    font-family: inherit;
+}
+
+.torobpay-slide-embed-viewport {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    perspective: 1200px;
+    container-type: size;
+    container-name: torobpaySlider;
+}
+
+.torobpay-slide-embed .torobpay-slider-slide {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: none;
+    transition: none;
+    z-index: auto;
+    will-change: auto;
+}
+
+.torobpay-slide-embed .torobpay-slider-slide--anim-slide,
+.torobpay-slide-embed .torobpay-slider-slide--anim-zoom {
+    transform: none;
+}
+
+.torobpay-slide-embed .torobpay-slider-slide--anim-flip .torobpay-slider-foreground {
+    transform: none;
+    transition: none;
+    will-change: auto;
+}

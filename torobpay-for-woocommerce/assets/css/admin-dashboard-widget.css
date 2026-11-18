@@ -1,0 +1,155 @@
+/**
+ * TorobPay Dashboard Widget Styles
+ */
+
+/* ── Wrapper ── */
+.torobpay-dw-wrap {
+    direction: rtl;
+    line-height: 1.8;
+    overflow: hidden;
+}
+
+/* ── Carousel track ── */
+.torobpay-dw-carousel {
+    position: relative;
+}
+
+.torobpay-dw-track {
+    display: flex;
+    transition: transform 0.35s ease;
+}
+
+.torobpay-dw-slide {
+    flex: 0 0 100%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* ── Slide banner image ── */
+.torobpay-dw-banner {
+    display: block;
+    width: 100%;
+    margin: 0 auto 20px auto;
+    height: auto;
+    max-height: 255px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 8px;
+}
+
+/* ── Intro row (logo + text) ── */
+.torobpay-dw-intro {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.torobpay-dw-intro img,
+.torobpay-dw-intro > .dashicons {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+}
+
+.torobpay-dw-intro > .dashicons {
+    font-size: 36px;
+    line-height: 1;
+    color: #005b01;
+}
+
+.torobpay-dw-intro p {
+    margin: 0;
+    font-size: 13px;
+}
+
+/* ── Feature rows ── */
+.torobpay-dw-feature {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.torobpay-dw-feature .dashicons {
+    color: #005b01;
+    font-size: 22px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.torobpay-dw-feature strong {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 2px;
+}
+
+.torobpay-dw-feature p {
+    margin: 0;
+    font-size: 12px;
+    color: #646970;
+}
+
+/* ── Divider ── */
+.torobpay-dw-divider {
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 0 0 14px;
+}
+
+/* ── Carousel navigation ── */
+.torobpay-dw-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 14px;
+    gap: 8px;
+}
+
+.torobpay-dw-nav-arrow {
+    background: none;
+    border: 1px solid #dcdcde;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #787c82;
+    flex-shrink: 0;
+    padding: 0;
+    transition: border-color 0.2s, color 0.2s;
+}
+
+.torobpay-dw-nav-arrow:hover {
+    border-color: #005b01;
+    color: #005b01;
+}
+
+.torobpay-dw-nav-arrow .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    line-height: 1;
+}
+
+.torobpay-dw-dots {
+    display: flex;
+    gap: 6px;
+}
+
+.torobpay-dw-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #dcdcde;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.torobpay-dw-dot.is-active {
+    background: #005b01;
+}
+

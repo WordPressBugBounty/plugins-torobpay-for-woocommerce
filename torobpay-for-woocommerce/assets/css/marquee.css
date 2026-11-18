@@ -1,0 +1,93 @@
+/**
+ * TorobPay Product Marquee Bar
+ *
+ * Glassmorphism scrolling bar rendered at the bottom of product thumbnails
+ * on product listing pages (PLP).
+ */
+
+/* Ensure parent image containers clip the marquee */
+.has-torobpay-marquee {
+    overflow: hidden !important;
+    position: relative !important;
+}
+
+.torobpay-product-marquee {
+    position: absolute;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    z-index: 10;
+    pointer-events: none;
+    direction: ltr;
+    /* Glassmorphism background — color/opacity/position/gap set via inline CSS */
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.torobpay-product-marquee-track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    /* align-items + padding controlled via inline CSS from vertical_align / vertical_padding settings */
+    box-sizing: border-box;
+    height: 100%;
+    width: max-content;
+    white-space: nowrap;
+    /* animation-duration set via inline CSS from scroll_speed setting */
+    animation: torobpay-marquee-scroll linear infinite;
+    will-change: transform;
+}
+
+/* Pause on hover to let the user read the text */
+.torobpay-product-marquee:hover .torobpay-product-marquee-track {
+    animation-play-state: paused;
+}
+
+.torobpay-product-marquee-item {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    direction: rtl;
+    gap: 4px;
+    padding: 0 14px;
+    /* font-size, font-weight, color set via inline CSS from marquee settings */
+    line-height: 1;
+}
+
+/* wc_price() wraps figures in .amount; themes like Woodmart style that class globally. */
+.torobpay-product-marquee .amount,
+.torobpay-product-marquee .woocommerce-Price-amount,
+.torobpay-product-marquee .woocommerce-Price-currencySymbol {
+    color: inherit;
+    font-weight: inherit;
+}
+
+.torobpay-product-marquee-logo {
+    height: 14px !important;
+    width: auto !important;
+    flex-shrink: 0 !important;
+    display: inline-block !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    object-fit: contain !important;
+    vertical-align: middle;
+    margin: 0 !important;
+}
+
+.torobpay-product-marquee-sep {
+    opacity: 0.45;
+    margin: 0 5px;
+    font-weight: 400;
+}
+
+@keyframes torobpay-marquee-scroll {
+    from {
+        transform: translateX(-25%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}

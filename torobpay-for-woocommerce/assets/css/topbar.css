@@ -1,0 +1,1086 @@
+/* TorobPay sitewide topbar — ticker + spread layouts. Brand: #9CE76A / #003D01; timing via inline vars (PHP). */
+
+#torobpay-topbar {
+    position: relative;
+    width: 100%;
+    height: var(--torobpay-topbar-h, 44px);
+    font-size: var(--torobpay-topbar-fs, 14px);
+    background-color: #9CE76A;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* Fixed bar; document gap reserved in PHP. */
+#torobpay-topbar.torobpay-topbar--sticky {
+    position: fixed;
+    top: var(--torobpay-topbar-top, 0px);
+    left: 0;
+    right: 0;
+    z-index: var(--torobpay-topbar-z, 9990);
+}
+
+/* In-flow embed (shortcode / theme header). */
+#torobpay-topbar.torobpay-topbar--embed {
+    position: relative;
+    width: 100%;
+}
+
+.torobpay-topbar-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    direction: rtl;
+    padding: 0 16px;
+    box-sizing: border-box;
+    gap: 12px;
+}
+
+/* Background layer (canvas or aurora blobs); no pointer events. */
+.torobpay-topbar-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.torobpay-topbar-bg canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.torobpay-topbar-bg-blob {
+    position: absolute;
+    top: 50%;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    filter: blur(34px);
+    opacity: 0.6;
+    will-change: transform, opacity;
+    mix-blend-mode: soft-light;
+}
+
+.torobpay-topbar-bg-blob:nth-child(1) {
+    left: 0;
+    background: radial-gradient(circle at center, #ffffff 0%, rgba(255, 255, 255, 0) 70%);
+    animation: torobpay-tb-aurora-1 13s ease-in-out infinite;
+}
+
+.torobpay-topbar-bg-blob:nth-child(2) {
+    left: 0;
+    background: radial-gradient(circle at center, #003D01 0%, rgba(0, 61, 1, 0) 70%);
+    opacity: 0.4;
+    animation: torobpay-tb-aurora-2 17s ease-in-out infinite;
+}
+
+.torobpay-topbar-bg-blob:nth-child(3) {
+    left: 0;
+    background: radial-gradient(circle at center, #d8ffb8 0%, rgba(216, 255, 184, 0) 70%);
+    animation: torobpay-tb-aurora-3 11s ease-in-out infinite;
+}
+
+@keyframes torobpay-tb-aurora-1 {
+    0%   { transform: translate(-50%, -55%) scale(1); opacity: 0.45; }
+    50%  { transform: translate(60vw, -45%) scale(1.4); opacity: 0.8; }
+    100% { transform: translate(110vw, -55%) scale(1); opacity: 0.45; }
+}
+
+@keyframes torobpay-tb-aurora-2 {
+    0%   { transform: translate(110vw, -45%) scale(1.1); opacity: 0.3; }
+    50%  { transform: translate(45vw, -58%) scale(0.85); opacity: 0.5; }
+    100% { transform: translate(-50%, -45%) scale(1.1); opacity: 0.3; }
+}
+
+@keyframes torobpay-tb-aurora-3 {
+    0%   { transform: translate(30vw, -50%) scale(0.9); opacity: 0.4; }
+    50%  { transform: translate(85vw, -60%) scale(1.35); opacity: 0.75; }
+    100% { transform: translate(30vw, -50%) scale(0.9); opacity: 0.4; }
+}
+
+.torobpay-topbar-logo-wrap {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.torobpay-topbar-logo {
+    display: block;
+    object-fit: contain;
+    width: var(--torobpay-topbar-logo, 24px);
+    height: var(--torobpay-topbar-logo, 24px);
+}
+
+.torobpay-topbar-ticker-wrap {
+    position: relative;
+    overflow: hidden;
+    height: var(--torobpay-topbar-h, 44px);
+    min-width: 0;
+    flex: 1;
+    /* At least ~23rem so the credit line fits; never wider than the bar minus logos. */
+    max-width: min(calc(100vw - 6.5rem), max(var(--torobpay-topbar-w, 250px), 23rem));
+    perspective: 480px;
+}
+
+.torobpay-topbar-ticker-track {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.torobpay-topbar-ticker-item {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #003D01;
+    white-space: nowrap;
+    direction: rtl;
+    text-align: center;
+    opacity: 0;
+    backface-visibility: hidden;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform, opacity, filter;
+}
+
+/* Ticker animations — ~33% visible slot per item; delay staggered inline. */
+.torobpay-topbar--anim-slide-up .torobpay-topbar-ticker-item {
+    animation-name: torobpay-tb-slide-up;
+}
+@keyframes torobpay-tb-slide-up {
+    0%   { opacity: 0; transform: translateY(100%); }
+    4%   { opacity: 1; transform: translateY(0); }
+    29%  { opacity: 1; transform: translateY(0); }
+    33%  { opacity: 0; transform: translateY(-100%); }
+    100% { opacity: 0; transform: translateY(-100%); }
+}
+
+.torobpay-topbar--anim-slide-down .torobpay-topbar-ticker-item {
+    animation-name: torobpay-tb-slide-down;
+}
+@keyframes torobpay-tb-slide-down {
+    0%   { opacity: 0; transform: translateY(-100%); }
+    4%   { opacity: 1; transform: translateY(0); }
+    29%  { opacity: 1; transform: translateY(0); }
+    33%  { opacity: 0; transform: translateY(100%); }
+    100% { opacity: 0; transform: translateY(100%); }
+}
+
+.torobpay-topbar--anim-fade .torobpay-topbar-ticker-item {
+    animation-name: torobpay-tb-fade;
+    animation-timing-function: ease-in-out;
+}
+@keyframes torobpay-tb-fade {
+    0%   { opacity: 0; transform: translateY(20%); }
+    6%   { opacity: 1; transform: translateY(0); }
+    27%  { opacity: 1; transform: translateY(0); }
+    33%  { opacity: 0; transform: translateY(-20%); }
+    100% { opacity: 0; transform: translateY(-20%); }
+}
+
+.torobpay-topbar--anim-flip .torobpay-topbar-ticker-item {
+    animation-name: torobpay-tb-flip;
+}
+@keyframes torobpay-tb-flip {
+    0%   { opacity: 0; transform: rotateX(-90deg); }
+    5%   { opacity: 1; transform: rotateX(0deg); }
+    28%  { opacity: 1; transform: rotateX(0deg); }
+    33%  { opacity: 0; transform: rotateX(90deg); }
+    100% { opacity: 0; transform: rotateX(90deg); }
+}
+
+.torobpay-topbar--anim-zoom .torobpay-topbar-ticker-item {
+    animation-name: torobpay-tb-zoom;
+}
+@keyframes torobpay-tb-zoom {
+    0%   { opacity: 0; transform: scale(0.4); }
+    5%   { opacity: 1; transform: scale(1); }
+    28%  { opacity: 1; transform: scale(1); }
+    33%  { opacity: 0; transform: scale(1.6); }
+    100% { opacity: 0; transform: scale(1.6); }
+}
+
+.torobpay-topbar--anim-blur .torobpay-topbar-ticker-item {
+    animation-name: torobpay-tb-blur;
+    animation-timing-function: ease-in-out;
+}
+@keyframes torobpay-tb-blur {
+    0%   { opacity: 0; filter: blur(8px); transform: scale(1.08); }
+    6%   { opacity: 1; filter: blur(0); transform: scale(1); }
+    27%  { opacity: 1; filter: blur(0); transform: scale(1); }
+    33%  { opacity: 0; filter: blur(8px); transform: scale(0.96); }
+    100% { opacity: 0; filter: blur(8px); transform: scale(0.96); }
+}
+
+.torobpay-topbar--anim-bounce .torobpay-topbar-ticker-item {
+    animation-name: torobpay-tb-bounce;
+    animation-timing-function: ease-out;
+}
+@keyframes torobpay-tb-bounce {
+    0%   { opacity: 0; transform: translateY(-130%); }
+    4%   { opacity: 1; }
+    9%   { transform: translateY(12%); }
+    14%  { transform: translateY(-6%); }
+    19%  { transform: translateY(0); }
+    29%  { opacity: 1; transform: translateY(0); }
+    33%  { opacity: 0; transform: translateY(130%); }
+    100% { opacity: 0; transform: translateY(130%); }
+}
+
+/* Four slogans — 25% slot (delays 0/25/50/75%). */
+.torobpay-topbar--ticker-count-4.torobpay-topbar--anim-slide-up .torobpay-topbar-ticker-item {
+    animation-name: torobpay-tb-slide-up-4;
+}
+@keyframes torobpay-tb-slide-up-4 {
+    0%   { opacity: 0; transform: translateY(100%); }
+    3%   { opacity: 1; transform: translateY(0); }
+    22%  { opacity: 1; transform: translateY(0); }
+    25%  { opacity: 0; transform: translateY(-100%); }
+    100% { opacity: 0; transform: translateY(-100%); }
+}
+
+.torobpay-topbar--ticker-count-4.torobpay-topbar--anim-slide-down .torobpay-topbar-ticker-item {
+    animation-name: torobpay-tb-slide-down-4;
+}
+@keyframes torobpay-tb-slide-down-4 {
+    0%   { opacity: 0; transform: translateY(-100%); }
+    3%   { opacity: 1; transform: translateY(0); }
+    22%  { opacity: 1; transform: translateY(0); }
+    25%  { opacity: 0; transform: translateY(100%); }
+    100% { opacity: 0; transform: translateY(100%); }
+}
+
+.torobpay-topbar--ticker-count-4.torobpay-topbar--anim-fade .torobpay-topbar-ticker-item {
+    animation-name: torobpay-tb-fade-4;
+}
+@keyframes torobpay-tb-fade-4 {
+    0%   { opacity: 0; transform: translateY(20%); }
+    5%   { opacity: 1; transform: translateY(0); }
+    20%  { opacity: 1; transform: translateY(0); }
+    25%  { opacity: 0; transform: translateY(-20%); }
+    100% { opacity: 0; transform: translateY(-20%); }
+}
+
+.torobpay-topbar--ticker-count-4.torobpay-topbar--anim-flip .torobpay-topbar-ticker-item {
+    animation-name: torobpay-tb-flip-4;
+}
+@keyframes torobpay-tb-flip-4 {
+    0%   { opacity: 0; transform: rotateX(-90deg); }
+    4%   { opacity: 1; transform: rotateX(0deg); }
+    21%  { opacity: 1; transform: rotateX(0deg); }
+    25%  { opacity: 0; transform: rotateX(90deg); }
+    100% { opacity: 0; transform: rotateX(90deg); }
+}
+
+.torobpay-topbar--ticker-count-4.torobpay-topbar--anim-zoom .torobpay-topbar-ticker-item {
+    animation-name: torobpay-tb-zoom-4;
+}
+@keyframes torobpay-tb-zoom-4 {
+    0%   { opacity: 0; transform: scale(0.4); }
+    4%   { opacity: 1; transform: scale(1); }
+    21%  { opacity: 1; transform: scale(1); }
+    25%  { opacity: 0; transform: scale(1.6); }
+    100% { opacity: 0; transform: scale(1.6); }
+}
+
+.torobpay-topbar--ticker-count-4.torobpay-topbar--anim-blur .torobpay-topbar-ticker-item {
+    animation-name: torobpay-tb-blur-4;
+}
+@keyframes torobpay-tb-blur-4 {
+    0%   { opacity: 0; filter: blur(8px); transform: scale(1.08); }
+    5%   { opacity: 1; filter: blur(0); transform: scale(1); }
+    20%  { opacity: 1; filter: blur(0); transform: scale(1); }
+    25%  { opacity: 0; filter: blur(8px); transform: scale(0.96); }
+    100% { opacity: 0; filter: blur(8px); transform: scale(0.96); }
+}
+
+.torobpay-topbar--ticker-count-4.torobpay-topbar--anim-bounce .torobpay-topbar-ticker-item {
+    animation-name: torobpay-tb-bounce-4;
+    animation-timing-function: ease-out;
+}
+@keyframes torobpay-tb-bounce-4 {
+    0%   { opacity: 0; transform: translateY(-130%); }
+    3%   { opacity: 1; }
+    7%   { transform: translateY(12%); }
+    11%  { transform: translateY(-6%); }
+    14%  { transform: translateY(0); }
+    22%  { opacity: 1; transform: translateY(0); }
+    25%  { opacity: 0; transform: translateY(130%); }
+    100% { opacity: 0; transform: translateY(130%); }
+}
+
+/* Five slogans — 20% slot (delays 0/20/40/60/80%). */
+.torobpay-topbar--ticker-count-5.torobpay-topbar--anim-slide-up .torobpay-topbar-ticker-item {
+    animation-name: torobpay-tb-slide-up-5;
+}
+@keyframes torobpay-tb-slide-up-5 {
+    0%   { opacity: 0; transform: translateY(100%); }
+    2%   { opacity: 1; transform: translateY(0); }
+    18%  { opacity: 1; transform: translateY(0); }
+    20%  { opacity: 0; transform: translateY(-100%); }
+    100% { opacity: 0; transform: translateY(-100%); }
+}
+
+.torobpay-topbar--ticker-count-5.torobpay-topbar--anim-slide-down .torobpay-topbar-ticker-item {
+    animation-name: torobpay-tb-slide-down-5;
+}
+@keyframes torobpay-tb-slide-down-5 {
+    0%   { opacity: 0; transform: translateY(-100%); }
+    2%   { opacity: 1; transform: translateY(0); }
+    18%  { opacity: 1; transform: translateY(0); }
+    20%  { opacity: 0; transform: translateY(100%); }
+    100% { opacity: 0; transform: translateY(100%); }
+}
+
+.torobpay-topbar--ticker-count-5.torobpay-topbar--anim-fade .torobpay-topbar-ticker-item {
+    animation-name: torobpay-tb-fade-5;
+}
+@keyframes torobpay-tb-fade-5 {
+    0%   { opacity: 0; transform: translateY(20%); }
+    4%   { opacity: 1; transform: translateY(0); }
+    16%  { opacity: 1; transform: translateY(0); }
+    20%  { opacity: 0; transform: translateY(-20%); }
+    100% { opacity: 0; transform: translateY(-20%); }
+}
+
+.torobpay-topbar--ticker-count-5.torobpay-topbar--anim-flip .torobpay-topbar-ticker-item {
+    animation-name: torobpay-tb-flip-5;
+}
+@keyframes torobpay-tb-flip-5 {
+    0%   { opacity: 0; transform: rotateX(-90deg); }
+    3%   { opacity: 1; transform: rotateX(0deg); }
+    17%  { opacity: 1; transform: rotateX(0deg); }
+    20%  { opacity: 0; transform: rotateX(90deg); }
+    100% { opacity: 0; transform: rotateX(90deg); }
+}
+
+.torobpay-topbar--ticker-count-5.torobpay-topbar--anim-zoom .torobpay-topbar-ticker-item {
+    animation-name: torobpay-tb-zoom-5;
+}
+@keyframes torobpay-tb-zoom-5 {
+    0%   { opacity: 0; transform: scale(0.4); }
+    3%   { opacity: 1; transform: scale(1); }
+    17%  { opacity: 1; transform: scale(1); }
+    20%  { opacity: 0; transform: scale(1.6); }
+    100% { opacity: 0; transform: scale(1.6); }
+}
+
+.torobpay-topbar--ticker-count-5.torobpay-topbar--anim-blur .torobpay-topbar-ticker-item {
+    animation-name: torobpay-tb-blur-5;
+}
+@keyframes torobpay-tb-blur-5 {
+    0%   { opacity: 0; filter: blur(8px); transform: scale(1.08); }
+    4%   { opacity: 1; filter: blur(0); transform: scale(1); }
+    16%  { opacity: 1; filter: blur(0); transform: scale(1); }
+    20%  { opacity: 0; filter: blur(8px); transform: scale(0.96); }
+    100% { opacity: 0; filter: blur(8px); transform: scale(0.96); }
+}
+
+.torobpay-topbar--ticker-count-5.torobpay-topbar--anim-bounce .torobpay-topbar-ticker-item {
+    animation-name: torobpay-tb-bounce-5;
+    animation-timing-function: ease-out;
+}
+@keyframes torobpay-tb-bounce-5 {
+    0%   { opacity: 0; transform: translateY(-130%); }
+    2%   { opacity: 1; }
+    6%   { transform: translateY(12%); }
+    9%   { transform: translateY(-6%); }
+    11%  { transform: translateY(0); }
+    18%  { opacity: 1; transform: translateY(0); }
+    20%  { opacity: 0; transform: translateY(130%); }
+    100% { opacity: 0; transform: translateY(130%); }
+}
+
+/* Credit line is longer than the other slogans; shrink only that item on narrow screens. */
+.torobpay-topbar-ticker-item--confetti {
+    font-size: clamp(12px, 3.4vw, 1em);
+}
+
+/* Taller than the bar so pieces can fall. #torobpay-topbar clips the overflow.
+   The stage shortens on a narrow screen so the burst stays wide, not tall. */
+.torobpay-topbar-confetti {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    z-index: 1;
+    height: clamp(84px, 18vw, 180px);
+    overflow: hidden;
+    pointer-events: none;
+    transform: translateY(-50%);
+}
+
+.torobpay-topbar-confetti-piece {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 6px;
+    height: 8px;
+    border-radius: 1px;
+    background: var(--torobpay-tb-confetti-color, #F46344);
+    opacity: 0;
+    animation: torobpay-tb-confetti var(--torobpay-tb-confetti-duration, 900ms) ease-out var(--torobpay-tb-confetti-delay, 0ms) forwards;
+    will-change: transform, opacity;
+}
+
+.torobpay-topbar-confetti-piece--round {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+@keyframes torobpay-tb-confetti {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) translate(var(--x0, 0px), var(--y0, -70px)) rotate(0deg);
+    }
+    18% {
+        opacity: 1;
+    }
+    72% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) translate(var(--x, 0px), var(--y, 70px)) rotate(var(--r, 180deg));
+    }
+}
+
+/* Spread — RTL grid: title → right, fee centre, last slogan → left. */
+.torobpay-topbar--anim-spread .torobpay-topbar-inner {
+    justify-content: center;
+    max-width: none;
+    padding-inline: clamp(12px, 3vw, 28px);
+}
+
+.torobpay-topbar-spread-stage {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    column-gap: clamp(0.5em, 2vw, 1.25em);
+    flex: 1;
+    width: 100%;
+    max-width: min(100%, 960px);
+    height: 100%;
+    margin-inline: auto;
+    direction: rtl;
+}
+
+.torobpay-topbar-spread-slot {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+}
+
+.torobpay-topbar-spread-slot--right {
+    justify-content: flex-start;
+}
+
+.torobpay-topbar-spread-slot--center {
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+}
+
+.torobpay-topbar-spread-slot--left {
+    justify-content: flex-end;
+}
+
+.torobpay-topbar-spread-group {
+    position: relative;
+    display: block;
+    white-space: nowrap;
+    max-width: 100%;
+    animation-duration: var(--torobpay-tb-spread-duration, 8s);
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform, opacity;
+}
+
+.torobpay-topbar-spread-group--right {
+    z-index: 1;
+    padding-inline-start: calc(var(--torobpay-topbar-logo, 24px) + 0.5em);
+    animation-name: torobpay-tb-spread-group-right;
+}
+
+.torobpay-topbar-spread-group--left {
+    z-index: 1;
+    padding-inline-end: calc(var(--torobpay-topbar-logo, 24px) + 0.5em);
+    animation-name: torobpay-tb-spread-group-left;
+}
+
+.torobpay-topbar-spread-text {
+    color: #003D01;
+    direction: rtl;
+    display: inline-block;
+}
+
+.torobpay-topbar-spread-text--title strong {
+    font-weight: 700;
+}
+
+.torobpay-topbar-spread-text--fee {
+    position: relative;
+    z-index: 3;
+    color: #003D01;
+    white-space: nowrap;
+    direction: rtl;
+    opacity: 0;
+    animation-duration: var(--torobpay-tb-spread-duration, 8s);
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    animation-name: torobpay-tb-spread-middle;
+    will-change: opacity;
+}
+
+.torobpay-topbar-spread-text--middle {
+    opacity: 0;
+    animation-duration: var(--torobpay-tb-spread-duration, 8s);
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+    animation-timing-function: ease;
+    animation-name: torobpay-tb-spread-left-text;
+}
+
+.torobpay-topbar-spread-logo {
+    position: absolute;
+    top: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--torobpay-topbar-logo, 24px);
+    height: var(--torobpay-topbar-logo, 24px);
+    line-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    animation-duration: var(--torobpay-tb-spread-duration, 8s);
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform, opacity;
+}
+
+.torobpay-topbar-spread-logo--end {
+    inset-inline-start: 0;
+    animation-name: torobpay-tb-spread-logo-end;
+}
+
+.torobpay-topbar-spread-logo--start {
+    inset-inline-end: 0;
+    animation-name: torobpay-tb-spread-logo-start;
+}
+
+.torobpay-topbar--anim-spread {
+    --torobpay-tb-spread-pull-right: clamp(5rem, 28vw, 13rem);
+    --torobpay-tb-spread-pull-left: clamp(5rem, 28vw, 13rem);
+}
+
+.torobpay-topbar-spread-logo .torobpay-topbar-logo {
+    flex-shrink: 0;
+}
+
+/* Measure script: freeze layout for width reads. */
+.torobpay-topbar-spread-stage.torobpay-topbar-spread-measuring .torobpay-topbar-spread-group,
+.torobpay-topbar-spread-stage.torobpay-topbar-spread-measuring .torobpay-topbar-spread-text--fee,
+.torobpay-topbar-spread-stage.torobpay-topbar-spread-measuring .torobpay-topbar-spread-text--middle {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+.torobpay-topbar-spread-stage.torobpay-topbar-spread-measuring .torobpay-topbar-spread-logo {
+    animation: none !important;
+    opacity: 0 !important;
+    transform: translateY(-50%) !important;
+}
+
+.torobpay-topbar-spread-stage.torobpay-topbar-spread-measuring .torobpay-topbar-spread-solo {
+    animation: none !important;
+    opacity: 0 !important;
+}
+
+/* Credit and custom lines sit on top of the slots and fade in their own window. */
+.torobpay-topbar-spread-solo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 4;
+    max-width: calc(100% - 1.5rem);
+    color: #003D01;
+    direction: rtl;
+    white-space: nowrap;
+    text-align: center;
+    font-size: clamp(12px, 3.4vw, 1em);
+    opacity: 0;
+    pointer-events: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65em;
+    animation-duration: var(--torobpay-tb-spread-duration, 8s);
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+    animation-timing-function: ease;
+}
+
+.torobpay-topbar-spread-solo--credit {
+    animation-name: torobpay-tb-spread-credit;
+}
+
+.torobpay-topbar--spread-has-custom .torobpay-topbar-spread-solo--credit {
+    animation-name: torobpay-tb-spread-credit-x;
+}
+
+.torobpay-topbar-spread-solo--custom {
+    animation-name: torobpay-tb-spread-custom;
+}
+
+.torobpay-topbar-spread-solo-logo {
+    display: flex;
+    flex: 0 0 auto;
+}
+
+.torobpay-topbar-spread-solo-logo .torobpay-topbar-logo {
+    width: var(--torobpay-topbar-logo, 24px);
+    height: var(--torobpay-topbar-logo, 24px);
+}
+
+@keyframes torobpay-tb-spread-credit {
+    0%   { opacity: 0; transform: translate(-50%, -50%); }
+    4%   { opacity: 1; transform: translate(-50%, -50%); }
+    16%  { opacity: 1; transform: translate(-50%, -50%); }
+    22%  { opacity: 0; transform: translate(-50%, -50%); }
+    100% { opacity: 0; transform: translate(-50%, -50%); }
+}
+
+@keyframes torobpay-tb-spread-credit-x {
+    0%   { opacity: 0; transform: translate(-50%, -50%); }
+    3%   { opacity: 1; transform: translate(-50%, -50%); }
+    13%  { opacity: 1; transform: translate(-50%, -50%); }
+    18%  { opacity: 0; transform: translate(-50%, -50%); }
+    100% { opacity: 0; transform: translate(-50%, -50%); }
+}
+
+@keyframes torobpay-tb-spread-custom {
+    0%, 78% { opacity: 0; transform: translate(-50%, -50%); }
+    82%     { opacity: 1; transform: translate(-50%, -50%); }
+    94%     { opacity: 1; transform: translate(-50%, -50%); }
+    100%    { opacity: 0; transform: translate(-50%, -50%); }
+}
+
+@keyframes torobpay-tb-spread-group-right {
+    0%   { opacity: 0; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+    22%  { opacity: 0; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+    29%  { opacity: 0; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+    32.1% { opacity: 1; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+    34.5% { opacity: 1; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+    47%  { opacity: 1; transform: translateX(0); }
+    82.8% { opacity: 1; transform: translateX(0); }
+    90.6% { opacity: 0; transform: translateX(0); }
+    100% { opacity: 0; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+}
+
+@keyframes torobpay-tb-spread-logo-end {
+    0%   { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    22%  { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    39.2% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    45.4% { opacity: 1; transform: translateY(-50%); }
+    82.8% { opacity: 1; transform: translateY(-50%); }
+    90.6% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    100% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+}
+
+@keyframes torobpay-tb-spread-middle {
+    0%   { opacity: 0; }
+    22%  { opacity: 0; }
+    47%  { opacity: 0; }
+    51.6% { opacity: 1; }
+    82.8% { opacity: 1; }
+    90.6% { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+@keyframes torobpay-tb-spread-group-left {
+    0%   { opacity: 0; transform: translateX(var(--torobpay-tb-spread-pull-left)); }
+    22%  { opacity: 0; transform: translateX(var(--torobpay-tb-spread-pull-left)); }
+    58.7% { opacity: 0; transform: translateX(var(--torobpay-tb-spread-pull-left)); }
+    59.4% { opacity: 1; transform: translateX(var(--torobpay-tb-spread-pull-left)); }
+    73.5% { opacity: 1; transform: translateX(0); }
+    82.8% { opacity: 1; transform: translateX(0); }
+    90.6% { opacity: 0; transform: translateX(0); }
+    100% { opacity: 0; transform: translateX(var(--torobpay-tb-spread-pull-left)); }
+}
+
+@keyframes torobpay-tb-spread-left-text {
+    0%   { opacity: 0; }
+    22%  { opacity: 0; }
+    43.8% { opacity: 0; }
+    48.5% { opacity: 1; }
+    100% { opacity: 1; }
+}
+
+@keyframes torobpay-tb-spread-logo-start {
+    0%   { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    22%  { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    64.1% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    71.9% { opacity: 1; transform: translateY(-50%); }
+    82.8% { opacity: 1; transform: translateY(-50%); }
+    90.6% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    100% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+}
+
+/* Spread mobile (<850px): side icons, one centred slogan at a time. */
+@media (max-width: 849px) {
+    .torobpay-topbar--anim-spread {
+        --torobpay-tb-spread-m-exit-x: calc(50vw + 40%);
+        --torobpay-tb-spread-m-exit-y: 200%;
+    }
+
+    .torobpay-topbar-spread-stage {
+        display: block;
+        position: relative;
+        max-width: 100%;
+        column-gap: 0;
+    }
+
+    .torobpay-topbar-spread-slot,
+    .torobpay-topbar-spread-group {
+        display: contents;
+    }
+
+    .torobpay-topbar-spread-group--right,
+    .torobpay-topbar-spread-group--left {
+        padding: 0;
+        animation: none !important;
+    }
+
+    .torobpay-topbar-spread-text--fee,
+    .torobpay-topbar-spread-text--middle,
+    .torobpay-topbar-spread-text--title {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        z-index: 1;
+        opacity: 0;
+        animation-duration: var(--torobpay-tb-spread-duration, 8s);
+        animation-iteration-count: infinite;
+        animation-fill-mode: both;
+        animation-timing-function: linear;
+        will-change: transform, opacity;
+    }
+
+    .torobpay-topbar-spread-text--title {
+        animation-name: torobpay-tb-spread-m-fee;
+    }
+
+    .torobpay-topbar-spread-text--fee {
+        animation-name: torobpay-tb-spread-m-middle;
+    }
+
+    .torobpay-topbar-spread-text--middle {
+        animation-name: torobpay-tb-spread-m-title;
+    }
+
+    .torobpay-topbar-spread-logo {
+        z-index: 5;
+        inset-inline: auto;
+        animation-duration: var(--torobpay-tb-spread-duration, 8s);
+        animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .torobpay-topbar-spread-logo--end {
+        right: 0;
+        left: auto;
+        animation-name: torobpay-tb-spread-m-logo-end;
+    }
+
+    .torobpay-topbar-spread-logo--start {
+        left: 0;
+        right: auto;
+        animation-name: torobpay-tb-spread-m-logo-start;
+    }
+
+    .torobpay-topbar-spread-stage.torobpay-topbar-spread-measuring .torobpay-topbar-spread-text--fee,
+    .torobpay-topbar-spread-stage.torobpay-topbar-spread-measuring .torobpay-topbar-spread-text--middle,
+    .torobpay-topbar-spread-stage.torobpay-topbar-spread-measuring .torobpay-topbar-spread-text--title {
+        animation: none !important;
+        opacity: 0 !important;
+        transform: translate(-50%, -50%) !important;
+    }
+
+    .torobpay-topbar-spread-stage.torobpay-topbar-spread-measuring .torobpay-topbar-spread-logo--end,
+    .torobpay-topbar-spread-stage.torobpay-topbar-spread-measuring .torobpay-topbar-spread-logo--start {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: translateY(-50%) !important;
+    }
+}
+
+@keyframes torobpay-tb-spread-m-logo-end {
+    0%   { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    22%  { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    25.1% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    29.8% { opacity: 1; transform: translateY(-50%); }
+    90.6% { opacity: 1; transform: translateY(-50%); }
+    96.9% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    100% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+}
+
+@keyframes torobpay-tb-spread-m-logo-start {
+    0%   { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    22%  { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    25.1% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    29.8% { opacity: 1; transform: translateY(-50%); }
+    90.6% { opacity: 1; transform: translateY(-50%); }
+    96.9% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    100% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+}
+
+@keyframes torobpay-tb-spread-m-fee {
+    0%   { opacity: 0; transform: translate(-50%, -50%); }
+    22%  { opacity: 0; transform: translate(-50%, -50%); }
+    29.8% { opacity: 0; transform: translate(-50%, -50%); }
+    31.4% { opacity: 1; transform: translate(-50%, -50%); }
+    43.1% { opacity: 1; transform: translate(-50%, -50%); }
+    45.4% { opacity: 0; transform: translate(calc(-50% + 35vw), -50%); }
+    49.3% { opacity: 0; transform: translate(calc(-50% + var(--torobpay-tb-spread-m-exit-x)), -50%); }
+    100% { opacity: 0; transform: translate(-50%, -50%); }
+}
+
+@keyframes torobpay-tb-spread-m-middle {
+    0%   { opacity: 0; transform: translate(-50%, -50%); }
+    22%  { opacity: 0; transform: translate(-50%, -50%); }
+    49.3% { opacity: 0; transform: translate(-50%, -50%); }
+    50.9% { opacity: 1; transform: translate(-50%, -50%); }
+    62.6% { opacity: 1; transform: translate(-50%, -50%); }
+    64.9% { opacity: 0; transform: translate(calc(-50% - 35vw), -50%); }
+    68.8% { opacity: 0; transform: translate(calc(-50% - var(--torobpay-tb-spread-m-exit-x)), -50%); }
+    100% { opacity: 0; transform: translate(-50%, -50%); }
+}
+
+@keyframes torobpay-tb-spread-m-title {
+    0%   { opacity: 0; transform: translate(-50%, -50%); }
+    22%  { opacity: 0; transform: translate(-50%, -50%); }
+    68.8% { opacity: 0; transform: translate(-50%, -50%); }
+    70.4% { opacity: 1; transform: translate(-50%, -50%); }
+    82.1% { opacity: 1; transform: translate(-50%, -50%); }
+    84.4% { opacity: 0; transform: translate(-50%, calc(-50% - 80%)); }
+    88.3% { opacity: 0; transform: translate(-50%, calc(-50% - var(--torobpay-tb-spread-m-exit-y))); }
+    100% { opacity: 0; transform: translate(-50%, -50%); }
+}
+
+@keyframes torobpay-tb-spread-group-right-x {
+    0%   { opacity: 0; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+    18%  { opacity: 0; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+    23.2% { opacity: 0; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+    25.5% { opacity: 1; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+    27.3% { opacity: 1; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+    36.6% { opacity: 1; transform: translateX(0); }
+    63.2% { opacity: 1; transform: translateX(0); }
+    69%  { opacity: 0; transform: translateX(0); }
+    76%  { opacity: 0; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+    100% { opacity: 0; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+}
+
+@keyframes torobpay-tb-spread-logo-end-x {
+    0%   { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    18%  { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    30.8% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    35.4% { opacity: 1; transform: translateY(-50%); }
+    63.2% { opacity: 1; transform: translateY(-50%); }
+    69%  { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    76%  { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    100% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+}
+
+@keyframes torobpay-tb-spread-middle-x {
+    0%   { opacity: 0; }
+    18%  { opacity: 0; }
+    36.6% { opacity: 0; }
+    40%  { opacity: 1; }
+    63.2% { opacity: 1; }
+    69%  { opacity: 0; }
+    76%  { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+@keyframes torobpay-tb-spread-group-left-x {
+    0%   { opacity: 0; transform: translateX(var(--torobpay-tb-spread-pull-left)); }
+    18%  { opacity: 0; transform: translateX(var(--torobpay-tb-spread-pull-left)); }
+    45.3% { opacity: 0; transform: translateX(var(--torobpay-tb-spread-pull-left)); }
+    45.8% { opacity: 1; transform: translateX(var(--torobpay-tb-spread-pull-left)); }
+    56.3% { opacity: 1; transform: translateX(0); }
+    63.2% { opacity: 1; transform: translateX(0); }
+    69%  { opacity: 0; transform: translateX(0); }
+    76%  { opacity: 0; transform: translateX(var(--torobpay-tb-spread-pull-left)); }
+    100% { opacity: 0; transform: translateX(var(--torobpay-tb-spread-pull-left)); }
+}
+
+@keyframes torobpay-tb-spread-left-text-x {
+    0%   { opacity: 0; }
+    18%  { opacity: 0; }
+    34.2% { opacity: 0; }
+    37.7% { opacity: 1; }
+    76%  { opacity: 1; }
+    100% { opacity: 1; }
+}
+
+@keyframes torobpay-tb-spread-logo-start-x {
+    0%   { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    18%  { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    49.3% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    55.1% { opacity: 1; transform: translateY(-50%); }
+    63.2% { opacity: 1; transform: translateY(-50%); }
+    69%  { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    76%  { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    100% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+}
+
+@keyframes torobpay-tb-spread-m-logo-end-x {
+    0%   { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    18%  { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    20.3% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    23.8% { opacity: 1; transform: translateY(-50%); }
+    69%  { opacity: 1; transform: translateY(-50%); }
+    73.7% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    76%  { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    100% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+}
+
+@keyframes torobpay-tb-spread-m-logo-start-x {
+    0%   { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    18%  { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    20.3% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    23.8% { opacity: 1; transform: translateY(-50%); }
+    69%  { opacity: 1; transform: translateY(-50%); }
+    73.7% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    76%  { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    100% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+}
+
+@keyframes torobpay-tb-spread-m-fee-x {
+    0%   { opacity: 0; transform: translate(-50%, -50%); }
+    18%  { opacity: 0; transform: translate(-50%, -50%); }
+    23.8% { opacity: 0; transform: translate(-50%, -50%); }
+    25%  { opacity: 1; transform: translate(-50%, -50%); }
+    33.7% { opacity: 1; transform: translate(-50%, -50%); }
+    35.4% { opacity: 0; transform: translate(calc(-50% + 35vw), -50%); }
+    38.3% { opacity: 0; transform: translate(calc(-50% + var(--torobpay-tb-spread-m-exit-x)), -50%); }
+    76%  { opacity: 0; transform: translate(-50%, -50%); }
+    100% { opacity: 0; transform: translate(-50%, -50%); }
+}
+
+@keyframes torobpay-tb-spread-m-middle-x {
+    0%   { opacity: 0; transform: translate(-50%, -50%); }
+    18%  { opacity: 0; transform: translate(-50%, -50%); }
+    38.3% { opacity: 0; transform: translate(-50%, -50%); }
+    39.5% { opacity: 1; transform: translate(-50%, -50%); }
+    48.2% { opacity: 1; transform: translate(-50%, -50%); }
+    49.9% { opacity: 0; transform: translate(calc(-50% - 35vw), -50%); }
+    52.8% { opacity: 0; transform: translate(calc(-50% - var(--torobpay-tb-spread-m-exit-x)), -50%); }
+    76%  { opacity: 0; transform: translate(-50%, -50%); }
+    100% { opacity: 0; transform: translate(-50%, -50%); }
+}
+
+@keyframes torobpay-tb-spread-m-title-x {
+    0%   { opacity: 0; transform: translate(-50%, -50%); }
+    18%  { opacity: 0; transform: translate(-50%, -50%); }
+    52.8% { opacity: 0; transform: translate(-50%, -50%); }
+    54%  { opacity: 1; transform: translate(-50%, -50%); }
+    62.7% { opacity: 1; transform: translate(-50%, -50%); }
+    64.4% { opacity: 0; transform: translate(-50%, calc(-50% - 80%)); }
+    67.3% { opacity: 0; transform: translate(-50%, calc(-50% - var(--torobpay-tb-spread-m-exit-y))); }
+    76%  { opacity: 0; transform: translate(-50%, -50%); }
+    100% { opacity: 0; transform: translate(-50%, -50%); }
+}
+
+
+.torobpay-topbar--spread-has-custom .torobpay-topbar-spread-group--right {
+    animation-name: torobpay-tb-spread-group-right-x;
+}
+
+.torobpay-topbar--spread-has-custom .torobpay-topbar-spread-group--left {
+    animation-name: torobpay-tb-spread-group-left-x;
+}
+
+.torobpay-topbar--spread-has-custom .torobpay-topbar-spread-text--fee {
+    animation-name: torobpay-tb-spread-middle-x;
+}
+
+.torobpay-topbar--spread-has-custom .torobpay-topbar-spread-text--middle {
+    animation-name: torobpay-tb-spread-left-text-x;
+}
+
+.torobpay-topbar--spread-has-custom .torobpay-topbar-spread-logo--end {
+    animation-name: torobpay-tb-spread-logo-end-x;
+}
+
+.torobpay-topbar--spread-has-custom .torobpay-topbar-spread-logo--start {
+    animation-name: torobpay-tb-spread-logo-start-x;
+}
+
+@media (max-width: 849px) {
+    .torobpay-topbar--spread-has-custom .torobpay-topbar-spread-text--title {
+        animation-name: torobpay-tb-spread-m-fee-x;
+    }
+
+    .torobpay-topbar--spread-has-custom .torobpay-topbar-spread-text--fee {
+        animation-name: torobpay-tb-spread-m-middle-x;
+    }
+
+    .torobpay-topbar--spread-has-custom .torobpay-topbar-spread-text--middle {
+        animation-name: torobpay-tb-spread-m-title-x;
+    }
+
+    .torobpay-topbar--spread-has-custom .torobpay-topbar-spread-logo--end {
+        animation-name: torobpay-tb-spread-m-logo-end-x;
+    }
+
+    .torobpay-topbar--spread-has-custom .torobpay-topbar-spread-logo--start {
+        animation-name: torobpay-tb-spread-m-logo-start-x;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .torobpay-topbar-ticker-item {
+        animation: none !important;
+        opacity: 0;
+        transform: none !important;
+        filter: none !important;
+    }
+    .torobpay-topbar-ticker-item:first-child {
+        opacity: 1;
+    }
+    .torobpay-topbar--anim-spread .torobpay-topbar-spread-solo--credit {
+        animation: none !important;
+        opacity: 1;
+        transform: translate(-50%, -50%) !important;
+    }
+    .torobpay-topbar--anim-spread .torobpay-topbar-spread-solo--custom,
+    .torobpay-topbar--anim-spread .torobpay-topbar-spread-group,
+    .torobpay-topbar--anim-spread .torobpay-topbar-spread-text--title,
+    .torobpay-topbar--anim-spread .torobpay-topbar-spread-text--fee,
+    .torobpay-topbar--anim-spread .torobpay-topbar-spread-text--middle,
+    .torobpay-topbar--anim-spread .torobpay-topbar-spread-logo {
+        animation: none !important;
+        opacity: 0;
+        transform: none !important;
+    }
+    .torobpay-topbar-bg,
+    .torobpay-topbar-confetti {
+        display: none !important;
+    }
+}

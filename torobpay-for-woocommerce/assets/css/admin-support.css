@@ -1,0 +1,396 @@
+/**
+ * TorobPay support page.
+ *
+ * Same card language as the campaign page: white cards, green accent, hairline borders.
+ */
+
+.trb-support-page {
+	--trb-support-green: #2e8e20;
+	--trb-support-green-hover: #267a1b;
+	--trb-support-green-soft: #eef9ea;
+	--trb-support-green-line: #d8edd4;
+	--trb-support-text: #1d2327;
+	--trb-support-muted: #646970;
+	--trb-support-line: #e6e7e9;
+	--trb-support-radius: 16px;
+	max-width: 1200px;
+	margin-top: 8px;
+}
+
+.trb-support-page .wp-heading-inline {
+	display: block;
+	margin-bottom: 16px;
+	font-size: 22px;
+	font-weight: 700;
+}
+
+.trb-support-layout {
+	display: grid;
+	grid-template-columns: minmax(360px, 460px) minmax(0, 1fr);
+	gap: 16px;
+	align-items: start;
+}
+
+.trb-support-side {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.trb-support-card {
+	background: #fff;
+	border: 1px solid var(--trb-support-line);
+	border-radius: var(--trb-support-radius);
+	box-shadow: none;
+	box-sizing: border-box;
+}
+
+.trb-support-card-head {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 18px 20px 8px;
+}
+
+.trb-support-card-head h2 {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 15px;
+	font-weight: 700;
+	line-height: 1.4;
+	color: var(--trb-support-text);
+}
+
+.trb-support-card-icon .dashicons {
+	width: 22px;
+	height: 22px;
+	font-size: 22px;
+	line-height: 1;
+	color: var(--trb-support-green);
+}
+
+.trb-support-card-lead {
+	margin: 0;
+	padding: 0 20px 16px;
+	color: var(--trb-support-muted);
+	font-size: 13px;
+	line-height: 1.8;
+}
+
+.trb-support-method-label {
+	margin: 0;
+	padding: 0 20px 10px;
+	color: var(--trb-support-text);
+	font-size: 13px;
+	font-weight: 700;
+}
+
+.trb-support-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	padding: 0 20px 20px;
+}
+
+.trb-support-page .trb-support-btn {
+	box-sizing: border-box;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	min-height: 36px;
+	padding: 6px 14px;
+	border: 1px solid var(--trb-support-green);
+	border-radius: 8px;
+	background: #fff;
+	color: var(--trb-support-green);
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.3;
+	text-decoration: none;
+	box-shadow: none;
+	cursor: pointer;
+	flex-shrink: 0;
+	white-space: nowrap;
+}
+
+.trb-support-page .trb-support-btn .dashicons {
+	width: 16px;
+	height: 16px;
+	font-size: 16px;
+	line-height: 1;
+	color: inherit;
+}
+
+.trb-support-page .trb-support-btn:hover,
+.trb-support-page .trb-support-btn:focus {
+	background: var(--trb-support-green-soft);
+	color: var(--trb-support-green-hover);
+	border-color: var(--trb-support-green-hover);
+}
+
+.trb-support-page .trb-support-btn:focus {
+	outline: 2px solid var(--trb-support-green);
+	outline-offset: 2px;
+}
+
+.trb-support-page .trb-support-btn--primary {
+	border-color: var(--trb-support-green);
+	background: var(--trb-support-green);
+	color: #fff;
+}
+
+.trb-support-page .trb-support-btn--primary .dashicons {
+	color: #fff;
+}
+
+.trb-support-page .trb-support-btn--primary:hover,
+.trb-support-page .trb-support-btn--primary:focus {
+	background: var(--trb-support-green-hover);
+	border-color: var(--trb-support-green-hover);
+	color: #fff;
+}
+
+.trb-support-links {
+	list-style: none;
+	margin: 0 20px 20px;
+	padding: 4px 12px;
+	border: 1px solid var(--trb-support-line);
+	border-radius: 12px;
+}
+
+.trb-support-link {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 12px 4px;
+	border-bottom: 1px solid var(--trb-support-line);
+}
+
+.trb-support-link:last-child {
+	border-bottom: 0;
+}
+
+.trb-support-link-copy {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.trb-support-link-copy strong {
+	display: block;
+	color: var(--trb-support-text);
+	font-size: 13px;
+	font-weight: 700;
+	line-height: 1.4;
+}
+
+.trb-support-link-copy p {
+	margin: 2px 0 0;
+	color: var(--trb-support-muted);
+	font-size: 12px;
+	line-height: 1.6;
+}
+
+.trb-support-faq {
+	padding-bottom: 8px;
+}
+
+.trb-support-faq-item {
+	border-top: 1px solid var(--trb-support-line);
+}
+
+.trb-support-faq-item:first-child {
+	border-top: 0;
+}
+
+.trb-support-page button.torobpay-accordion-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	width: 100%;
+	margin: 0;
+	padding: 14px 20px;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+	color: var(--trb-support-text);
+	font-size: 14px !important;
+	font-weight: 600;
+	line-height: 1.5;
+	text-align: start;
+	cursor: pointer;
+}
+
+.trb-support-page button.torobpay-accordion-header:hover,
+.trb-support-page button.torobpay-accordion-header:focus {
+	background: #f6f7f7;
+	color: var(--trb-support-text);
+	box-shadow: none;
+}
+
+.trb-support-page button.torobpay-accordion-header:focus {
+	outline: 2px solid var(--trb-support-green);
+	outline-offset: -2px;
+}
+
+.trb-support-page button.torobpay-accordion-header.is-open {
+	color: var(--trb-support-green);
+	background: var(--trb-support-green-soft);
+}
+
+.trb-support-faq-label {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.trb-support-page .trb-support-faq-chevron {
+	width: 18px;
+	height: 18px;
+	font-size: 18px;
+	line-height: 1;
+	flex-shrink: 0;
+	color: #8c8f94;
+	transition: transform 0.15s ease;
+}
+
+.trb-support-page button.torobpay-accordion-header.is-open .trb-support-faq-chevron {
+	color: var(--trb-support-green);
+	transform: rotate(180deg);
+}
+
+.trb-support-page .torobpay-accordion-content {
+	display: none;
+	margin: 0;
+	padding: 4px 20px 16px;
+	border: 0;
+	background: transparent;
+	color: var(--trb-support-text);
+	font-size: 13px;
+	line-height: 1.8;
+}
+
+.trb-support-page .torobpay-accordion-content p,
+.trb-support-page .torobpay-accordion-content li {
+	font-size: 13px;
+	line-height: 1.8;
+}
+
+.trb-support-page .torobpay-accordion-content h4 {
+	margin: 16px 0 8px;
+	color: var(--trb-support-text);
+	font-size: 13px;
+	font-weight: 700;
+}
+
+.trb-support-page .torobpay-accordion-content ol {
+	margin: 8px 0 12px;
+	padding-inline-start: 18px;
+}
+
+.trb-support-page .torobpay-accordion-content a {
+	color: var(--trb-support-green);
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.trb-support-page .torobpay-accordion-content a:hover,
+.trb-support-page .torobpay-accordion-content a:focus {
+	color: var(--trb-support-green-hover);
+	text-decoration: underline;
+}
+
+.trb-support-page .torobpay-accordion-content img {
+	display: block;
+	width: 100%;
+	height: auto;
+	margin: 12px 0;
+	border: 1px solid var(--trb-support-line);
+	border-radius: 12px;
+	cursor: zoom-in;
+	box-sizing: border-box;
+}
+
+.trb-support-note {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	margin: 12px 0;
+	padding: 12px 14px;
+	background: var(--trb-support-green-soft);
+	border: 1px solid var(--trb-support-green-line);
+	border-radius: 12px;
+}
+
+.trb-support-note p {
+	margin: 0;
+}
+
+.trb-support-page .trb-support-note .dashicons {
+	width: 18px;
+	height: 18px;
+	margin-top: 3px;
+	font-size: 18px;
+	line-height: 1;
+	flex-shrink: 0;
+	color: var(--trb-support-green);
+}
+
+.trb-support-note--warning {
+	background: #fffbf0;
+	border-color: #f5df8a;
+}
+
+.trb-support-page .trb-support-note--warning .dashicons {
+	color: #9a6700;
+}
+
+#trb-lightbox {
+	display: none;
+	position: fixed;
+	inset: 0;
+	z-index: 99999;
+	align-items: center;
+	justify-content: center;
+	background: rgba(0, 0, 0, 0.82);
+	cursor: zoom-out;
+}
+
+#trb-lightbox-img {
+	max-width: 90vw;
+	max-height: 90vh;
+	border-radius: 12px;
+	box-shadow: 0 4px 32px rgba(0, 0, 0, 0.6);
+	pointer-events: none;
+}
+
+@media screen and (max-width: 1100px) {
+	.trb-support-layout {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media screen and (max-width: 782px) {
+	.trb-support-card-head,
+	.trb-support-card-lead,
+	.trb-support-method-label,
+	.trb-support-actions {
+		padding-inline: 16px;
+	}
+
+	.trb-support-page button.torobpay-accordion-header,
+	.trb-support-page .torobpay-accordion-content {
+		padding-inline: 16px;
+	}
+
+	.trb-support-links {
+		margin-inline: 16px;
+	}
+
+	.trb-support-link {
+		flex-wrap: wrap;
+	}
+}
