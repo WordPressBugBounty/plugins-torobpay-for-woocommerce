@@ -8,14 +8,18 @@ function torobpay_get_order_amount_in_iranian_rial( WC_Order $order ) {
 	return torobpay_get_amount_by_currency( $order->get_total(), $order->get_currency() );
 }
 
-function torobpay_get_amount_by_currency( $amount, $currency = null ) {
+/**
+ * Multiplier that converts a store-currency amount into Iranian rial.
+ *
+ * @param string|null $currency Store currency code. Null uses the WooCommerce currency.
+ * @return int
+ */
+function torobpay_get_currency_amount_factor( $currency = null ) {
 	if ( null === $currency ) {
 		$currency = get_woocommerce_currency();
 	}
 
-	$amount = floatval( $amount );
-
-	$currency_lower = strtolower( $currency );
+	$currency_lower = strtolower( (string) $currency );
 
 	$toman_variants = array(
 		'irt',
@@ -31,12 +35,20 @@ function torobpay_get_amount_by_currency( $amount, $currency = null ) {
 	);
 
 	if ( in_array( $currency_lower, $toman_variants, true ) ) {
-		$amount = $amount * 10;
-	} elseif ( $currency_lower === 'irht' ) {
-		$amount = $amount * 10000;
-	} elseif ( $currency_lower === 'irhr' ) {
-		$amount = $amount * 1000;
+		return 10;
 	}
+	if ( 'irht' === $currency_lower ) {
+		return 10000;
+	}
+	if ( 'irhr' === $currency_lower ) {
+		return 1000;
+	}
+
+	return 1;
+}
+
+function torobpay_get_amount_by_currency( $amount, $currency = null ) {
+	$amount = floatval( $amount ) * torobpay_get_currency_amount_factor( $currency );
 
 	// intval/floor would silently under-charge the merchant.
 	return (int) ceil( $amount );
@@ -55,6 +67,49 @@ function torobpay_get_settings( $refresh = false ) {
 		$settings = get_option( 'woocommerce_WC_Gateway_TorobPay_settings', false ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals -- WooCommerce Settings API key: woocommerce_{gateway_id}_settings.
 	}
 	return $settings;
+}
+
+/**
+ * Whether "Require mobile number" is on for an enabled gateway.
+ *
+ * A missing mobile_enabled key stays on, matching the checkbox default.
+ * Reads the option directly so a settings save in the same request is visible.
+ *
+ * @return bool
+ */
+function torobpay_should_require_checkout_phone() {
+	$settings = get_option( 'woocommerce_WC_Gateway_TorobPay_settings', false ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals -- WooCommerce Settings API key: woocommerce_{gateway_id}_settings.
+	if ( ! is_array( $settings ) ) {
+		return false;
+	}
+	if ( ! isset( $settings['enabled'] ) || 'yes' !== $settings['enabled'] ) {
+		return false;
+	}
+	if ( ! array_key_exists( 'mobile_enabled', $settings ) ) {
+		return true;
+	}
+	return 'yes' === $settings['mobile_enabled'];
+}
+
+/**
+ * Force WooCommerce's checkout phone visibility to required.
+ *
+ * Classic checkout and block checkout both read woocommerce_checkout_phone_field.
+ * Marking billing_phone required in woocommerce_checkout_fields still leaves the
+ * classic asterisk and the block "optional" label on the optional visibility.
+ *
+ * wp-admin keeps the saved WooCommerce value. Checkout AJAX still needs the override.
+ *
+ * @param mixed $value Saved visibility: required, optional, hidden, or empty.
+ * @return mixed
+ */
+function torobpay_checkout_phone_field_visibility( $value ) {
+	$is_admin_screen = function_exists( 'is_admin' ) && is_admin()
+		&& ( ! function_exists( 'wp_doing_ajax' ) || ! wp_doing_ajax() );
+	if ( $is_admin_screen || ! torobpay_should_require_checkout_phone() ) {
+		return $value;
+	}
+	return 'required';
 }
 
 function torobpay_has_credentials() {

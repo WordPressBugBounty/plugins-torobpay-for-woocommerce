@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       TorobPay for WooCommerce
  * Description:       Accept TorobPay installment payments in WooCommerce.
- * Version:           4.8.17
+ * Version:           4.9.0
  * Requires at least: 5.8
  * Requires PHP:      7.4
  * Requires Plugins:  woocommerce
@@ -13,7 +13,7 @@
  * Text Domain:       torobpay-for-woocommerce
  * Domain Path:       /languages
  * WC requires at least: 7.1
- * WC tested up to:   11.2.1
+ * WC tested up to:   11.3.1
  *
  * @package TorobPay
  */
@@ -35,7 +35,7 @@ if ( ! defined( 'TOROBPAY_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'TOROBPAY_VERSION' ) ) {
-	define( 'TOROBPAY_VERSION', '4.8.17' );
+	define( 'TOROBPAY_VERSION', '4.9.0' );
 }
 
 add_action( 'before_woocommerce_init', 'torobpay_declare_wc_compatibility' );
@@ -81,7 +81,9 @@ require_once $torobpay_plugin_dir . 'includes/torobpay-payment-price-parity.php'
  */
 function torobpay_load_after_wc() {
 	torobpay_maybe_migrate_widget_display_priority();
+	torobpay_maybe_migrate_green_colors();
 	require_once plugin_dir_path( __FILE__ ) . 'includes/torobpay-payment-retry-control.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/torobpay-discount-campaigns.php';
 	require_once plugin_dir_path( __FILE__ ) . 'includes/torobpay-pdp-promo.php';
 	require_once plugin_dir_path( __FILE__ ) . 'includes/torobpay-widget.php';
 	require_once plugin_dir_path( __FILE__ ) . 'includes/torobpay-marquee.php';
@@ -106,6 +108,7 @@ function torobpay_cleanup_removed_custom_css() {
 	delete_option( 'torobpay_custom_css_mobile' );
 	update_option( 'torobpay_custom_css_removed', 1, false );
 }
+
 require_once $torobpay_plugin_dir . 'includes/torobpay-utm-handler.php';
 require_once $torobpay_plugin_dir . 'includes/torobpay-dns-resolve.php';
 require_once $torobpay_plugin_dir . 'includes/torobpay-dashboard-widget.php';

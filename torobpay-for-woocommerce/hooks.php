@@ -250,6 +250,11 @@ function torobpay_enqueue_admin_styles( $hook ) {
 				'presets' => $layout_presets_js,
 			)
 		);
+		wp_localize_script(
+			'torobpay-widget-settings',
+			'torobpayGreenColor',
+			torobpay_green_color_limits()
+		);
 
 		$loader_js = '( function () {
 				var wrap = document.querySelector( \'.torobpay-visual-settings-wrap\' );
@@ -592,7 +597,7 @@ add_filter( 'woocommerce_available_payment_gateways', 'torobpay_filter_gateways_
 
 function torobpay_filter_gateways_by_cart_amount( $available_gateways ) {
 
-	if ( ! is_checkout() ) {
+	if ( ! function_exists( 'torobpay_is_checkout_request' ) || ! torobpay_is_checkout_request() ) {
 		return $available_gateways;
 	}
 
@@ -639,8 +644,12 @@ function torobpay_filter_gateways_by_cart_amount( $available_gateways ) {
 		return $available_gateways;
 	}
 
-	$amount   = WC()->cart->get_total( 'edit' );
-	$currency = get_woocommerce_currency();
+	if ( ! function_exists( 'torobpay_checkout_payable' ) ) {
+		require_once dirname( TOROBPAY_PLUGIN_FILE ) . '/includes/torobpay-utils.php';
+	}
+	$payable  = torobpay_checkout_payable();
+	$amount   = $payable['amount'];
+	$currency = null !== $payable['currency'] ? $payable['currency'] : get_woocommerce_currency();
 
 	if ( ! function_exists( 'torobpay_resolve_eligibility' ) ) {
 		require_once dirname( TOROBPAY_PLUGIN_FILE ) . '/includes/torobpay-eligibility.php';
@@ -649,18 +658,34 @@ function torobpay_filter_gateways_by_cart_amount( $available_gateways ) {
 	$eligibility = torobpay_resolve_eligibility( $amount, $currency );
 
 	if ( $eligibility['wp_error'] ) {
-		wc_print_notice( $eligibility['wp_error']->get_error_message(), 'error' );
+		if ( ! function_exists( 'torobpay_is_store_api_checkout_request' ) || ! torobpay_is_store_api_checkout_request() ) {
+			wc_print_notice( $eligibility['wp_error']->get_error_message(), 'error' );
+		}
 		unset( $available_gateways['WC_Gateway_TorobPay'] );
 		return $available_gateways;
 	}
 
 	if ( $eligibility['eligible'] ) {
 		if ( isset( $available_gateways['WC_Gateway_TorobPay'] ) ) {
-			$gateway              = $available_gateways['WC_Gateway_TorobPay'];
-			$gateway->title       = $eligibility['title'];
-			$gateway->description = $eligibility['description'];
+			$gateway                            = $available_gateways['WC_Gateway_TorobPay'];
+			$gateway->title                     = $eligibility['title'];
+			$type                               = isset( $eligibility['description_type'] ) ? (string) $eligibility['description_type'] : 'installment';
+			$gateway->torobpay_description_type = $type;
+			// Discount copy is a highlight on the method label. The payment box
+			// stays for installment and for any description_type we do not know.
+			$offer_html = '';
+			if ( torobpay_description_type_is_offer( $type ) ) {
+				$gateway->torobpay_offer_text = (string) $eligibility['description'];
+				$gateway->description         = '';
+				$offer_html                   = torobpay_checkout_offer_html( $gateway->torobpay_offer_text, $type );
+			} else {
+				$gateway->torobpay_offer_text = '';
+				$gateway->description         = $eligibility['description'];
+			}
+			torobpay_checkout_offer_icon( $offer_html );
 		}
 	} else {
+		torobpay_checkout_offer_icon( '' );
 		unset( $available_gateways['WC_Gateway_TorobPay'] );
 	}
 
@@ -668,11 +693,12 @@ function torobpay_filter_gateways_by_cart_amount( $available_gateways ) {
 }
 
 /**
- * Modify checkout fields to enforce TorobPay requirements for Classic Checkout
+ * Require the classic postal-code field when that gateway checkbox is on.
  *
- * This makes postal code and phone required based on TorobPay settings.
- * The validation is payment-method-specific (enforced in validation hook below).
+ * Phone uses WooCommerce's checkout phone visibility. See
+ * torobpay_checkout_phone_field_visibility().
  */
+add_filter( 'option_woocommerce_checkout_phone_field', 'torobpay_checkout_phone_field_visibility' );
 add_filter( 'woocommerce_checkout_fields', 'torobpay_checkout_fields', 98 );
 function torobpay_checkout_fields( $fields ) {
 	if ( ! function_exists( 'is_checkout' ) || ! is_checkout() ) {
@@ -691,7 +717,6 @@ function torobpay_checkout_fields( $fields ) {
 	}
 
 	$postal_enabled = isset( $torobpay_settings['postal_enabled'] ) ? $torobpay_settings['postal_enabled'] : 'no';
-	$mobile_enabled = isset( $torobpay_settings['mobile_enabled'] ) ? $torobpay_settings['mobile_enabled'] : 'yes';
 
 	// If postal code is enabled (set to 'yes'), ensure it's marked as required
 	if ( $postal_enabled === 'yes' ) {
@@ -705,20 +730,122 @@ function torobpay_checkout_fields( $fields ) {
 		}
 	}
 
-	// If mobile is enabled (set to 'yes'), ensure it's marked as required
-	if ( $mobile_enabled === 'yes' ) {
-		if ( isset( $fields['billing']['billing_phone'] ) ) {
-			$fields['billing']['billing_phone']['required'] = true;
-			$fields['billing']['billing_phone']['class'][]  = 'torobpay-required-field';
-		}
-		if ( isset( $fields['shipping']['shipping_phone'] ) ) {
-			$fields['shipping']['shipping_phone']['required'] = true;
-			$fields['shipping']['shipping_phone']['class'][]  = 'torobpay-required-field';
-		}
-	}
-
 	return $fields;
 }
+
+/**
+ * Refresh classic checkout after the billing phone becomes a mobile number.
+ *
+ * WooCommerce does not run update_order_review when #billing_phone changes.
+ * Clearing that number restores the previous description without another
+ * eligibility call.
+ */
+add_action( 'wp_enqueue_scripts', 'torobpay_enqueue_checkout_phone_refresh' );
+function torobpay_enqueue_checkout_phone_refresh() {
+	if ( ! function_exists( 'is_checkout' ) || ! is_checkout() ) {
+		return;
+	}
+	if ( function_exists( 'is_order_received_page' ) && is_order_received_page() ) {
+		return;
+	}
+
+	$settings = get_option( 'woocommerce_WC_Gateway_TorobPay_settings' );
+	if ( ! is_array( $settings ) || ( $settings['enabled'] ?? '' ) !== 'yes' ) {
+		return;
+	}
+
+	torobpay_enqueue_checkout_offer_style();
+
+	wp_enqueue_script(
+		'torobpay-checkout-phone',
+		plugins_url( 'assets/js/checkout-phone.js', TOROBPAY_PLUGIN_FILE ),
+		array( 'jquery' ),
+		defined( 'TOROBPAY_VERSION' ) ? TOROBPAY_VERSION : false,
+		true
+	);
+}
+
+/**
+ * Styles for the discount highlight on the checkout payment method.
+ *
+ * @return void
+ */
+function torobpay_enqueue_checkout_offer_style() {
+	wp_enqueue_style(
+		'torobpay-checkout-offer',
+		plugins_url( 'assets/css/checkout-offer.css', TOROBPAY_PLUGIN_FILE ),
+		array(),
+		defined( 'TOROBPAY_VERSION' ) ? TOROBPAY_VERSION : false
+	);
+}
+
+/**
+ * Discount markup for the classic checkout icon, set while gateways are filtered.
+ *
+ * Passing a string stores it for this request. Calling with no arguments reads it.
+ * The stored title on the order stays plain text.
+ *
+ * @param string|null $html Markup to store, or null to read.
+ * @return string
+ */
+function torobpay_checkout_offer_icon( $html = null ) {
+	static $stored = '';
+	if ( null !== $html ) {
+		$stored = (string) $html;
+	}
+
+	return $stored;
+}
+
+/**
+ * Append the stored discount highlight after the gateway icon.
+ *
+ * @param string $icon       Icon HTML.
+ * @param string $gateway_id Gateway id.
+ * @return string
+ */
+function torobpay_append_checkout_offer_to_icon( $icon, $gateway_id ) {
+	if ( 'WC_Gateway_TorobPay' !== (string) $gateway_id ) {
+		return $icon;
+	}
+
+	$offer = torobpay_checkout_offer_icon();
+	if ( '' === $offer ) {
+		return $icon;
+	}
+
+	return torobpay_checkout_logo_html( $icon ) . $offer;
+}
+
+/**
+ * Payment logo for the special-offer row, with no img for a theme to reposition.
+ * Outer box scales, inner box spins: one element cannot do both transforms.
+ *
+ * @param string $icon Gateway icon HTML.
+ * @return string
+ */
+function torobpay_checkout_logo_html( $icon ) {
+	$src = '';
+	$alt = '';
+	if ( preg_match( '/\bsrc=(["\'])([^"\']+)\1/', (string) $icon, $matches ) ) {
+		$src = html_entity_decode( $matches[2], ENT_QUOTES, 'UTF-8' );
+	}
+	if ( preg_match( '/\balt=(["\'])([^"\']*)\1/', (string) $icon, $matches ) ) {
+		$alt = html_entity_decode( $matches[2], ENT_QUOTES, 'UTF-8' );
+	}
+	$src = esc_url( $src );
+	// Same characters cssBackgroundImage() removes. Quotes keep a semicolon
+	// inside the address from starting another style declaration.
+	$src = preg_replace( '/[\x00-\x1F\x7F"\\\\();]/', '', (string) $src );
+	// Keep the original icon when its address cannot be reused. Wrapping that
+	// markup would put an img back under theme payment-icon rules.
+	if ( ! is_string( $src ) || '' === $src ) {
+		return $icon;
+	}
+
+	return '<span class="torobpay-checkout-logo torobpay-logo-elastic"><span class="torobpay-logo-spin" role="img" aria-label="' . esc_attr( $alt ) . '" style="' . esc_attr( 'background-image:url("' . $src . '")' ) . '"></span></span>';
+}
+add_filter( 'woocommerce_gateway_icon', 'torobpay_append_checkout_offer_to_icon', 20, 2 );
 
 add_filter( 'plugin_action_links_' . TOROBPAY_PLUGIN, 'torobpay_plugin_action_links' );
 function torobpay_plugin_action_links( $links ) {
@@ -1906,6 +2033,72 @@ function torobpay_register_blocks_support() {
 		function ( $registry ) {
 			$registry->register( new TorobPay_Blocks_Support() );
 		}
+	);
+
+	if ( function_exists( 'woocommerce_store_api_register_endpoint_data' ) ) {
+		woocommerce_store_api_register_endpoint_data(
+			array(
+				'endpoint'        => 'cart',
+				'namespace'       => 'torobpay',
+				'data_callback'   => 'torobpay_store_api_cart_data',
+				'schema_callback' => 'torobpay_store_api_cart_schema',
+				'schema_type'     => ARRAY_A,
+			)
+		);
+	}
+}
+
+/**
+ * Description for the checkout block, taken from the same eligibility call.
+ *
+ * @return array{description:string,description_type:string}
+ */
+function torobpay_store_api_cart_data() {
+	if ( ! function_exists( 'torobpay_is_checkout_request' ) || ! torobpay_is_checkout_request() ) {
+		return array(
+			'description'      => '',
+			'description_type' => 'installment',
+		);
+	}
+
+	if ( ! function_exists( 'torobpay_resolve_eligibility' ) ) {
+		require_once dirname( TOROBPAY_PLUGIN_FILE ) . '/includes/torobpay-eligibility.php';
+	}
+
+	if ( ! function_exists( 'torobpay_checkout_payable' ) ) {
+		require_once dirname( TOROBPAY_PLUGIN_FILE ) . '/includes/torobpay-utils.php';
+	}
+	$payable = torobpay_checkout_payable();
+
+	$eligibility = torobpay_resolve_eligibility( $payable['amount'], $payable['currency'] );
+	$description = isset( $eligibility['description'] ) ? (string) $eligibility['description'] : '';
+	$type        = isset( $eligibility['description_type'] ) ? (string) $eligibility['description_type'] : 'installment';
+
+	return array(
+		'description'      => $description,
+		'description_type' => torobpay_normalize_description_type( $type ),
+	);
+}
+
+/**
+ * Schema for the cart description extension.
+ *
+ * @return array<string,array<string,mixed>>
+ */
+function torobpay_store_api_cart_schema() {
+	return array(
+		'description'      => array(
+			'description' => __( 'TorobPay description for this cart.', 'torobpay-for-woocommerce' ),
+			'type'        => 'string',
+			'context'     => array( 'view', 'edit' ),
+			'readonly'    => true,
+		),
+		'description_type' => array(
+			'description' => __( 'How to present the TorobPay description. Unknown values are shown as installment.', 'torobpay-for-woocommerce' ),
+			'type'        => 'string',
+			'context'     => array( 'view', 'edit' ),
+			'readonly'    => true,
+		),
 	);
 }
 

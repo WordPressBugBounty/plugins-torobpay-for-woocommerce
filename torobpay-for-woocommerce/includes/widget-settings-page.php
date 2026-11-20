@@ -19,9 +19,9 @@ function torobpay_widget_settings_page() {
 		update_option( 'torobpay_slider_enabled', isset( $_POST['torobpay_slider_enabled'] ) ? 'yes' : 'no' );
 
 		update_option( 'torobpay_widget_layout', torobpay_sanitize_widget_layout( isset( $_POST['widget_layout'] ) ? sanitize_text_field( wp_unslash( $_POST['widget_layout'] ) ) : 'classic' ) );
-		update_option( 'torobpay_widget_background_color', isset( $_POST['widget_background_color'] ) ? sanitize_hex_color( wp_unslash( $_POST['widget_background_color'] ) ) : '' );
-		update_option( 'torobpay_widget_border_color', isset( $_POST['widget_border_color'] ) ? sanitize_hex_color( wp_unslash( $_POST['widget_border_color'] ) ) : '' );
-		update_option( 'torobpay_widget_text_color', isset( $_POST['widget_text_color'] ) ? sanitize_hex_color( wp_unslash( $_POST['widget_text_color'] ) ) : '' );
+		torobpay_save_green_color_option( 'torobpay_widget_background_color', isset( $_POST['widget_background_color'] ) ? wp_unslash( $_POST['widget_background_color'] ) : '' );
+		torobpay_save_green_color_option( 'torobpay_widget_border_color', isset( $_POST['widget_border_color'] ) ? wp_unslash( $_POST['widget_border_color'] ) : '' );
+		torobpay_save_green_color_option( 'torobpay_widget_text_color', isset( $_POST['widget_text_color'] ) ? wp_unslash( $_POST['widget_text_color'] ) : '' );
 		torobpay_save_responsive_number( 'widget_border_size', 'torobpay_widget_border_size', 0, 20, 1 );
 		torobpay_save_responsive_number( 'widget_border_radius', 'torobpay_widget_border_radius', 0, 999, 16 );
 		torobpay_save_responsive_number( 'widget_title_font_size', 'torobpay_widget_title_font_size', 10, 30, 14 );
@@ -47,17 +47,18 @@ function torobpay_widget_settings_page() {
 		torobpay_save_responsive_number( 'badge_offset_vertical', 'torobpay_badge_offset_vertical', 0, 1000, 10 );
 		update_option( 'torobpay_badge_offset_horizontal_unit', isset( $_POST['badge_offset_horizontal_unit'] ) ? sanitize_text_field( wp_unslash( $_POST['badge_offset_horizontal_unit'] ) ) : 'px' );
 		update_option( 'torobpay_badge_offset_vertical_unit', isset( $_POST['badge_offset_vertical_unit'] ) ? sanitize_text_field( wp_unslash( $_POST['badge_offset_vertical_unit'] ) ) : 'px' );
-		update_option( 'torobpay_badge_background_color', isset( $_POST['badge_background_color'] ) ? sanitize_hex_color( wp_unslash( $_POST['badge_background_color'] ) ) : '' );
-		update_option( 'torobpay_badge_text_color', isset( $_POST['badge_text_color'] ) ? sanitize_hex_color( wp_unslash( $_POST['badge_text_color'] ) ) : '' );
+		torobpay_save_green_color_option( 'torobpay_badge_background_color', isset( $_POST['badge_background_color'] ) ? wp_unslash( $_POST['badge_background_color'] ) : '' );
+		torobpay_save_green_color_option( 'torobpay_badge_border_color', isset( $_POST['badge_border_color'] ) ? wp_unslash( $_POST['badge_border_color'] ) : '' );
+		torobpay_save_green_color_option( 'torobpay_badge_text_color', isset( $_POST['badge_text_color'] ) ? wp_unslash( $_POST['badge_text_color'] ) : '' );
 		torobpay_save_responsive_number( 'badge_border_radius', 'torobpay_badge_border_radius', 0, 50, 8 );
 		torobpay_save_responsive_number( 'badge_font_size', 'torobpay_badge_font_size', 8, 24, 12 );
 		update_option( 'torobpay_badge_font_weight', isset( $_POST['badge_font_weight'] ) ? sanitize_text_field( wp_unslash( $_POST['badge_font_weight'] ) ) : '' );
 		torobpay_save_responsive_number( 'badge_logo_height', 'torobpay_badge_logo_height', 10, 48, 24 );
 		update_option( 'torobpay_badge_compatibility_mode', isset( $_POST['badge_compatibility_mode'] ) ? 'yes' : 'no' );
 
-		update_option( 'torobpay_marquee_bg_color', isset( $_POST['marquee_bg_color'] ) ? sanitize_hex_color( wp_unslash( $_POST['marquee_bg_color'] ) ) : '#ffffff' );
+		torobpay_save_green_color_option( 'torobpay_marquee_bg_color', isset( $_POST['marquee_bg_color'] ) ? wp_unslash( $_POST['marquee_bg_color'] ) : '' );
 		update_option( 'torobpay_marquee_bg_opacity', isset( $_POST['marquee_bg_opacity'] ) ? min( 100, max( 0, absint( wp_unslash( $_POST['marquee_bg_opacity'] ) ) ) ) : 22 );
-		update_option( 'torobpay_marquee_text_color', isset( $_POST['marquee_text_color'] ) ? sanitize_hex_color( wp_unslash( $_POST['marquee_text_color'] ) ) : '#003D01' );
+		torobpay_save_green_color_option( 'torobpay_marquee_text_color', isset( $_POST['marquee_text_color'] ) ? wp_unslash( $_POST['marquee_text_color'] ) : '' );
 		torobpay_save_responsive_number( 'marquee_font_size', 'torobpay_marquee_font_size', 8, 24, 11 );
 		update_option( 'torobpay_marquee_font_weight', isset( $_POST['marquee_font_weight'] ) ? sanitize_text_field( wp_unslash( $_POST['marquee_font_weight'] ) ) : '600' );
 		torobpay_save_responsive_number( 'marquee_height', 'torobpay_marquee_height', 16, 400, 26 );
@@ -128,9 +129,9 @@ function torobpay_widget_settings_page() {
 		update_option( 'torobpay_slider_enabled', 'no' );
 
 		update_option( 'torobpay_widget_layout', 'classic' );
-		update_option( 'torobpay_widget_background_color', '#ffffff' );
-		update_option( 'torobpay_widget_border_color', '#ebecf2' );
-		update_option( 'torobpay_widget_text_color', '#1a1c23' );
+		torobpay_save_green_color_option( 'torobpay_widget_background_color', '#ffffff' );
+		torobpay_save_green_color_option( 'torobpay_widget_border_color', '#ebecf2' );
+		torobpay_save_green_color_option( 'torobpay_widget_text_color', '#1a1c23' );
 		torobpay_reset_responsive_number( 'torobpay_widget_border_size', 1 );
 		torobpay_reset_responsive_number( 'torobpay_widget_border_radius', 16 );
 		torobpay_reset_responsive_number( 'torobpay_widget_title_font_size', 14 );
@@ -150,17 +151,18 @@ function torobpay_widget_settings_page() {
 		torobpay_reset_responsive_number( 'torobpay_badge_offset_vertical', 10 );
 		update_option( 'torobpay_badge_offset_horizontal_unit', 'px' );
 		update_option( 'torobpay_badge_offset_vertical_unit', 'px' );
-		update_option( 'torobpay_badge_background_color', '#9CE76A' );
-		update_option( 'torobpay_badge_text_color', '#003D01' );
+		torobpay_save_green_color_option( 'torobpay_badge_background_color', '#9CE76A' );
+		torobpay_save_green_color_option( 'torobpay_badge_border_color', '#9CE76A' );
+		torobpay_save_green_color_option( 'torobpay_badge_text_color', '#003D01' );
 		torobpay_reset_responsive_number( 'torobpay_badge_border_radius', 8 );
 		torobpay_reset_responsive_number( 'torobpay_badge_font_size', 12 );
 		update_option( 'torobpay_badge_font_weight', '600' );
 		torobpay_reset_responsive_number( 'torobpay_badge_logo_height', 24 );
 		update_option( 'torobpay_badge_compatibility_mode', 'no' );
 
-		update_option( 'torobpay_marquee_bg_color', '#ffffff' );
+		torobpay_save_green_color_option( 'torobpay_marquee_bg_color', '#ffffff' );
 		update_option( 'torobpay_marquee_bg_opacity', 22 );
-		update_option( 'torobpay_marquee_text_color', '#003D01' );
+		torobpay_save_green_color_option( 'torobpay_marquee_text_color', '#003D01' );
 		torobpay_reset_responsive_number( 'torobpay_marquee_font_size', 11 );
 		update_option( 'torobpay_marquee_font_weight', '600' );
 		torobpay_reset_responsive_number( 'torobpay_marquee_height', 26 );
@@ -204,9 +206,9 @@ function torobpay_widget_settings_page() {
 
 		echo '<div class="notice notice-info is-dismissible"><p>' . esc_html__( 'Settings were restored to defaults.', 'torobpay-for-woocommerce' ) . '</p></div>';
 
-		$background_color  = '#ffffff';
-		$border_color      = '#ebecf2';
-		$text_color        = '#1a1c23';
+		$background_color  = torobpay_clamp_hex_to_green( '#ffffff' );
+		$border_color      = torobpay_clamp_hex_to_green( '#ebecf2' );
+		$text_color        = torobpay_clamp_hex_to_green( '#1a1c23' );
 		$border_size_r     = [ 'base' => 1, 'tablet' => '', 'mobile' => '' ];
 		$border_radius_r   = [ 'base' => 16, 'tablet' => '', 'mobile' => '' ];
 		$title_font_size_r = [ 'base' => 14, 'tablet' => '', 'mobile' => '' ];
@@ -225,16 +227,17 @@ function torobpay_widget_settings_page() {
 		$badge_offset_vertical_r       = [ 'base' => 10, 'tablet' => '', 'mobile' => '' ];
 		$badge_offset_horizontal_unit  = 'px';
 		$badge_offset_vertical_unit    = 'px';
-		$badge_background_color        = '#9CE76A';
-		$badge_text_color              = '#003D01';
+		$badge_background_color        = torobpay_clamp_hex_to_green( '#9CE76A' );
+		$badge_border_color            = torobpay_clamp_hex_to_green( '#9CE76A' );
+		$badge_text_color              = torobpay_clamp_hex_to_green( '#003D01' );
 		$badge_border_radius_r         = [ 'base' => 8, 'tablet' => '', 'mobile' => '' ];
 		$badge_font_size_r             = [ 'base' => 12, 'tablet' => '', 'mobile' => '' ];
 		$badge_font_weight             = '600';
 		$badge_logo_height_r           = [ 'base' => 24, 'tablet' => '', 'mobile' => '' ];
 		$badge_compatibility_mode      = 'no';
-		$marquee_bg_color              = '#ffffff';
+		$marquee_bg_color              = torobpay_clamp_hex_to_green( '#ffffff' );
 		$marquee_bg_opacity            = 22;
-		$marquee_text_color            = '#003D01';
+		$marquee_text_color            = torobpay_clamp_hex_to_green( '#003D01' );
 		$marquee_font_size_r           = [ 'base' => 11, 'tablet' => '', 'mobile' => '' ];
 		$marquee_font_weight           = '600';
 		$marquee_height_r              = [ 'base' => 26, 'tablet' => '', 'mobile' => '' ];
@@ -278,9 +281,9 @@ function torobpay_widget_settings_page() {
 	$badge_enabled   = get_option( 'torobpay_badge_enabled', 'yes' );
 	$marquee_enabled = get_option( 'torobpay_marquee_enabled', 'no' );
 
-	$background_color  = get_option( 'torobpay_widget_background_color', '#ffffff' );
-	$border_color      = get_option( 'torobpay_widget_border_color', '#ebecf2' );
-	$text_color        = get_option( 'torobpay_widget_text_color', '#1a1c23' );
+	$background_color  = torobpay_read_green_color_option( 'torobpay_widget_background_color' );
+	$border_color      = torobpay_read_green_color_option( 'torobpay_widget_border_color' );
+	$text_color        = torobpay_read_green_color_option( 'torobpay_widget_text_color' );
 	$border_size_r     = torobpay_get_responsive_setting( 'torobpay_widget_border_size', 1 );
 	$border_radius_r   = torobpay_get_responsive_setting( 'torobpay_widget_border_radius', 16 );
 	$title_font_size_r = torobpay_get_responsive_setting( 'torobpay_widget_title_font_size', 14 );
@@ -309,8 +312,9 @@ function torobpay_widget_settings_page() {
 	$badge_offset_vertical_r      = torobpay_get_responsive_setting( 'torobpay_badge_offset_vertical', 10 );
 	$badge_offset_horizontal_unit = get_option( 'torobpay_badge_offset_horizontal_unit', 'px' );
 	$badge_offset_vertical_unit   = get_option( 'torobpay_badge_offset_vertical_unit', 'px' );
-	$badge_background_color       = get_option( 'torobpay_badge_background_color', '#9CE76A' );
-	$badge_text_color             = get_option( 'torobpay_badge_text_color', '#003D01' );
+	$badge_background_color       = torobpay_read_green_color_option( 'torobpay_badge_background_color' );
+	$badge_border_color           = torobpay_read_green_color_option( 'torobpay_badge_border_color' );
+	$badge_text_color             = torobpay_read_green_color_option( 'torobpay_badge_text_color' );
 	$badge_border_radius_r        = torobpay_get_responsive_setting( 'torobpay_badge_border_radius', 8 );
 	$badge_font_size_r            = torobpay_get_responsive_setting( 'torobpay_badge_font_size', 12 );
 	$badge_font_weight            = get_option( 'torobpay_badge_font_weight', '600' );
@@ -318,9 +322,9 @@ function torobpay_widget_settings_page() {
 	$badge_compatibility_mode     = get_option( 'torobpay_badge_compatibility_mode', 'no' );
 
 	$marquee_slogan                = __( 'Buy in installments with TorobPay — no fees', 'torobpay-for-woocommerce' );
-	$marquee_bg_color              = get_option( 'torobpay_marquee_bg_color', '#ffffff' );
+	$marquee_bg_color              = torobpay_read_green_color_option( 'torobpay_marquee_bg_color' );
 	$marquee_bg_opacity            = get_option( 'torobpay_marquee_bg_opacity', 22 );
-	$marquee_text_color            = get_option( 'torobpay_marquee_text_color', '#003D01' );
+	$marquee_text_color            = torobpay_read_green_color_option( 'torobpay_marquee_text_color' );
 	$marquee_font_size_r           = torobpay_get_responsive_setting( 'torobpay_marquee_font_size', 11 );
 	$marquee_font_weight           = get_option( 'torobpay_marquee_font_weight', '600' );
 	$marquee_height_r              = torobpay_get_responsive_setting( 'torobpay_marquee_height', 26 );
@@ -362,24 +366,21 @@ function torobpay_widget_settings_page() {
 
 	$slider_enabled        = get_option( 'torobpay_slider_enabled', 'no' );
 
-	$pdp_promo          = function_exists( 'torobpay_get_pdp_promo_settings' )
+	$pdp_promo       = function_exists( 'torobpay_get_pdp_promo_settings' )
 		? torobpay_get_pdp_promo_settings()
 		: array(
-			'enabled'        => 'no',
-			'code'           => '',
-			'discount_type'  => 'amount',
-			'discount_value' => 0,
-			'min_total'      => 0,
-			'expires_at'     => 0,
-			'style'          => 'marquee',
+			'widget' => 'yes',
+			'topbar' => 'yes',
+			'style'  => 'marquee',
 		);
-	$pdp_promo_style    = isset( $pdp_promo['style'] ) ? $pdp_promo['style'] : 'marquee';
-	$pdp_promo_expires  = function_exists( 'torobpay_pdp_promo_expires_local_value' )
-		? torobpay_pdp_promo_expires_local_value( $pdp_promo['expires_at'] )
-		: '';
-	$pdp_promo_currency = function_exists( 'get_woocommerce_currency_symbol' )
-		? get_woocommerce_currency_symbol()
-		: '';
+	$pdp_promo_style = isset( $pdp_promo['style'] ) ? $pdp_promo['style'] : 'marquee';
+
+	$discount_campaign = function_exists( 'torobpay_get_active_discount_campaign' )
+		? torobpay_get_active_discount_campaign()
+		: null;
+	$discount_campaigns_status = function_exists( 'torobpay_discount_campaigns_status' )
+		? torobpay_discount_campaigns_status()
+		: 'ok';
 
 	$torobpay_loading_gif_url = esc_url( plugins_url( 'assets/images/loading.gif', TOROBPAY_PLUGIN_FILE ) );
 	?>
@@ -455,28 +456,26 @@ function torobpay_widget_settings_page() {
 						'id'       => 'torobpay_badge_enabled',
 						'name'     => 'torobpay_badge_enabled',
 						'label'    => __( 'Show TorobPay badge', 'torobpay-for-woocommerce' ),
-						'tooltip'  => __( 'Show or hide the TorobPay badge on product lists', 'torobpay-for-woocommerce' ),
 						'enabled'  => $badge_enabled,
 					),
 					array(
 						'id'       => 'torobpay_marquee_enabled',
 						'name'     => 'torobpay_marquee_enabled',
 						'label'    => __( 'Show TorobPay marquee', 'torobpay-for-woocommerce' ),
-						'tooltip'  => __( 'Show or hide the TorobPay marquee on product lists', 'torobpay-for-woocommerce' ),
 						'enabled'  => $marquee_enabled,
 					),
 					array(
 						'id'       => 'torobpay_topbar_enabled',
 						'name'     => 'torobpay_topbar_enabled',
 						'label'    => __( 'Show TorobPay top bar', 'torobpay-for-woocommerce' ),
-						'tooltip'  => __( 'Show or hide the TorobPay promo bar at the top of the site. When disabled, you can still use [torobpay_topbar].', 'torobpay-for-woocommerce' ),
+						'tooltip'  => __( 'When disabled, you can still use [torobpay_topbar].', 'torobpay-for-woocommerce' ),
 						'enabled'  => $topbar_enabled,
 					),
 					array(
 						'id'       => 'torobpay_slider_enabled',
 						'name'     => 'torobpay_slider_enabled',
 						'label'    => __( 'Show TorobPay slider', 'torobpay-for-woocommerce' ),
-						'tooltip'  => __( 'Show or hide the TorobPay promo slider. When disabled, you can still use [torobpay_slider].', 'torobpay-for-woocommerce' ),
+						'tooltip'  => __( 'When disabled, you can still use [torobpay_slider].', 'torobpay-for-woocommerce' ),
 						'enabled'  => $slider_enabled,
 					),
 				);
@@ -494,7 +493,9 @@ function torobpay_widget_settings_page() {
 								>
 								<span class="torobpay-display-toggle-name">
 									<?php echo esc_html( $torobpay_toggle['label'] ); ?>
-									<span class="torobpay-tooltip" data-tip="<?php echo esc_attr( $torobpay_toggle['tooltip'] ); ?>" title="<?php echo esc_attr( $torobpay_toggle['label'] ); ?>"><?php esc_html_e( '?', 'torobpay-for-woocommerce' ); ?></span>
+									<?php if ( ! empty( $torobpay_toggle['tooltip'] ) ) : ?>
+										<span class="torobpay-tooltip" data-tip="<?php echo esc_attr( $torobpay_toggle['tooltip'] ); ?>" title="<?php echo esc_attr( $torobpay_toggle['label'] ); ?>"><?php esc_html_e( '?', 'torobpay-for-woocommerce' ); ?></span>
+									<?php endif; ?>
 								</span>
 							</label>
 						</div>
@@ -523,6 +524,11 @@ function torobpay_widget_settings_page() {
 					'id'    => 'topbar-settings',
 					'icon'  => 'dashicons-arrow-up-alt2',
 					'label' => __( 'Top bar settings', 'torobpay-for-woocommerce' ),
+				),
+				array(
+					'id'    => 'discount-settings',
+					'icon'  => 'dashicons-tickets-alt',
+					'label' => __( 'TorobPay special discount', 'torobpay-for-woocommerce' ),
 				),
 			);
 			/**
@@ -618,43 +624,28 @@ function torobpay_widget_settings_page() {
 					<tbody>
 						<tr>
 							<th scope="row">
-								<label for="widget_background_color"><?php esc_html_e( 'Background color', 'torobpay-for-woocommerce' ); ?></label>
-								<span class="torobpay-tooltip" data-tip="<?php echo esc_attr__( 'TorobPay widget background color', 'torobpay-for-woocommerce' ); ?>" title="<?php echo esc_attr__( 'TorobPay widget background color', 'torobpay-for-woocommerce' ); ?>"><?php esc_html_e( '?', 'torobpay-for-woocommerce' ); ?></span>
+								<label for="widget_background_color_lightness"><?php esc_html_e( 'Background color', 'torobpay-for-woocommerce' ); ?></label>
 							</th>
 							<td>
-								<input type="color"
-									id="widget_background_color"
-									name="widget_background_color"
-									value="<?php echo esc_attr( $background_color ); ?>"
-									class="color-picker">
+								<?php torobpay_render_green_color_control( 'widget_background_color', $background_color ); ?>
 							</td>
 						</tr>
 
 						<tr>
 							<th scope="row">
-								<label for="widget_border_color"><?php esc_html_e( 'Border color', 'torobpay-for-woocommerce' ); ?></label>
-								<span class="torobpay-tooltip" data-tip="<?php echo esc_attr__( 'Widget border color', 'torobpay-for-woocommerce' ); ?>" title="<?php echo esc_attr__( 'Widget border color', 'torobpay-for-woocommerce' ); ?>"><?php esc_html_e( '?', 'torobpay-for-woocommerce' ); ?></span>
+								<label for="widget_border_color_lightness"><?php esc_html_e( 'Border color', 'torobpay-for-woocommerce' ); ?></label>
 							</th>
 							<td>
-								<input type="color"
-									id="widget_border_color"
-									name="widget_border_color"
-									value="<?php echo esc_attr( $border_color ); ?>"
-									class="color-picker">
+								<?php torobpay_render_green_color_control( 'widget_border_color', $border_color ); ?>
 							</td>
 						</tr>
 
 						<tr>
 							<th scope="row">
-								<label for="widget_text_color"><?php esc_html_e( 'Text color', 'torobpay-for-woocommerce' ); ?></label>
-								<span class="torobpay-tooltip" data-tip="<?php echo esc_attr__( 'Widget text color', 'torobpay-for-woocommerce' ); ?>" title="<?php echo esc_attr__( 'Widget text color', 'torobpay-for-woocommerce' ); ?>"><?php esc_html_e( '?', 'torobpay-for-woocommerce' ); ?></span>
+								<label for="widget_text_color_lightness"><?php esc_html_e( 'Text color', 'torobpay-for-woocommerce' ); ?></label>
 							</th>
 							<td>
-								<input type="color"
-									id="widget_text_color"
-									name="widget_text_color"
-									value="<?php echo esc_attr( $text_color ); ?>"
-									class="color-picker">
+								<?php torobpay_render_green_color_control( 'widget_text_color', $text_color ); ?>
 							</td>
 						</tr>
 					</tbody>
@@ -668,7 +659,6 @@ function torobpay_widget_settings_page() {
 						torobpay_render_responsive_number_row(
 							array(
 								'label'  => __( 'Border width', 'torobpay-for-woocommerce' ),
-								'tip'    => __( 'Widget border width (0 to 20 px)', 'torobpay-for-woocommerce' ),
 								'name'   => 'widget_border_size',
 								'base'   => $border_size_r['base'],
 								'tablet' => $border_size_r['tablet'],
@@ -705,7 +695,6 @@ function torobpay_widget_settings_page() {
 						torobpay_render_responsive_number_row(
 							array(
 								'label'  => __( 'Title font size', 'torobpay-for-woocommerce' ),
-								'tip'    => __( 'Widget title font size (10 to 30 px)', 'torobpay-for-woocommerce' ),
 								'name'   => 'widget_title_font_size',
 								'base'   => $title_font_size_r['base'],
 								'tablet' => $title_font_size_r['tablet'],
@@ -719,7 +708,6 @@ function torobpay_widget_settings_page() {
 						<tr>
 							<th scope="row">
 								<label for="widget_title_font_weight"><?php esc_html_e( 'Title font weight', 'torobpay-for-woocommerce' ); ?></label>
-								<span class="torobpay-tooltip" data-tip="<?php echo esc_attr__( 'Widget title font weight', 'torobpay-for-woocommerce' ); ?>" title="<?php echo esc_attr__( 'Widget title font weight', 'torobpay-for-woocommerce' ); ?>"><?php esc_html_e( '?', 'torobpay-for-woocommerce' ); ?></span>
 							</th>
 							<td>
 								<select id="widget_title_font_weight" name="widget_title_font_weight">
@@ -737,7 +725,6 @@ function torobpay_widget_settings_page() {
 						torobpay_render_responsive_number_row(
 							array(
 								'label'  => __( 'Description font size', 'torobpay-for-woocommerce' ),
-								'tip'    => __( 'Widget description font size (8 to 24 px)', 'torobpay-for-woocommerce' ),
 								'name'   => 'widget_desc_font_size',
 								'base'   => $desc_font_size_r['base'],
 								'tablet' => $desc_font_size_r['tablet'],
@@ -751,7 +738,6 @@ function torobpay_widget_settings_page() {
 						<tr>
 							<th scope="row">
 								<label for="widget_desc_font_weight"><?php esc_html_e( 'Description font weight', 'torobpay-for-woocommerce' ); ?></label>
-								<span class="torobpay-tooltip" data-tip="<?php echo esc_attr__( 'Widget description font weight', 'torobpay-for-woocommerce' ); ?>" title="<?php echo esc_attr__( 'Widget description font weight', 'torobpay-for-woocommerce' ); ?>"><?php esc_html_e( '?', 'torobpay-for-woocommerce' ); ?></span>
 							</th>
 							<td>
 								<select id="widget_desc_font_weight" name="widget_desc_font_weight">
@@ -774,7 +760,6 @@ function torobpay_widget_settings_page() {
 						<tr>
 							<th scope="row">
 								<label for="widget_logo_animation"><?php esc_html_e( 'Logo animation', 'torobpay-for-woocommerce' ); ?></label>
-								<span class="torobpay-tooltip" data-tip="<?php echo esc_attr__( 'Looping animation for the TorobPay logo', 'torobpay-for-woocommerce' ); ?>" title="<?php echo esc_attr__( 'Looping animation for the TorobPay logo', 'torobpay-for-woocommerce' ); ?>"><?php esc_html_e( '?', 'torobpay-for-woocommerce' ); ?></span>
 							</th>
 							<td>
 								<select id="widget_logo_animation" name="widget_logo_animation">
@@ -783,6 +768,7 @@ function torobpay_widget_settings_page() {
 									<option value="pulse" <?php selected( $logo_animation, 'pulse' ); ?>><?php esc_html_e( 'Pulse', 'torobpay-for-woocommerce' ); ?></option>
 									<option value="wobble" <?php selected( $logo_animation, 'wobble' ); ?>><?php esc_html_e( 'Wobble', 'torobpay-for-woocommerce' ); ?></option>
 									<option value="bounce" <?php selected( $logo_animation, 'bounce' ); ?>><?php esc_html_e( 'Bounce', 'torobpay-for-woocommerce' ); ?></option>
+									<option value="elastic-spin" <?php selected( $logo_animation, 'elastic-spin' ); ?>><?php esc_html_e( 'Elastic spin', 'torobpay-for-woocommerce' ); ?></option>
 									<option value="status-dot" <?php selected( $logo_animation, 'status-dot' ); ?>><?php esc_html_e( 'Status dot', 'torobpay-for-woocommerce' ); ?></option>
 									<option value="none" <?php selected( $logo_animation, 'none' ); ?>><?php esc_html_e( 'No animation', 'torobpay-for-woocommerce' ); ?></option>
 								</select>
@@ -798,7 +784,6 @@ function torobpay_widget_settings_page() {
 						<tr>
 							<th scope="row">
 								<label for="widget_display_hook"><?php esc_html_e( 'Widget display location', 'torobpay-for-woocommerce' ); ?></label>
-								<span class="torobpay-tooltip" data-tip="<?php echo esc_attr__( 'Choose where to show the widget on the product page. If your theme has issues, try other options.', 'torobpay-for-woocommerce' ); ?>" title="<?php echo esc_attr__( 'Choose where to show the widget on the product page. If your theme has issues, try other options.', 'torobpay-for-woocommerce' ); ?>"><?php esc_html_e( '?', 'torobpay-for-woocommerce' ); ?></span>
 							</th>
 							<td>
 								<select id="widget_display_hook" name="widget_display_hook">
@@ -845,102 +830,6 @@ function torobpay_widget_settings_page() {
 					</tbody>
 				</table>
 
-				<h2 class="section-title" data-section-key="widget-promo"><span class="dashicons dashicons-tickets-alt"></span><?php esc_html_e( 'Special discount code', 'torobpay-for-woocommerce' ); ?><span class="section-collapse-icon dashicons dashicons-arrow-up-alt2"></span></h2>
-				<p class="torobpay-settings-note"><?php esc_html_e( 'Show a TorobPay gateway discount code on the product-page widget. Only the code is required. Amount, percent, minimum purchase or amount cap, and expiry are optional display fields and do not change the cart total. Shoppers enter the code on the TorobPay payment page, not in the store coupon field.', 'torobpay-for-woocommerce' ); ?></p>
-				<table class="form-table">
-					<tbody>
-						<tr>
-							<th scope="row">
-								<label for="pdp_promo_enabled"><?php esc_html_e( 'Show discount code', 'torobpay-for-woocommerce' ); ?></label>
-							</th>
-							<td>
-								<label>
-									<input type="checkbox" id="pdp_promo_enabled" name="pdp_promo_enabled" value="1" <?php checked( $pdp_promo['enabled'], 'yes' ); ?>>
-									<?php esc_html_e( 'Show the code on the product widget', 'torobpay-for-woocommerce' ); ?>
-								</label>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row">
-								<label for="pdp_promo_code"><?php esc_html_e( 'Discount code', 'torobpay-for-woocommerce' ); ?> <span class="required" aria-hidden="true">*</span></label>
-							</th>
-							<td>
-								<input type="text" id="pdp_promo_code" name="pdp_promo_code" value="<?php echo esc_attr( $pdp_promo['code'] ); ?>" class="regular-text" maxlength="40" autocomplete="off" dir="ltr" <?php echo 'yes' === $pdp_promo['enabled'] ? 'required' : ''; ?>>
-								<p class="description"><?php esc_html_e( 'Required when the discount is shown.', 'torobpay-for-woocommerce' ); ?></p>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row">
-								<label for="pdp_promo_discount_type"><?php esc_html_e( 'Discount display (optional)', 'torobpay-for-woocommerce' ); ?></label>
-							</th>
-							<td>
-								<select id="pdp_promo_discount_type" name="pdp_promo_discount_type">
-									<option value="amount" <?php selected( $pdp_promo['discount_type'], 'amount' ); ?>><?php esc_html_e( 'Amount', 'torobpay-for-woocommerce' ); ?></option>
-									<option value="percent" <?php selected( $pdp_promo['discount_type'], 'percent' ); ?>><?php esc_html_e( 'Percent', 'torobpay-for-woocommerce' ); ?></option>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row">
-								<label for="pdp_promo_discount_value"><?php esc_html_e( 'Discount value (optional)', 'torobpay-for-woocommerce' ); ?></label>
-							</th>
-							<td>
-								<input type="number" id="pdp_promo_discount_value" name="pdp_promo_discount_value" value="<?php echo esc_attr( (string) $pdp_promo['discount_value'] ); ?>" min="0" max="1000000000000" step="any" class="regular-text torobpay-promo-amount-input">
-								<span id="pdp_promo_value_suffix" class="description"><?php echo 'percent' === $pdp_promo['discount_type'] ? esc_html__( '%', 'torobpay-for-woocommerce' ) : esc_html( $pdp_promo_currency ); ?></span>
-								<p class="description"><?php esc_html_e( 'Shown in the lightbox only. Not applied to the WooCommerce cart.', 'torobpay-for-woocommerce' ); ?></p>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row">
-								<label for="pdp_promo_min_total" id="pdp_promo_min_total_label"><?php
-								echo 'percent' === $pdp_promo['discount_type']
-									? esc_html__( 'Amount cap (optional)', 'torobpay-for-woocommerce' )
-									: esc_html__( 'Minimum purchase (optional)', 'torobpay-for-woocommerce' );
-								?></label>
-							</th>
-							<td>
-								<input type="number" id="pdp_promo_min_total" name="pdp_promo_min_total" value="<?php echo esc_attr( (string) $pdp_promo['min_total'] ); ?>" min="0" max="1000000000000" step="any" class="regular-text torobpay-promo-amount-input">
-								<span class="description"><?php echo esc_html( $pdp_promo_currency ); ?></span>
-								<p class="description" id="pdp_promo_min_total_help"<?php echo 'percent' === $pdp_promo['discount_type'] ? '' : ' hidden'; ?>><?php esc_html_e( 'The percent is calculated on this amount even if the order total is higher.', 'torobpay-for-woocommerce' ); ?></p>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row">
-								<label for="pdp_promo_expires_display"><?php esc_html_e( 'Expires (optional)', 'torobpay-for-woocommerce' ); ?></label>
-							</th>
-							<td>
-								<div class="date-input-wrapper torobpay-promo-expires">
-									<input type="text"
-										id="pdp_promo_expires_display"
-										class="jalali-date regular-text"
-										data-jdp
-										data-jdp-only-date
-										data-jdp-target-value-input="#pdp_promo_expires_at"
-										data-jdp-target-value-type="gregorian"
-										placeholder="<?php echo esc_attr__( 'Date', 'torobpay-for-woocommerce' ); ?>"
-										autocomplete="off"
-										dir="ltr">
-									<span class="dashicons dashicons-calendar-alt" aria-hidden="true"></span>
-									<input type="hidden" id="pdp_promo_expires_at" name="pdp_promo_expires_at" value="<?php echo esc_attr( $pdp_promo_expires ); ?>">
-								</div>
-								<p class="description"><?php esc_html_e( 'Site timezone. The offer lasts until 12 at night on this date, for example Until 12 at night Friday 10 Mehr. Leave empty for no expiry.', 'torobpay-for-woocommerce' ); ?></p>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row">
-								<label for="pdp_promo_style"><?php esc_html_e( 'Discount style', 'torobpay-for-woocommerce' ); ?></label>
-								<span class="torobpay-tooltip" data-tip="<?php echo esc_attr__( 'Marquee is a scrolling bar along the bottom of the widget. It pauses while the pointer is over the widget. Simple keeps the label and code still.', 'torobpay-for-woocommerce' ); ?>" title="<?php echo esc_attr__( 'Marquee is a scrolling bar along the bottom of the widget. It pauses while the pointer is over the widget. Simple keeps the label and code still.', 'torobpay-for-woocommerce' ); ?>"><?php esc_html_e( '?', 'torobpay-for-woocommerce' ); ?></span>
-							</th>
-							<td>
-								<select id="pdp_promo_style" name="pdp_promo_style">
-									<option value="marquee" <?php selected( $pdp_promo_style, 'marquee' ); ?>><?php esc_html_e( 'Marquee', 'torobpay-for-woocommerce' ); ?></option>
-									<option value="simple" <?php selected( $pdp_promo_style, 'simple' ); ?>><?php esc_html_e( 'Simple', 'torobpay-for-woocommerce' ); ?></option>
-								</select>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-
 				<div class="widget-preview-section">
 					<h2><?php esc_html_e( 'Widget preview', 'torobpay-for-woocommerce' ); ?><button type="button" class="torobpay-preview-toggle" onclick="torobpayTogglePreview(this)" title="<?php echo esc_attr__( 'Shrink/expand preview', 'torobpay-for-woocommerce' ); ?>"><span class="dashicons dashicons-minus"></span></button></h2>
 					<div class="widget-preview-container">
@@ -950,8 +839,12 @@ function torobpay_widget_settings_page() {
 						$promo_preview_html    = ( $promo_preview_on && function_exists( 'torobpay_get_pdp_promo_widget_html' ) )
 							? torobpay_get_pdp_promo_widget_html( array( 'tabindex' => -1 ) )
 							: '';
+						$promo_preview_code    = $discount_campaign ? $discount_campaign['code'] : '';
+						$promo_preview_label   = ( $discount_campaign && function_exists( 'torobpay_pdp_promo_campaign_label' ) )
+							? torobpay_pdp_promo_campaign_label( $discount_campaign )
+							: '';
 						?>
-						<div id="torobpay-widget-preview" class="torobpay-widget torobpay-widget--<?php echo esc_attr( $widget_layout ); ?><?php echo $promo_preview_on ? ' has-torobpay-promo' : ''; ?><?php echo $promo_preview_marquee ? ' torobpay-promo-marquee' : ''; ?>" data-promo-currency="<?php echo esc_attr( $pdp_promo_currency ); ?>">
+						<div id="torobpay-widget-preview" class="torobpay-widget torobpay-widget--<?php echo esc_attr( $widget_layout ); ?><?php echo $promo_preview_on ? ' has-torobpay-promo' : ''; ?><?php echo $promo_preview_marquee ? ' torobpay-promo-marquee' : ''; ?>" data-promo-code="<?php echo esc_attr( $promo_preview_code ); ?>" data-promo-label="<?php echo esc_attr( $promo_preview_label ); ?>">
 							<div class="torobpay-widget-media">
 								<img src="<?php echo esc_url( plugins_url( 'assets/images/logo_favicon.svg', TOROBPAY_PLUGIN_FILE ) ); ?>"
 									alt="<?php echo esc_attr__( 'TorobPay', 'torobpay-for-woocommerce' ); ?>"
@@ -997,7 +890,6 @@ function torobpay_widget_settings_page() {
 						<tr>
 							<th scope="row">
 								<label for="badge_position_horizontal"><?php esc_html_e( 'Horizontal position', 'torobpay-for-woocommerce' ); ?></label>
-								<span class="torobpay-tooltip" data-tip="<?php echo esc_attr__( 'Badge position on right or left of product', 'torobpay-for-woocommerce' ); ?>" title="<?php echo esc_attr__( 'Badge position on right or left of product', 'torobpay-for-woocommerce' ); ?>"><?php esc_html_e( '?', 'torobpay-for-woocommerce' ); ?></span>
 							</th>
 							<td>
 								<select id="badge_position_horizontal" name="badge_position_horizontal">
@@ -1010,7 +902,6 @@ function torobpay_widget_settings_page() {
 						<tr>
 							<th scope="row">
 								<label for="badge_position_vertical"><?php esc_html_e( 'Vertical position', 'torobpay-for-woocommerce' ); ?></label>
-								<span class="torobpay-tooltip" data-tip="<?php echo esc_attr__( 'Badge position at top or bottom of product', 'torobpay-for-woocommerce' ); ?>" title="<?php echo esc_attr__( 'Badge position at top or bottom of product', 'torobpay-for-woocommerce' ); ?>"><?php esc_html_e( '?', 'torobpay-for-woocommerce' ); ?></span>
 							</th>
 							<td>
 								<select id="badge_position_vertical" name="badge_position_vertical">
@@ -1064,29 +955,28 @@ function torobpay_widget_settings_page() {
 					<tbody>
 						<tr>
 							<th scope="row">
-								<label for="badge_background_color"><?php esc_html_e( 'Background color', 'torobpay-for-woocommerce' ); ?></label>
-								<span class="torobpay-tooltip" data-tip="<?php echo esc_attr__( 'Badge background color', 'torobpay-for-woocommerce' ); ?>" title="<?php echo esc_attr__( 'Badge background color', 'torobpay-for-woocommerce' ); ?>"><?php esc_html_e( '?', 'torobpay-for-woocommerce' ); ?></span>
+								<label for="badge_background_color_lightness"><?php esc_html_e( 'Background color', 'torobpay-for-woocommerce' ); ?></label>
 							</th>
 							<td>
-								<input type="color"
-									id="badge_background_color"
-									name="badge_background_color"
-									value="<?php echo esc_attr( $badge_background_color ); ?>"
-									class="color-picker">
+								<?php torobpay_render_green_color_control( 'badge_background_color', $badge_background_color ); ?>
 							</td>
 						</tr>
 
 						<tr>
 							<th scope="row">
-								<label for="badge_text_color"><?php esc_html_e( 'Text color', 'torobpay-for-woocommerce' ); ?></label>
-								<span class="torobpay-tooltip" data-tip="<?php echo esc_attr__( 'Badge text color', 'torobpay-for-woocommerce' ); ?>" title="<?php echo esc_attr__( 'Badge text color', 'torobpay-for-woocommerce' ); ?>"><?php esc_html_e( '?', 'torobpay-for-woocommerce' ); ?></span>
+								<label for="badge_border_color_lightness"><?php esc_html_e( 'Border color', 'torobpay-for-woocommerce' ); ?></label>
 							</th>
 							<td>
-								<input type="color"
-									id="badge_text_color"
-									name="badge_text_color"
-									value="<?php echo esc_attr( $badge_text_color ); ?>"
-									class="color-picker">
+								<?php torobpay_render_green_color_control( 'badge_border_color', $badge_border_color ); ?>
+							</td>
+						</tr>
+
+						<tr>
+							<th scope="row">
+								<label for="badge_text_color_lightness"><?php esc_html_e( 'Text color', 'torobpay-for-woocommerce' ); ?></label>
+							</th>
+							<td>
+								<?php torobpay_render_green_color_control( 'badge_text_color', $badge_text_color ); ?>
 							</td>
 						</tr>
 
@@ -1094,7 +984,6 @@ function torobpay_widget_settings_page() {
 						torobpay_render_responsive_number_row(
 							array(
 								'label'  => __( 'Border radius', 'torobpay-for-woocommerce' ),
-								'tip'    => __( 'Badge corner radius (0 to 50 px)', 'torobpay-for-woocommerce' ),
 								'name'   => 'badge_border_radius',
 								'base'   => $badge_border_radius_r['base'],
 								'tablet' => $badge_border_radius_r['tablet'],
@@ -1116,7 +1005,6 @@ function torobpay_widget_settings_page() {
 						torobpay_render_responsive_number_row(
 							array(
 								'label'  => __( 'Font size', 'torobpay-for-woocommerce' ),
-								'tip'    => __( 'Badge text font size (8 to 24 px)', 'torobpay-for-woocommerce' ),
 								'name'   => 'badge_font_size',
 								'base'   => $badge_font_size_r['base'],
 								'tablet' => $badge_font_size_r['tablet'],
@@ -1130,7 +1018,6 @@ function torobpay_widget_settings_page() {
 						<tr>
 							<th scope="row">
 								<label for="badge_font_weight"><?php esc_html_e( 'Font weight', 'torobpay-for-woocommerce' ); ?></label>
-								<span class="torobpay-tooltip" data-tip="<?php echo esc_attr__( 'Badge text font weight', 'torobpay-for-woocommerce' ); ?>" title="<?php echo esc_attr__( 'Badge text font weight', 'torobpay-for-woocommerce' ); ?>"><?php esc_html_e( '?', 'torobpay-for-woocommerce' ); ?></span>
 							</th>
 							<td>
 								<select id="badge_font_weight" name="badge_font_weight">
@@ -1154,7 +1041,6 @@ function torobpay_widget_settings_page() {
 						torobpay_render_responsive_number_row(
 							array(
 								'label'  => __( 'Logo height', 'torobpay-for-woocommerce' ),
-								'tip'    => __( 'Badge logo height (10 to 48 px)', 'torobpay-for-woocommerce' ),
 								'name'   => 'badge_logo_height',
 								'base'   => $badge_logo_height_r['base'],
 								'tablet' => $badge_logo_height_r['tablet'],
@@ -1221,34 +1107,28 @@ function torobpay_widget_settings_page() {
 					<tbody>
 						<tr id="marquee_style_rows">
 							<th scope="row">
-								<label for="marquee_bg_color"><?php esc_html_e( 'Background color', 'torobpay-for-woocommerce' ); ?></label>
+								<label for="marquee_bg_color_lightness"><?php esc_html_e( 'Background color', 'torobpay-for-woocommerce' ); ?></label>
 								<span class="torobpay-tooltip" data-tip="<?php echo esc_attr__( 'Bar glass background color and opacity (0 = fully transparent, 100 = fully opaque)', 'torobpay-for-woocommerce' ); ?>" title="<?php echo esc_attr__( 'Bar glass background color and opacity (0 = fully transparent, 100 = fully opaque)', 'torobpay-for-woocommerce' ); ?>"><?php esc_html_e( '?', 'torobpay-for-woocommerce' ); ?></span>
 							</th>
 							<td>
-								<input type="color"
-									id="marquee_bg_color"
-									name="marquee_bg_color"
-									value="<?php echo esc_attr( $marquee_bg_color ); ?>">
-								&nbsp;
-								<label for="marquee_bg_opacity"><?php esc_html_e( 'Opacity:', 'torobpay-for-woocommerce' ); ?></label>
-								<input type="number"
-									id="marquee_bg_opacity"
-									name="marquee_bg_opacity"
-									value="<?php echo esc_attr( $marquee_bg_opacity ); ?>"
-									min="0" max="100" step="1" style="width:70px;">
-								<span><?php esc_html_e( '%', 'torobpay-for-woocommerce' ); ?></span>
+								<?php torobpay_render_green_color_control( 'marquee_bg_color', $marquee_bg_color ); ?>
+								<div class="torobpay-green-color-opacity">
+									<label for="marquee_bg_opacity"><?php esc_html_e( 'Opacity:', 'torobpay-for-woocommerce' ); ?></label>
+									<input type="number"
+										id="marquee_bg_opacity"
+										name="marquee_bg_opacity"
+										value="<?php echo esc_attr( $marquee_bg_opacity ); ?>"
+										min="0" max="100" step="1" style="width:70px;">
+									<span><?php esc_html_e( '%', 'torobpay-for-woocommerce' ); ?></span>
+								</div>
 							</td>
 						</tr>
 						<tr id="marquee_text_color_row">
 							<th scope="row">
-								<label for="marquee_text_color"><?php esc_html_e( 'Text color', 'torobpay-for-woocommerce' ); ?></label>
-								<span class="torobpay-tooltip" data-tip="<?php echo esc_attr__( 'Marquee text color', 'torobpay-for-woocommerce' ); ?>" title="<?php echo esc_attr__( 'Marquee text color', 'torobpay-for-woocommerce' ); ?>"><?php esc_html_e( '?', 'torobpay-for-woocommerce' ); ?></span>
+								<label for="marquee_text_color_lightness"><?php esc_html_e( 'Text color', 'torobpay-for-woocommerce' ); ?></label>
 							</th>
 							<td>
-								<input type="color"
-									id="marquee_text_color"
-									name="marquee_text_color"
-									value="<?php echo esc_attr( $marquee_text_color ); ?>">
+								<?php torobpay_render_green_color_control( 'marquee_text_color', $marquee_text_color ); ?>
 							</td>
 						</tr>
 					</tbody>
@@ -1284,7 +1164,6 @@ function torobpay_widget_settings_page() {
 						torobpay_render_responsive_number_row(
 							array(
 								'label'  => __( 'Font size', 'torobpay-for-woocommerce' ),
-								'tip'    => __( 'Marquee text font size (8–24 px)', 'torobpay-for-woocommerce' ),
 								'name'   => 'marquee_font_size',
 								'base'   => $marquee_font_size_r['base'],
 								'tablet' => $marquee_font_size_r['tablet'],
@@ -1298,7 +1177,6 @@ function torobpay_widget_settings_page() {
 						torobpay_render_responsive_number_row(
 							array(
 								'label'  => __( 'Icon size', 'torobpay-for-woocommerce' ),
-								'tip'    => __( 'Marquee logo icon height (8–48 px)', 'torobpay-for-woocommerce' ),
 								'name'   => 'marquee_icon_size',
 								'base'   => $marquee_icon_size_r['base'],
 								'tablet' => $marquee_icon_size_r['tablet'],
@@ -1336,7 +1214,6 @@ function torobpay_widget_settings_page() {
 						torobpay_render_responsive_number_row(
 							array(
 								'label'  => __( 'Top-left corner radius', 'torobpay-for-woocommerce' ),
-								'tip'    => __( 'Top-left bar corner radius in px', 'torobpay-for-woocommerce' ),
 								'name'   => 'marquee_radius_tl',
 								'base'   => $marquee_radius_tl_r['base'],
 								'tablet' => $marquee_radius_tl_r['tablet'],
@@ -1350,7 +1227,6 @@ function torobpay_widget_settings_page() {
 						torobpay_render_responsive_number_row(
 							array(
 								'label'  => __( 'Top-right corner radius', 'torobpay-for-woocommerce' ),
-								'tip'    => __( 'Top-right bar corner radius in px', 'torobpay-for-woocommerce' ),
 								'name'   => 'marquee_radius_tr',
 								'base'   => $marquee_radius_tr_r['base'],
 								'tablet' => $marquee_radius_tr_r['tablet'],
@@ -1364,7 +1240,6 @@ function torobpay_widget_settings_page() {
 						torobpay_render_responsive_number_row(
 							array(
 								'label'  => __( 'Bottom-left corner radius', 'torobpay-for-woocommerce' ),
-								'tip'    => __( 'Bottom-left bar corner radius in px', 'torobpay-for-woocommerce' ),
 								'name'   => 'marquee_radius_bl',
 								'base'   => $marquee_radius_bl_r['base'],
 								'tablet' => $marquee_radius_bl_r['tablet'],
@@ -1378,7 +1253,6 @@ function torobpay_widget_settings_page() {
 						torobpay_render_responsive_number_row(
 							array(
 								'label'  => __( 'Bottom-right corner radius', 'torobpay-for-woocommerce' ),
-								'tip'    => __( 'Bottom-right bar corner radius in px', 'torobpay-for-woocommerce' ),
 								'name'   => 'marquee_radius_br',
 								'base'   => $marquee_radius_br_r['base'],
 								'tablet' => $marquee_radius_br_r['tablet'],
@@ -1415,7 +1289,6 @@ function torobpay_widget_settings_page() {
 						<tr id="marquee_position_gap_row">
 							<th scope="row">
 								<label for="marquee_position"><?php esc_html_e( 'Bar position', 'torobpay-for-woocommerce' ); ?></label>
-								<span class="torobpay-tooltip" data-tip="<?php echo esc_attr__( 'Bar position relative to image (top or bottom)', 'torobpay-for-woocommerce' ); ?>" title="<?php echo esc_attr__( 'Bar position relative to image (top or bottom)', 'torobpay-for-woocommerce' ); ?>"><?php esc_html_e( '?', 'torobpay-for-woocommerce' ); ?></span>
 							</th>
 							<td>
 								<select id="marquee_position" name="marquee_position">
@@ -1487,7 +1360,6 @@ function torobpay_widget_settings_page() {
 							<th scope="row">
 								<label for="marquee_compatibility_mode"><?php esc_html_e( 'Compatibility mode', 'torobpay-for-woocommerce' ); ?></label>
 								<span style="background:#f0ad4e;color:#fff;font-size:11px;padding:1px 6px;border-radius:3px;vertical-align:middle;"><?php esc_html_e( 'Beta', 'torobpay-for-woocommerce' ); ?></span>
-								<span class="torobpay-tooltip" data-tip="<?php echo esc_attr__( 'Enable only if the marquee does not appear in the correct place in your theme. The bar is then injected into the product image via JavaScript.', 'torobpay-for-woocommerce' ); ?>" title="<?php echo esc_attr__( 'Enable only if the marquee does not appear in the correct place in your theme. The bar is then injected into the product image via JavaScript.', 'torobpay-for-woocommerce' ); ?>"><?php esc_html_e( '?', 'torobpay-for-woocommerce' ); ?></span>
 							</th>
 							<td>
 								<label>
@@ -1544,7 +1416,6 @@ function torobpay_widget_settings_page() {
 						<tr>
 							<th scope="row">
 								<label><?php esc_html_e( 'Placement mode', 'torobpay-for-woocommerce' ); ?></label>
-								<span class="torobpay-tooltip" data-tip="<?php echo esc_attr__( 'Automatic: the bar is injected at the top of the body tag (sticky mode supported). Manual: a simple bar for shortcode display; your theme controls stickiness and position.', 'torobpay-for-woocommerce' ); ?>" title="<?php echo esc_attr__( 'Top bar display location', 'torobpay-for-woocommerce' ); ?>"><?php esc_html_e( '?', 'torobpay-for-woocommerce' ); ?></span>
 							</th>
 							<td>
 								<fieldset>
@@ -1575,7 +1446,6 @@ function torobpay_widget_settings_page() {
 						torobpay_render_responsive_number_row(
 							array(
 								'label'  => __( 'Bar height', 'torobpay-for-woocommerce' ),
-								'tip'    => __( 'Top site bar height (20 to 80 px)', 'torobpay-for-woocommerce' ),
 								'name'   => 'topbar_height',
 								'base'   => $topbar_height_r['base'],
 								'tablet' => $topbar_height_r['tablet'],
@@ -1587,7 +1457,6 @@ function torobpay_widget_settings_page() {
 						torobpay_render_responsive_number_row(
 							array(
 								'label'  => __( 'Text area width', 'torobpay-for-woocommerce' ),
-								'tip'    => __( 'Max width of rotating text area (100 to 1200 px)', 'torobpay-for-woocommerce' ),
 								'name'   => 'topbar_ticker_width',
 								'base'   => $topbar_ticker_width_r['base'],
 								'tablet' => $topbar_ticker_width_r['tablet'],
@@ -1600,7 +1469,6 @@ function torobpay_widget_settings_page() {
 						torobpay_render_responsive_number_row(
 							array(
 								'label'  => __( 'Logo size', 'torobpay-for-woocommerce' ),
-								'tip'    => __( 'TorobPay logo height in bar (16 to 48 px)', 'torobpay-for-woocommerce' ),
 								'name'   => 'topbar_logo_size',
 								'base'   => $topbar_logo_size_r['base'],
 								'tablet' => $topbar_logo_size_r['tablet'],
@@ -1620,7 +1488,6 @@ function torobpay_widget_settings_page() {
 						torobpay_render_responsive_number_row(
 							array(
 								'label'  => __( 'Font size', 'torobpay-for-woocommerce' ),
-								'tip'    => __( 'Bar text font size (10 to 24 px)', 'torobpay-for-woocommerce' ),
 								'name'   => 'topbar_font_size',
 								'base'   => $topbar_font_size_r['base'],
 								'tablet' => $topbar_font_size_r['tablet'],
@@ -1633,7 +1500,6 @@ function torobpay_widget_settings_page() {
 						<tr>
 							<th scope="row">
 								<label for="topbar_font_weight"><?php esc_html_e( 'Font weight', 'torobpay-for-woocommerce' ); ?></label>
-								<span class="torobpay-tooltip" data-tip="<?php echo esc_attr__( 'Bar text font weight', 'torobpay-for-woocommerce' ); ?>" title="<?php echo esc_attr__( 'Bar text font weight', 'torobpay-for-woocommerce' ); ?>"><?php esc_html_e( '?', 'torobpay-for-woocommerce' ); ?></span>
 							</th>
 							<td>
 								<select id="topbar_font_weight" name="topbar_font_weight">
@@ -1662,7 +1528,6 @@ function torobpay_widget_settings_page() {
 						<tr>
 							<th scope="row">
 								<label for="topbar_animation"><?php esc_html_e( 'Animation type', 'torobpay-for-woocommerce' ); ?></label>
-								<span class="torobpay-tooltip" data-tip="<?php echo esc_attr__( 'Top bar rotating text display effect', 'torobpay-for-woocommerce' ); ?>" title="<?php echo esc_attr__( 'Top bar animation type', 'torobpay-for-woocommerce' ); ?>"><?php esc_html_e( '?', 'torobpay-for-woocommerce' ); ?></span>
 							</th>
 							<td>
 								<select id="topbar_animation" name="topbar_animation">
@@ -1687,7 +1552,6 @@ function torobpay_widget_settings_page() {
 						<tr class="torobpay-topbar-custom-sentence-row">
 							<th scope="row">
 								<label for="topbar_custom_sentence"><?php esc_html_e( 'Custom sentence', 'torobpay-for-woocommerce' ); ?></label>
-								<span class="torobpay-tooltip" data-tip="<?php echo esc_attr__( 'Adds a line after the built-in top bar messages, including the side-to-side animation.', 'torobpay-for-woocommerce' ); ?>" title="<?php echo esc_attr__( 'Custom top bar sentence', 'torobpay-for-woocommerce' ); ?>"><?php esc_html_e( '?', 'torobpay-for-woocommerce' ); ?></span>
 							</th>
 							<td>
 								<input type="text" id="topbar_custom_sentence" name="topbar_custom_sentence" value="<?php echo esc_attr( $topbar_custom_sentence ); ?>" maxlength="80" class="regular-text">
@@ -1707,7 +1571,6 @@ function torobpay_widget_settings_page() {
 						<tr>
 							<th scope="row">
 								<label for="topbar_bg_animation"><?php esc_html_e( 'Background animation', 'torobpay-for-woocommerce' ); ?></label>
-								<span class="torobpay-tooltip" data-tip="<?php echo esc_attr__( 'Dynamic graphic effect in the top bar background (payment-related icons). "None" keeps a plain background.', 'torobpay-for-woocommerce' ); ?>" title="<?php echo esc_attr__( 'Top bar background animation', 'torobpay-for-woocommerce' ); ?>"><?php esc_html_e( '?', 'torobpay-for-woocommerce' ); ?></span>
 							</th>
 							<td>
 								<select id="topbar_bg_animation" name="topbar_bg_animation">
@@ -1797,7 +1660,6 @@ function torobpay_widget_settings_page() {
 						<tr>
 							<th scope="row">
 								<label for="topbar_position"><?php esc_html_e( 'Bar position', 'torobpay-for-woocommerce' ); ?></label>
-								<span class="torobpay-tooltip" data-tip="<?php echo esc_attr__( 'Normal: scrolls with the page. Sticky: like the WordPress admin bar, stays at the top and reserves space above the site.', 'torobpay-for-woocommerce' ); ?>" title="<?php echo esc_attr__( 'Top bar position', 'torobpay-for-woocommerce' ); ?>"><?php esc_html_e( '?', 'torobpay-for-woocommerce' ); ?></span>
 							</th>
 							<td>
 								<select id="topbar_position" name="topbar_position">
@@ -1846,6 +1708,77 @@ function torobpay_widget_settings_page() {
 				</div>
 			</div>
 			<!-- End Topbar Settings Tab -->
+
+			<!-- Special Discount Tab -->
+			<div id="discount-settings" class="tab-content" role="tabpanel" aria-labelledby="torobpay-nav-discount-settings">
+
+				<h2 class="section-title" data-section-key="discount-promo"><span class="dashicons dashicons-tickets-alt"></span><?php esc_html_e( 'TorobPay special discount', 'torobpay-for-woocommerce' ); ?><span class="section-collapse-icon dashicons dashicons-arrow-up-alt2"></span></h2>
+				<p class="torobpay-settings-note"><?php esc_html_e( 'TorobPay special discount is provided automatically by TorobPay. You can control how discounts are displayed in this section.', 'torobpay-for-woocommerce' ); ?></p>
+				<?php if ( 'error' === $discount_campaigns_status && ! $discount_campaign ) : ?>
+					<p class="torobpay-settings-note"><?php esc_html_e( 'TorobPay could not be reached, so it is unknown whether a discount campaign is active.', 'torobpay-for-woocommerce' ); ?></p>
+				<?php elseif ( $discount_campaign ) : ?>
+					<p class="torobpay-settings-note">
+						<strong><?php esc_html_e( 'Active discount campaign:', 'torobpay-for-woocommerce' ); ?></strong>
+						<code dir="ltr"><?php echo esc_html( $discount_campaign['code'] ); ?></code>
+						<?php
+						$campaign_details = array_filter(
+							array(
+								$discount_campaign['amount_title'],
+								$discount_campaign['min_order_text'],
+								$discount_campaign['expiry_text'],
+							)
+						);
+						if ( ! empty( $campaign_details ) ) {
+							echo ' — ' . esc_html( implode( ' · ', $campaign_details ) );
+						}
+						?>
+					</p>
+					<?php if ( 'error' === $discount_campaigns_status ) : ?>
+						<p class="torobpay-settings-note"><?php esc_html_e( 'TorobPay could not be reached. Showing the last campaign that loaded.', 'torobpay-for-woocommerce' ); ?></p>
+					<?php endif; ?>
+				<?php elseif ( 'yes' === $pdp_promo['widget'] || ( isset( $pdp_promo['topbar'] ) && 'yes' === $pdp_promo['topbar'] ) ) : ?>
+					<p class="torobpay-settings-note"><?php esc_html_e( 'There is currently no active discount campaign for your store.', 'torobpay-for-woocommerce' ); ?></p>
+				<?php endif; ?>
+				<table class="form-table">
+					<tbody>
+						<tr>
+							<th scope="row">
+								<label for="pdp_promo_widget"><?php esc_html_e( 'Show on the widget', 'torobpay-for-woocommerce' ); ?></label>
+							</th>
+							<td>
+								<label>
+									<input type="checkbox" id="pdp_promo_widget" name="pdp_promo_widget" value="1" <?php checked( $pdp_promo['widget'], 'yes' ); ?>>
+									<?php esc_html_e( 'Show the discount on the product widget', 'torobpay-for-woocommerce' ); ?>
+								</label>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">
+								<label for="pdp_promo_topbar"><?php esc_html_e( 'Show on the top bar', 'torobpay-for-woocommerce' ); ?></label>
+							</th>
+							<td>
+								<label>
+									<input type="checkbox" id="pdp_promo_topbar" name="pdp_promo_topbar" value="1" <?php checked( isset( $pdp_promo['topbar'] ) ? $pdp_promo['topbar'] : 'yes', 'yes' ); ?>>
+									<?php esc_html_e( 'Add a longer slide that opens the discount details', 'torobpay-for-woocommerce' ); ?>
+								</label>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">
+								<label for="pdp_promo_style"><?php esc_html_e( 'Widget discount style', 'torobpay-for-woocommerce' ); ?></label>
+								<span class="torobpay-tooltip" data-tip="<?php echo esc_attr__( 'Marquee is a scrolling bar along the bottom of the widget. It pauses while the pointer is over the widget. Simple keeps the label and code still.', 'torobpay-for-woocommerce' ); ?>" title="<?php echo esc_attr__( 'Marquee is a scrolling bar along the bottom of the widget. It pauses while the pointer is over the widget. Simple keeps the label and code still.', 'torobpay-for-woocommerce' ); ?>"><?php esc_html_e( '?', 'torobpay-for-woocommerce' ); ?></span>
+							</th>
+							<td>
+								<select id="pdp_promo_style" name="pdp_promo_style">
+									<option value="marquee" <?php selected( $pdp_promo_style, 'marquee' ); ?>><?php esc_html_e( 'Marquee', 'torobpay-for-woocommerce' ); ?></option>
+									<option value="simple" <?php selected( $pdp_promo_style, 'simple' ); ?>><?php esc_html_e( 'Simple', 'torobpay-for-woocommerce' ); ?></option>
+								</select>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- End Special Discount Tab -->
 
 			<?php
 			/**

@@ -41,17 +41,116 @@ if ( ! defined( 'TOROBPAY_ELIGIBILITY_ERROR_REFRESH' ) ) {
 }
 
 /**
+ * Collapse description_type to a value this plugin presents.
+ *
+ * The API may add values later. Anything else is shown as installment.
+ * assets/js/blocks/torobpay-blocks.js repeats the known list.
+ *
+ * @param mixed $type Raw description_type from the eligible response.
+ * @return string installment, discount, or first_order_discount.
+ */
+function torobpay_normalize_description_type( $type ) {
+	$type = strtolower( trim( (string) $type ) );
+	if ( in_array( $type, array( 'installment', 'discount', 'first_order_discount' ), true ) ) {
+		return $type;
+	}
+
+	return 'installment';
+}
+
+/**
+ * Whether this type is a discount highlight rather than the payment-method description.
+ *
+ * @param mixed $type Raw or normalized description_type.
+ * @return bool
+ */
+function torobpay_description_type_is_offer( $type ) {
+	$type = torobpay_normalize_description_type( $type );
+
+	return 'discount' === $type || 'first_order_discount' === $type;
+}
+
+/**
+ * Inline tags the eligibility description may render.
+ *
+ * assets/js/blocks/torobpay-blocks.js repeats this list. No attributes: style,
+ * href, and event handlers are removed with every other tag.
+ *
+ * @return array<string, array<string, array<int, string>>>
+ */
+function torobpay_eligibility_description_allowed_html() {
+	$allowed = array();
+	$tags    = array( 'strong', 'b', 'em', 'i', 'u', 's', 'del', 'ins', 'mark', 'small', 'sub', 'sup', 'br', 'span' );
+	foreach ( $tags as $tag ) {
+		$allowed[ $tag ] = array();
+	}
+
+	return $allowed;
+}
+
+/**
+ * Keep inline text formatting in an eligibility description and drop the rest.
+ *
+ * @param mixed $description API description.
+ * @return string
+ */
+function torobpay_sanitize_eligibility_description( $description ) {
+	$description = trim( (string) $description );
+	if ( '' === $description ) {
+		return '';
+	}
+
+	$stripped = preg_replace( '#<(script|style)\b[^>]*>.*?</\1>#is', '', $description );
+	if ( is_string( $stripped ) ) {
+		$description = $stripped;
+	}
+	$stripped = preg_replace( '#<(script|style)\b[^>]*>.*$#is', '', $description );
+	if ( is_string( $stripped ) ) {
+		$description = $stripped;
+	}
+
+	if ( function_exists( 'wp_kses' ) ) {
+		$description = wp_kses( $description, torobpay_eligibility_description_allowed_html() );
+	}
+
+	return trim( $description );
+}
+
+/**
+ * Highlight markup for a discount description. Empty for installment and unknown types.
+ *
+ * Inline formatting in the description is kept. The sentence itself is not rebuilt.
+ *
+ * @param mixed $description API description.
+ * @param mixed $type        description_type.
+ * @return string
+ */
+function torobpay_checkout_offer_html( $description, $type ) {
+	if ( ! torobpay_description_type_is_offer( $type ) ) {
+		return '';
+	}
+
+	$description = torobpay_sanitize_eligibility_description( $description );
+	if ( '' === $description ) {
+		return '';
+	}
+
+	return '<span class="torobpay-offer">' . $description . '</span>';
+}
+
+/**
  * Check merchant + amount eligibility via TorobPay API.
  *
  * @param float       $amount    Raw cart or order amount.
  * @param string|null $currency  Optional currency; defaults to store currency.
  *
  * @return array {
- *   @type bool       $eligible     Whether merchant is eligible for the given amount.
- *   @type string      $title        Localised title message to show customers (may be empty).
- *   @type string      $description  Localised description (may be empty).
- *   @type WP_Error|null $wp_error   Error object if API call failed, otherwise null.
- *   @type mixed       $raw_response Full raw API response when available.
+ *   @type bool       $eligible          Whether merchant is eligible for the given amount.
+ *   @type string      $title             Title message to show customers (may be empty).
+ *   @type string      $description       Description sentence (may be empty). Inline formatting is kept.
+ *   @type string      $description_type  installment, discount, or first_order_discount.
+ *   @type WP_Error|null $wp_error        Error object if API call failed, otherwise null.
+ *   @type mixed       $raw_response      Full raw API response when available.
  * }
  */
 function torobpay_resolve_eligibility( $amount, $currency = null ) {
@@ -60,64 +159,79 @@ function torobpay_resolve_eligibility( $amount, $currency = null ) {
 	if ( function_exists( 'torobpay_is_payment_price_parity_probing' )
 		&& torobpay_is_payment_price_parity_probing() ) {
 		return [
-			'eligible'     => true,
-			'title'        => '',
-			'description'  => '',
-			'wp_error'     => null,
-			'raw_response' => null,
+			'eligible'         => true,
+			'title'            => '',
+			'description'      => '',
+			'description_type' => 'installment',
+			'wp_error'         => null,
+			'raw_response'     => null,
 		];
 	}
 
 	// Skip external request in admin / CLI / zero-amount contexts.
 	if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) || floatval( $amount ) <= 0 ) {
 		return [
-			'eligible'     => true,
-			'title'        => '',
-			'description'  => '',
-			'wp_error'     => null,
-			'raw_response' => null,
+			'eligible'         => true,
+			'title'            => '',
+			'description'      => '',
+			'description_type' => 'installment',
+			'wp_error'         => null,
+			'raw_response'     => null,
 		];
 	}
-
-	$request_uri   = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
-	$is_blocks_api = defined( 'REST_REQUEST' ) && REST_REQUEST && $request_uri && strpos( $request_uri, '/wc/store/' ) !== false;
 
 	// Thank-you / order-received is still is_checkout() in WooCommerce, but
 	// payment methods are not shown there — skip the eligibility API.
 	$is_thankyou = ( function_exists( 'is_order_received_page' ) && is_order_received_page() )
 		|| ( function_exists( 'is_wc_endpoint_url' ) && is_wc_endpoint_url( 'order-received' ) );
+	$on_checkout = function_exists( 'torobpay_is_checkout_request' )
+		? torobpay_is_checkout_request()
+		: ( function_exists( 'is_checkout' ) && is_checkout() );
 
-	if ( $is_thankyou || ( ! is_checkout() && ! is_wc_endpoint_url( 'order-pay' ) && ! $is_blocks_api ) ) {
+	if ( $is_thankyou || ( ! $on_checkout && ! is_wc_endpoint_url( 'order-pay' ) ) ) {
 		return [
-			'eligible'     => true,
-			'title'        => '',
-			'description'  => '',
-			'wp_error'     => null,
-			'raw_response' => null,
+			'eligible'         => true,
+			'title'            => '',
+			'description'      => '',
+			'description_type' => 'installment',
+			'wp_error'         => null,
+			'raw_response'     => null,
 		];
 	}
 
 	$currency     = $currency ?: get_woocommerce_currency();
 	$final_amount = torobpay_get_amount_by_currency( $amount, $currency );
+	$phone        = function_exists( 'torobpay_eligibility_phone_number' ) ? torobpay_eligibility_phone_number() : '';
 
 	// Request-level cache to avoid duplicate external calls within the same page load.
+	// Phone is part of the key so a different number cannot reuse another response.
 	static $cache = [];
-	$cache_key    = $currency . '|' . $final_amount;
+	$cache_key    = $currency . '|' . $final_amount . '|' . $phone;
 	if ( isset( $cache[ $cache_key ] ) ) {
 		return $cache[ $cache_key ];
 	}
 
-	// Perform API request.
-	$api_response = ( new TorobPayAPI() )->is_merchant_eligible( $final_amount );
+	// Perform API request. Omit phone_number when we have no normalized mobile.
+	if ( '' !== $phone ) {
+		$api_response = ( new TorobPayAPI() )->is_merchant_eligible(
+			$final_amount,
+			array(
+				'phone_number' => $phone,
+			)
+		);
+	} else {
+		$api_response = ( new TorobPayAPI() )->is_merchant_eligible( $final_amount );
+	}
 
 	// Error handling.
 	if ( is_wp_error( $api_response ) ) {
 		$result = [
-			'eligible'     => false,
-			'title'        => '',
-			'description'  => '',
-			'wp_error'     => $api_response,
-			'raw_response' => null,
+			'eligible'         => false,
+			'title'            => '',
+			'description'      => '',
+			'description_type' => 'installment',
+			'wp_error'         => $api_response,
+			'raw_response'     => null,
 		];
 		// Request-scoped only — do not persist a negative cache across requests.
 		$cache[ $cache_key ] = $result;
@@ -126,17 +240,19 @@ function torobpay_resolve_eligibility( $amount, $currency = null ) {
 
 	torobpay_record_eligibility_api_error( $api_response );
 
-	$resp_arr    = $api_response['response'] ?? [];
-	$eligible    = ! empty( $resp_arr['eligible'] );
-	$title       = $resp_arr['title_message'] ?? '';
-	$description = $resp_arr['description'] ?? '';
+	$resp_arr         = $api_response['response'] ?? [];
+	$eligible         = ! empty( $resp_arr['eligible'] );
+	$title            = $resp_arr['title_message'] ?? '';
+	$description      = torobpay_sanitize_eligibility_description( $resp_arr['description'] ?? '' );
+	$description_type = torobpay_normalize_description_type( $resp_arr['description_type'] ?? '' );
 
 	$result = [
-		'eligible'     => $eligible,
-		'title'        => $title,
-		'description'  => $description,
-		'wp_error'     => null,
-		'raw_response' => $resp_arr,
+		'eligible'         => $eligible,
+		'title'            => $title,
+		'description'      => $description,
+		'description_type' => $description_type,
+		'wp_error'         => null,
+		'raw_response'     => $resp_arr,
 	];
 
 	$cache[ $cache_key ] = $result;

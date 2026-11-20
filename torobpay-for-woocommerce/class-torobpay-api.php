@@ -660,6 +660,47 @@ class TorobPayAPI {
 	}
 
 	/**
+	 * Prepare GET values for add_query_arg().
+	 *
+	 * WordPress urlencodes the values. TorobPay decodes the query a second
+	 * time, and that decode turns a single "+" into a space, so every number
+	 * receives the shop's default offer. Encoding here leaves "+" intact
+	 * after that second decode. Amounts are numbers and are left as they are.
+	 *
+	 * @param array $args Query args.
+	 * @return array
+	 */
+	private function encode_get_query_args( array $args ) {
+		$encoded = array();
+		foreach ( $args as $key => $value ) {
+			$encoded[ $key ] = $this->encode_get_query_value( $value );
+		}
+
+		return $encoded;
+	}
+
+	/**
+	 * @param mixed $value Query value.
+	 * @return mixed
+	 */
+	private function encode_get_query_value( $value ) {
+		if ( is_array( $value ) ) {
+			$encoded = array();
+			foreach ( $value as $item_key => $item ) {
+				$encoded[ $item_key ] = $this->encode_get_query_value( $item );
+			}
+
+			return $encoded;
+		}
+
+		if ( is_string( $value ) ) {
+			return rawurlencode( $value );
+		}
+
+		return $value;
+	}
+
+	/**
 	 * Custom remote request wrapper.
 	 *
 	 * @param string      $endpoint Endpoint path.
@@ -701,7 +742,7 @@ class TorobPayAPI {
 
 		if ( 'GET' === $method ) {
 			if ( ! empty( $args ) && is_array( $args ) ) {
-				$url = add_query_arg( $args, $url );
+				$url = add_query_arg( $this->encode_get_query_args( $args ), $url );
 			}
 			// Never attach a body to GET requests.
 		} else {
@@ -810,6 +851,30 @@ class TorobPayAPI {
 				'is_enabled' => (bool) $enabled,
 			)
 		);
+	}
+
+	/**
+	 * Retrieve the merchant's TorobPay special discount campaigns.
+	 *
+	 * GET api/online/discount/v1/campaigns
+	 *
+	 * A timeout also covers the nested token request. Pass one when this call
+	 * must not hold a storefront render for the default 10 seconds.
+	 *
+	 * @param int|null $timeout Seconds. Null keeps the client default.
+	 * @return array|WP_Error
+	 */
+	public function get_discount_campaigns( $timeout = null ) {
+		$previous_timeout = $this->http_timeout;
+		if ( null !== $timeout ) {
+			$this->http_timeout = max( 1, (int) $timeout );
+		}
+
+		try {
+			return $this->request( 'api/online/discount/v1/campaigns', 'GET', 'Bearer' );
+		} finally {
+			$this->http_timeout = $previous_timeout;
+		}
 	}
 
 	/**

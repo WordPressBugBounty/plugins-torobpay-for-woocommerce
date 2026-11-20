@@ -1,11 +1,5 @@
 /**
- * Confetti burst shared by the topbar credit sentence and the PDP promo dialog.
- *
- * The topbar spawns pieces when the credit ticker item appears (once on load,
- * then on each animation cycle). Other callers use window.torobpayBurstConfetti(host).
- * A host with .torobpay-confetti-stage fills its own box (the promo dialog).
- * Without that class, pieces fall through a stage taller than the parent bar.
- * Reduced-motion users get no burst.
+ * Confetti for the topbar credit line (on appear + each cycle; respects reduced-motion).
  */
 ( function () {
 	'use strict';
@@ -22,16 +16,10 @@
 		var width = host.clientWidth || 320;
 		var stageHeight = host.clientHeight || 180;
 		var barHeight = bar ? bar.clientHeight : 44;
-		var stage = host.classList && host.classList.contains( 'torobpay-confetti-stage' );
-		// The promo dialog is its own field. A thin-bar parent would throw the
-		// pieces across the whole overlay, so travel stays inside the stage.
-		if ( stage ) {
-			barHeight = Math.max( 44, Math.round( stageHeight * 0.28 ) );
-		}
 		var room = Math.max( 12, ( stageHeight - barHeight ) / 2 );
 		var narrow = width < 640;
 		var span = narrow ? 0.94 : 0.8;
-		var count = stage ? 36 : 24;
+		var count = 24;
 		var i;
 
 		for ( i = 0; i < count; i++ ) {
@@ -59,13 +47,8 @@
 			var dy = Math.abs( yEnd - y0 );
 			var distance = Math.sqrt( ( dx * dx ) + ( dy * dy ) );
 			var duration = Math.round( ( distance / 220 ) * 1000 );
-			if ( stage ) {
-				duration = Math.round( duration * ( 0.85 + ( Math.random() * 0.3 ) ) );
-				duration = Math.max( 700, Math.min( 1600, duration ) );
-			} else {
-				duration = Math.round( duration * ( narrow ? ( 0.7 + ( Math.random() * 0.5 ) ) : ( 0.92 + ( Math.random() * 0.16 ) ) ) );
-				duration = Math.max( narrow ? 400 : 480, Math.min( narrow ? 1000 : 1500, duration ) );
-			}
+			duration = Math.round( duration * ( narrow ? ( 0.7 + ( Math.random() * 0.5 ) ) : ( 0.92 + ( Math.random() * 0.16 ) ) ) );
+			duration = Math.max( narrow ? 400 : 480, Math.min( narrow ? 1000 : 1500, duration ) );
 
 			piece.className = 'torobpay-topbar-confetti-piece';
 			if ( i % 3 === 0 ) {
@@ -89,26 +72,62 @@
 		}
 	}
 
-	window.torobpayBurstConfetti = burst;
+	var boundItem = null;
 
-	function boot() {
-		if ( reduceMotion ) {
+	function animationDelaySeconds( item ) {
+		var raw = window.getComputedStyle( item ).animationDelay || '0s';
+		var first = String( raw ).split( ',' )[ 0 ].trim();
+		var value = parseFloat( first );
+		if ( isNaN( value ) ) {
+			return 0;
+		}
+		if ( first.slice( -2 ) === 'ms' ) {
+			return value / 1000;
+		}
+		return value;
+	}
+
+	function bindCredit( item, host, immediate ) {
+		if ( ! item || ! host || boundItem === item ) {
 			return;
 		}
+		boundItem = item;
+		if ( immediate ) {
+			burst( host );
+		} else {
+			item.addEventListener( 'animationstart', function () {
+				burst( host );
+			} );
+		}
+		item.addEventListener( 'animationiteration', function () {
+			burst( host );
+		} );
+	}
 
+	function bindVisibleCredit() {
 		var item = document.querySelector( '#torobpay-topbar .torobpay-topbar-confetti-target' );
 		var host = document.querySelector( '#torobpay-topbar .torobpay-topbar-confetti' );
 		if ( ! item || ! host ) {
 			return;
 		}
-
-		// The credit item starts at delay 0, so its animation has usually
-		// already begun by the time this footer script runs.
-		burst( host );
-		item.addEventListener( 'animationiteration', function () {
-			burst( host );
-		} );
+		// Delay ~0 usually already started when this footer script runs.
+		bindCredit( item, host, animationDelaySeconds( item ) < 0.05 );
 	}
+
+	function boot() {
+		if ( reduceMotion ) {
+			return;
+		}
+		bindVisibleCredit();
+	}
+
+	window.torobpayTopbarRebindConfetti = function () {
+		if ( reduceMotion ) {
+			return;
+		}
+		boundItem = null;
+		bindVisibleCredit();
+	};
 
 	if ( document.readyState === 'loading' ) {
 		document.addEventListener( 'DOMContentLoaded', boot );

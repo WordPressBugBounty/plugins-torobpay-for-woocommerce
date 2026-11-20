@@ -4,7 +4,7 @@ Tags: torobpay, ترب‌پی, woocommerce, payment gateway, installments
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 4.8.17
+Stable tag: 4.9.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,7 +22,7 @@ The plugin:
 * Syncs order status and supports refunds
 * Shows installment info on product pages, plus a slider and banners so shoppers know installments are available
 * Takes in-store payments with a QR code
-* Shows an optional TorobPay discount code on the product widget
+* Shows TorobPay special discount campaigns on the product widget and top bar when your merchant account has one
 * Lets merchants join the TorobPay campaign
 
 == Installation ==
@@ -63,6 +63,13 @@ It was removed in 4.7.2. If you had custom CSS there, copy it into your theme or
 5. WooCommerce payment settings for the TorobPay gateway.
 
 == Changelog ==
+
+= 4.9.0 =
+* Special discount campaigns now come from TorobPay instead of manual code and terms in settings. The product widget and top bar show what TorobPay sends; you choose where they appear and the widget row style.
+* Checkout and payment method UI updates, including clearer discount messaging and refreshed styling.
+* Checkout offer and product widget animations updated.
+* Checkout collects and validates the customer mobile number on checkout to display special offers.
+* Special discount settings grouped under visual elements in admin.
 
 = 4.8.17 =
 * Product widget, badge, marquee, discount amounts, and the in-store payment total follow the currency position set in WooCommerce. With Left selected, تومان and ریال stay on the left of the amount. This matches WooCommerce 11.2.
@@ -124,6 +131,9 @@ It was removed in 4.7.2. If you had custom CSS there, copy it into your theme or
 * First WordPress.org release. Updates now come through WordPress.org. Re-activate the plugin if the main file name changed.
 
 == Upgrade Notice ==
+
+= 4.9.0 =
+Special discounts are now driven by TorobPay campaigns. Upgrade recommended.
 
 = 4.8.17 =
 Installment prices follow WooCommerce's currency position, so تومان and ریال stay on the correct side. Upgrade recommended with WooCommerce 11.2.

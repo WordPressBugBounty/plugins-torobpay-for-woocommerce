@@ -1,6 +1,10 @@
 <?php
 /**
- * Merchant TorobPay gateway promo code shown on the PDP widget.
+ * TorobPay special discount campaign shown on storefront elements.
+ *
+ * Campaign data (code, discount terms, display texts) comes from the
+ * api/online/discount/v1/campaigns endpoint via torobpay-discount-campaigns.php.
+ * Local settings only control where it shows (widget, top bar) and the widget row style.
  *
  * Display-only: never applied to the WooCommerce cart.
  *
@@ -14,40 +18,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Default promo settings.
  *
- * @return array{
- *   enabled:string,
- *   code:string,
- *   discount_type:string,
- *   discount_value:float,
- *   min_total:float,
- *   expires_at:int,
- *   style:string
- * }
+ * `widget` replaced the legacy `enabled` key so stores that still have
+ * `enabled => no` from the old off-by-default pick up the on default.
+ *
+ * @return array{widget:string,topbar:string,style:string}
  */
 function torobpay_pdp_promo_defaults() {
 	return array(
-		'enabled'        => 'no',
-		'code'           => '',
-		'discount_type'  => 'amount',
-		'discount_value' => 0.0,
-		'min_total'      => 0.0,
-		'expires_at'     => 0,
-		'style'          => 'marquee',
+		'widget' => 'yes',
+		'topbar' => 'yes',
+		'style'  => 'marquee',
 	);
 }
 
 /**
  * Stored promo settings, sanitized.
  *
- * @return array{
- *   enabled:string,
- *   code:string,
- *   discount_type:string,
- *   discount_value:float,
- *   min_total:float,
- *   expires_at:int,
- *   style:string
- * }
+ * @return array{widget:string,topbar:string,style:string}
  */
 function torobpay_get_pdp_promo_settings() {
 	$stored = get_option( 'torobpay_pdp_promo', array() );
@@ -59,18 +46,13 @@ function torobpay_get_pdp_promo_settings() {
 }
 
 /**
- * Sanitize a promo settings array.
+ * Sanitize a promo settings array. Only visibility and style are local;
+ * campaign details always come from the API.
+ *
+ * Legacy `enabled` is ignored on purpose — that key defaulted to off.
  *
  * @param array $input Raw settings.
- * @return array{
- *   enabled:string,
- *   code:string,
- *   discount_type:string,
- *   discount_value:float,
- *   min_total:float,
- *   expires_at:int,
- *   style:string
- * }
+ * @return array{widget:string,topbar:string,style:string}
  */
 function torobpay_sanitize_pdp_promo_settings( $input ) {
 	$defaults = torobpay_pdp_promo_defaults();
@@ -78,59 +60,23 @@ function torobpay_sanitize_pdp_promo_settings( $input ) {
 		return $defaults;
 	}
 
-	$code = isset( $input['code'] ) ? sanitize_text_field( (string) $input['code'] ) : '';
-	$code = preg_replace( '/\s+/', '', $code );
-	$code = is_string( $code ) ? $code : '';
-	if ( function_exists( 'mb_substr' ) ) {
-		$code = mb_substr( $code, 0, 40 );
-	} else {
-		$code = substr( $code, 0, 40 );
+	$widget = $defaults['widget'];
+	if ( array_key_exists( 'widget', $input ) ) {
+		$widget = ( 'yes' === $input['widget'] ) ? 'yes' : 'no';
 	}
-
-	$type = isset( $input['discount_type'] ) ? sanitize_key( (string) $input['discount_type'] ) : 'amount';
-	if ( ! in_array( $type, array( 'amount', 'percent' ), true ) ) {
-		$type = 'amount';
+	$topbar = $defaults['topbar'];
+	if ( array_key_exists( 'topbar', $input ) ) {
+		$topbar = ( 'yes' === $input['topbar'] ) ? 'yes' : 'no';
 	}
-
-	$value = isset( $input['discount_value'] ) ? (float) $input['discount_value'] : 0.0;
-	if ( $value < 0 ) {
-		$value = 0.0;
-	}
-	if ( 'percent' === $type ) {
-		if ( $value > 100 ) {
-			$value = 100.0;
-		}
-	} elseif ( $value > 1000000000000 ) {
-		$value = 1000000000000.0;
-	}
-
-	$min = isset( $input['min_total'] ) ? (float) $input['min_total'] : 0.0;
-	if ( $min < 0 ) {
-		$min = 0.0;
-	}
-	if ( $min > 1000000000000 ) {
-		$min = 1000000000000.0;
-	}
-
-	$expires = isset( $input['expires_at'] ) ? (int) $input['expires_at'] : 0;
-	if ( $expires < 0 ) {
-		$expires = 0;
-	}
-
-	$enabled = ( isset( $input['enabled'] ) && 'yes' === $input['enabled'] ) ? 'yes' : 'no';
-	$style   = isset( $input['style'] ) ? sanitize_key( (string) $input['style'] ) : 'marquee';
+	$style = isset( $input['style'] ) ? sanitize_key( (string) $input['style'] ) : 'marquee';
 	if ( ! in_array( $style, array( 'marquee', 'simple' ), true ) ) {
 		$style = 'marquee';
 	}
 
 	return array(
-		'enabled'        => $enabled,
-		'code'           => $code,
-		'discount_type'  => $type,
-		'discount_value' => $value,
-		'min_total'      => $min,
-		'expires_at'     => $expires,
-		'style'          => $style,
+		'widget' => $widget,
+		'topbar' => $topbar,
+		'style'  => $style,
 	);
 }
 
@@ -145,10 +91,22 @@ function torobpay_set_pdp_promo_settings( $settings ) {
 }
 
 /**
+ * The active discount campaign for storefront display, or null.
+ *
+ * @return array|null
+ */
+function torobpay_get_pdp_promo_campaign() {
+	if ( ! function_exists( 'torobpay_get_active_discount_campaign' ) ) {
+		return null;
+	}
+
+	return torobpay_get_active_discount_campaign();
+}
+
+/**
  * Whether the promo should render on the storefront.
  *
- * Only the discount code is required. Amount, percent, minimum, and expiry
- * are optional display fields.
+ * Requires the local toggle plus a live campaign from the API.
  *
  * @param array|null $settings Optional preloaded settings.
  * @return bool
@@ -158,96 +116,66 @@ function torobpay_is_pdp_promo_active( $settings = null ) {
 		$settings = torobpay_get_pdp_promo_settings();
 	}
 
-	if ( 'yes' !== $settings['enabled'] ) {
+	if ( empty( $settings['widget'] ) || 'yes' !== $settings['widget'] ) {
 		return false;
 	}
 
-	if ( '' === $settings['code'] ) {
+	return null !== torobpay_get_pdp_promo_campaign();
+}
+
+/**
+ * Whether the top bar should include the campaign slide.
+ *
+ * Requires the top-bar switch plus a live campaign. The top bar itself
+ * still has to be rendered.
+ *
+ * @param array|null $settings Optional preloaded settings.
+ * @return bool
+ */
+function torobpay_is_pdp_promo_topbar_active( $settings = null ) {
+	if ( null === $settings ) {
+		$settings = torobpay_get_pdp_promo_settings();
+	}
+
+	if ( empty( $settings['topbar'] ) || 'yes' !== $settings['topbar'] ) {
 		return false;
 	}
 
-	$cutoff = torobpay_pdp_promo_expires_cutoff( $settings['expires_at'] );
-	if ( $cutoff instanceof DateTimeInterface && $cutoff->getTimestamp() <= time() ) {
+	return null !== torobpay_get_pdp_promo_campaign();
+}
+
+/**
+ * Whether the top bar should omit its merchant custom sentence.
+ *
+ * True only while a live discount campaign is shown on the top bar (the
+ * top-bar switch is on). Widget-only campaigns keep the custom sentence.
+ * It is not re-added client-side after expiry; the next page load brings it back.
+ *
+ * @param array|null $settings Optional preloaded settings.
+ * @return bool
+ */
+function torobpay_pdp_promo_hides_topbar_custom_sentence( $settings = null ) {
+	return torobpay_is_pdp_promo_topbar_active( $settings );
+}
+
+/**
+ * Whether either storefront surface should show the discount dialog.
+ *
+ * @param array|null $settings Optional preloaded settings.
+ * @return bool
+ */
+function torobpay_pdp_promo_dialog_active( $settings = null ) {
+	if ( null === $settings ) {
+		$settings = torobpay_get_pdp_promo_settings();
+	}
+
+	$widget_on = isset( $settings['widget'] ) && 'yes' === $settings['widget'];
+	$topbar_on = isset( $settings['topbar'] ) && 'yes' === $settings['topbar'];
+	if ( ! $widget_on && ! $topbar_on ) {
 		return false;
 	}
 
-	return true;
-}
-
-/**
- * Site timezone for the promo expiry date.
- *
- * @return DateTimeZone
- */
-function torobpay_pdp_promo_site_timezone() {
-	return function_exists( 'wp_timezone' ) ? wp_timezone() : new DateTimeZone( 'UTC' );
-}
-
-/**
- * Start of the selected expiry date in the site timezone.
- *
- * The clock time is ignored. The offer lasts until midnight at the end of this day.
- *
- * @param int $timestamp Unix timestamp.
- * @return DateTimeImmutable|null
- */
-function torobpay_pdp_promo_expires_datetime( $timestamp ) {
-	$timestamp = (int) $timestamp;
-	if ( $timestamp <= 0 ) {
-		return null;
-	}
-
-	$local = ( new DateTimeImmutable( '@' . $timestamp ) )->setTimezone( torobpay_pdp_promo_site_timezone() );
-
-	return $local->setTime( 0, 0 );
-}
-
-/**
- * Midnight when the selected expiry date ends.
- *
- * @param int $timestamp Unix timestamp.
- * @return DateTimeImmutable|null
- */
-function torobpay_pdp_promo_expires_cutoff( $timestamp ) {
-	$day = torobpay_pdp_promo_expires_datetime( $timestamp );
-
-	return $day ? $day->modify( '+1 day' ) : null;
-}
-
-/**
- * Parse a site-timezone date to midnight at the start of that day.
- *
- * A clock time, if present, is ignored.
- *
- * @param string $local Local date (`Y-m-d`) or datetime.
- * @return int
- */
-function torobpay_pdp_promo_parse_expires_local( $local ) {
-	$local = trim( (string) $local );
-	if ( '' === $local ) {
-		return 0;
-	}
-
-	$date = substr( $local, 0, 10 );
-	if ( ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $date ) ) {
-		return 0;
-	}
-
-	$dt = date_create_immutable( $date . ' 00:00:00', torobpay_pdp_promo_site_timezone() );
-
-	return $dt ? $dt->getTimestamp() : 0;
-}
-
-/**
- * Format a unix timestamp for the expiry hidden field (site timezone).
- *
- * @param int $timestamp Unix timestamp.
- * @return string Gregorian `Y-m-d` or empty.
- */
-function torobpay_pdp_promo_expires_local_value( $timestamp ) {
-	$dt = torobpay_pdp_promo_expires_datetime( $timestamp );
-
-	return $dt ? $dt->format( 'Y-m-d' ) : '';
+	return null !== torobpay_get_pdp_promo_campaign();
 }
 
 /**
@@ -256,17 +184,11 @@ function torobpay_pdp_promo_expires_local_value( $timestamp ) {
  * @return void
  */
 function torobpay_save_pdp_promo_from_post() {
-	$expires_raw = isset( $_POST['pdp_promo_expires_at'] ) ? sanitize_text_field( wp_unslash( $_POST['pdp_promo_expires_at'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Caller verifies the page nonce.
-
 	torobpay_set_pdp_promo_settings(
 		array(
-			'enabled'        => isset( $_POST['pdp_promo_enabled'] ) ? 'yes' : 'no', // phpcs:ignore WordPress.Security.NonceVerification.Missing
-			'code'           => isset( $_POST['pdp_promo_code'] ) ? wp_unslash( $_POST['pdp_promo_code'] ) : '', // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitized in torobpay_sanitize_pdp_promo_settings().
-			'discount_type'  => isset( $_POST['pdp_promo_discount_type'] ) ? wp_unslash( $_POST['pdp_promo_discount_type'] ) : 'amount', // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-			'discount_value' => isset( $_POST['pdp_promo_discount_value'] ) ? wp_unslash( $_POST['pdp_promo_discount_value'] ) : 0, // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-			'min_total'      => isset( $_POST['pdp_promo_min_total'] ) ? wp_unslash( $_POST['pdp_promo_min_total'] ) : 0, // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-			'expires_at'     => torobpay_pdp_promo_parse_expires_local( $expires_raw ),
-			'style'          => isset( $_POST['pdp_promo_style'] ) ? wp_unslash( $_POST['pdp_promo_style'] ) : 'marquee', // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitized in torobpay_sanitize_pdp_promo_settings().
+			'widget' => isset( $_POST['pdp_promo_widget'] ) ? 'yes' : 'no', // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Caller verifies the page nonce.
+			'topbar' => isset( $_POST['pdp_promo_topbar'] ) ? 'yes' : 'no', // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Caller verifies the page nonce.
+			'style'  => isset( $_POST['pdp_promo_style'] ) ? wp_unslash( $_POST['pdp_promo_style'] ) : 'marquee', // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitized in torobpay_sanitize_pdp_promo_settings().
 		)
 	);
 }
@@ -296,66 +218,185 @@ function torobpay_pdp_promo_format_number( $value ) {
 }
 
 /**
- * Display-only discount heading (amount or percent). Not used for totals.
+ * Convert an API amount (Iranian rial) into the store currency.
  *
- * @param array $settings Promo settings.
+ * @param float $irr Amount in rial.
+ * @return float
+ */
+function torobpay_pdp_promo_store_amount( $irr ) {
+	$factor = function_exists( 'torobpay_get_currency_amount_factor' ) ? (float) torobpay_get_currency_amount_factor() : 10.0;
+	$factor = $factor > 0 ? $factor : 10.0;
+
+	return (float) $irr / $factor;
+}
+
+/**
+ * Price HTML for a rial amount in the store currency.
+ *
+ * @param float $irr Amount in rial.
  * @return string Escaped HTML.
  */
-function torobpay_pdp_promo_discount_heading_html( $settings ) {
-	if ( $settings['discount_value'] <= 0 ) {
-		return '';
+function torobpay_pdp_promo_price_html( $irr ) {
+	$store_amount = torobpay_pdp_promo_store_amount( $irr );
+	if ( function_exists( 'wc_price' ) ) {
+		return wp_kses( wc_price( $store_amount ), torobpay_kses_allowed_html() );
 	}
 
-	if ( 'percent' === $settings['discount_type'] ) {
+	return esc_html( torobpay_pdp_promo_format_number( $store_amount ) );
+}
+
+/**
+ * Discount heading row for the lightbox. Prefers the API-provided text.
+ *
+ * @param array $campaign Sanitized campaign.
+ * @return string Escaped HTML or empty.
+ */
+function torobpay_pdp_promo_amount_html( $campaign ) {
+	if ( ! empty( $campaign['amount_text'] ) ) {
+		return esc_html( $campaign['amount_text'] ) . ' ' . esc_html__( 'TorobPay', 'torobpay-for-woocommerce' );
+	}
+
+	if ( 'percent' === $campaign['discount_type'] ) {
+		if ( $campaign['discount_percentage'] <= 0 ) {
+			return '';
+		}
+
 		return sprintf(
 			/* translators: %s: percentage number without the percent sign */
 			esc_html__( '%s%% discount', 'torobpay-for-woocommerce' ),
-			esc_html( torobpay_pdp_promo_format_number( $settings['discount_value'] ) )
+			esc_html( torobpay_pdp_promo_format_number( $campaign['discount_percentage'] ) )
 		);
 	}
 
-	$price = function_exists( 'wc_price' )
-		? wp_kses( wc_price( $settings['discount_value'] ), torobpay_kses_allowed_html() )
-		: esc_html( torobpay_pdp_promo_format_number( $settings['discount_value'] ) );
+	if ( $campaign['discount_fixed_amount'] <= 0 ) {
+		return '';
+	}
 
 	return sprintf(
 		/* translators: %s: formatted discount amount from wc_price() */
 		esc_html__( '%s discount', 'torobpay-for-woocommerce' ),
-		$price
+		torobpay_pdp_promo_price_html( $campaign['discount_fixed_amount'] )
 	);
 }
 
 /**
- * Optional minimum-purchase or amount-cap line. Display-only.
+ * Minimum-purchase and percent-cap rows for the lightbox. Display-only.
  *
- * Amount discounts show a minimum purchase. Percent discounts show an amount
- * cap: the percent is calculated on this amount even if the total is higher.
- *
- * @param array $settings Promo settings.
- * @return string Escaped HTML or empty.
+ * @param array $campaign Sanitized campaign.
+ * @return string Escaped HTML rows or empty.
  */
-function torobpay_pdp_promo_min_total_html( $settings ) {
-	if ( $settings['min_total'] <= 0 ) {
-		return '';
+function torobpay_pdp_promo_terms_html( $campaign ) {
+	$rows = '';
+
+	if ( $campaign['min_order_total_amount'] > 0 ) {
+		$min_inner = '' !== $campaign['min_order_text']
+			? esc_html( $campaign['min_order_text'] )
+			: torobpay_pdp_promo_price_html( $campaign['min_order_total_amount'] );
+		$rows     .= '<p class="torobpay-promo-card-min">'
+			. sprintf(
+				/* translators: %s: minimum purchase amount or API-provided text */
+				esc_html__( 'Minimum purchase: %s', 'torobpay-for-woocommerce' ),
+				$min_inner
+			)
+			. '</p>';
 	}
 
-	$price = function_exists( 'wc_price' )
-		? wp_kses( wc_price( $settings['min_total'] ), torobpay_kses_allowed_html() )
-		: esc_html( torobpay_pdp_promo_format_number( $settings['min_total'] ) );
-
-	if ( 'percent' === $settings['discount_type'] ) {
-		return sprintf(
-			/* translators: %s: formatted amount cap from wc_price(). Persian: تا سقف مبلغ %s */
-			esc_html__( 'Up to %s', 'torobpay-for-woocommerce' ),
-			$price
-		);
+	$has_cap_text = '' !== $campaign['max_discount_text'];
+	$has_cap      = 'percent' === $campaign['discount_type'] && null !== $campaign['discount_percentage_max_amount'] && $campaign['discount_percentage_max_amount'] > 0;
+	if ( $has_cap_text || $has_cap ) {
+		$cap_inner = $has_cap_text
+			? sprintf(
+				/* translators: %s: API-provided maximum discount text */
+				esc_html__( 'Maximum discount: %s', 'torobpay-for-woocommerce' ),
+				esc_html( $campaign['max_discount_text'] )
+			)
+			: sprintf(
+				/* translators: %s: formatted amount cap */
+				esc_html__( 'Up to %s', 'torobpay-for-woocommerce' ),
+				torobpay_pdp_promo_price_html( $campaign['discount_percentage_max_amount'] )
+			);
+		$rows      .= '<p class="torobpay-promo-card-min">' . $cap_inner . '</p>';
 	}
 
-	return sprintf(
-		/* translators: %s: formatted minimum order total from wc_price() */
-		esc_html__( 'Minimum purchase: %s', 'torobpay-for-woocommerce' ),
-		$price
-	);
+	return $rows;
+}
+
+/**
+ * Compact label for the discount chip. Prefers the API short title.
+ *
+ * @param array $campaign Sanitized campaign.
+ * @return string
+ */
+function torobpay_pdp_promo_campaign_label( $campaign ) {
+	foreach ( array( 'short_amount_title', 'amount_title' ) as $key ) {
+		if ( ! empty( $campaign[ $key ] ) ) {
+			return $campaign[ $key ];
+		}
+	}
+
+	return __( 'Special TorobPay discount', 'torobpay-for-woocommerce' );
+}
+
+/**
+ * Top-bar campaign title: first non-empty short/title/text field, plus «ترب‌پی».
+ *
+ * @param array $campaign Sanitized campaign.
+ * @return string
+ */
+function torobpay_pdp_promo_topbar_title( $campaign ) {
+	foreach ( array( 'short_amount_title', 'amount_title', 'amount_text' ) as $key ) {
+		if ( ! empty( $campaign[ $key ] ) ) {
+			return (string) $campaign[ $key ] . ' ترب‌پی';
+		}
+	}
+
+	return __( 'Special TorobPay discount', 'torobpay-for-woocommerce' );
+}
+
+/**
+ * Ticker campaign line: {@see torobpay_pdp_promo_topbar_title()} + Get Discount button.
+ *
+ * @param array $campaign Sanitized campaign.
+ * @return string HTML.
+ */
+function torobpay_pdp_promo_topbar_sentence_html( $campaign ) {
+	$title = esc_html( torobpay_pdp_promo_topbar_title( $campaign ) );
+	$label = esc_html__( 'Get Discount', 'torobpay-for-woocommerce' );
+	$title_html = '<span class="torobpay-topbar-campaign-title">' . $title . '</span>';
+	$hover = esc_html__( 'View Promo', 'torobpay-for-woocommerce' );
+
+	return '<span class="torobpay-topbar-campaign-line">'
+		. $title_html
+		. torobpay_pdp_promo_topbar_discount_button_html( $label, $hover )
+		. '</span>';
+}
+
+/**
+ * Spread campaign-slot button (label is the full line on small screens).
+ *
+ * @return string HTML.
+ */
+function torobpay_pdp_promo_topbar_spread_button_html() {
+	$label = esc_html__( 'Get discount code', 'torobpay-for-woocommerce' );
+	$hover = esc_html__( 'View Promo', 'torobpay-for-woocommerce' );
+
+	return torobpay_pdp_promo_topbar_discount_button_html( $label, $hover );
+}
+
+/**
+ * Shared topbar discount button markup.
+ *
+ * @param string $label Escaped resting label.
+ * @param string $hover Escaped hover label.
+ * @return string HTML.
+ */
+function torobpay_pdp_promo_topbar_discount_button_html( $label, $hover ) {
+	return '<button type="button" class="torobpay-topbar-campaign" aria-haspopup="dialog" aria-expanded="false" aria-controls="torobpay-promo-dialog">'
+		. '<span class="torobpay-topbar-campaign-labels">'
+			. '<span class="torobpay-topbar-campaign-label">' . $label . '</span>'
+			. '<span class="torobpay-topbar-campaign-label torobpay-topbar-campaign-label--alt" aria-hidden="true">' . $hover . '</span>'
+		. '</span>'
+		. '</button>';
 }
 
 /**
@@ -409,12 +450,16 @@ function torobpay_pdp_promo_marquee_set_html( $label, $code, $hide_all = false )
  */
 function torobpay_get_pdp_promo_widget_html( $args = array() ) {
 	$settings = torobpay_get_pdp_promo_settings();
-	if ( ! torobpay_is_pdp_promo_active( $settings ) ) {
+	if ( empty( $settings['widget'] ) || 'yes' !== $settings['widget'] ) {
+		return '';
+	}
+	$campaign = torobpay_get_pdp_promo_campaign();
+	if ( null === $campaign ) {
 		return '';
 	}
 
-	$label    = esc_html__( 'Special TorobPay discount', 'torobpay-for-woocommerce' );
-	$code     = esc_html( $settings['code'] );
+	$label    = esc_html( torobpay_pdp_promo_campaign_label( $campaign ) );
+	$code     = esc_html( $campaign['code'] );
 	$classes  = array( 'torobpay-widget-promo' );
 	$tabindex = '';
 	if ( isset( $args['tabindex'] ) ) {
@@ -438,46 +483,69 @@ function torobpay_get_pdp_promo_widget_html( $args = array() ) {
 }
 
 /**
+ * Expiry row for the lightbox, driven by the campaign's expires_at.
+ *
+ * @param array $campaign Sanitized campaign.
+ * @return string HTML or empty.
+ */
+function torobpay_pdp_promo_expiry_html( $campaign ) {
+	$expires_ts = isset( $campaign['expires_ts'] ) ? (int) $campaign['expires_ts'] : 0;
+
+	if ( '' !== $campaign['expiry_text'] ) {
+		$phrase = esc_html( $campaign['expiry_text'] );
+	} else {
+		$expires_dt = '' !== $campaign['expires_at'] ? date_create_immutable( $campaign['expires_at'] ) : false;
+		if ( ! $expires_dt instanceof DateTimeInterface || function_exists( 'torobpay_format_jalali_until_phrase' ) === false ) {
+			return '';
+		}
+		$phrase = esc_html( torobpay_format_jalali_until_phrase( $expires_dt ) );
+	}
+
+	$attrs = '';
+	if ( $expires_ts > 0 ) {
+		$attrs = sprintf(
+			' data-expires-at="%1$d"><time datetime="%2$s">%3$s</time></p>',
+			$expires_ts,
+			esc_attr( gmdate( 'c', $expires_ts ) ),
+			$phrase
+		);
+		return '<p class="torobpay-promo-expiry"' . $attrs;
+	}
+
+	return '<p class="torobpay-promo-expiry">' . $phrase . '</p>';
+}
+
+/**
  * Lightbox markup (printed once in the footer).
  *
  * @return string HTML or empty.
  */
 function torobpay_get_pdp_promo_lightbox_html() {
 	$settings = torobpay_get_pdp_promo_settings();
-	if ( ! torobpay_is_pdp_promo_active( $settings ) ) {
+	$widget_on = isset( $settings['widget'] ) && 'yes' === $settings['widget'];
+	$topbar_on = isset( $settings['topbar'] ) && 'yes' === $settings['topbar'];
+	if ( ! $widget_on && ! $topbar_on ) {
+		return '';
+	}
+	$campaign = torobpay_get_pdp_promo_campaign();
+	if ( null === $campaign ) {
 		return '';
 	}
 
-	$amount_html = torobpay_pdp_promo_discount_heading_html( $settings );
-	$amount_row  = '';
-	if ( '' !== $amount_html ) {
-		$amount_row = '<p class="torobpay-promo-card-amount">' . $amount_html . '</p>';
-	}
+	$amount_html = torobpay_pdp_promo_amount_html( $campaign );
+	$amount_row  = '' !== $amount_html ? '<p class="torobpay-promo-card-amount">' . $amount_html . '</p>' : '';
 
-	$min_html = torobpay_pdp_promo_min_total_html( $settings );
-	$min_row  = '';
-	if ( '' !== $min_html ) {
-		$min_row = '<p class="torobpay-promo-card-min">' . $min_html . '</p>';
-	}
+	$terms_rows = torobpay_pdp_promo_terms_html( $campaign );
 
-	$expiry = '';
-	$day    = torobpay_pdp_promo_expires_datetime( $settings['expires_at'] );
-	$cutoff = torobpay_pdp_promo_expires_cutoff( $settings['expires_at'] );
-	if ( $day instanceof DateTimeInterface && $cutoff instanceof DateTimeInterface ) {
-		$expiry = sprintf(
-			'<p class="torobpay-promo-expiry" data-expires-at="%1$d">'
-			. '<time datetime="%2$s">%3$s</time>'
-			. '</p>',
-			$cutoff->getTimestamp(),
-			esc_attr( $cutoff->format( 'c' ) ),
-			esc_html( torobpay_format_jalali_until_phrase( $day ) )
-		);
-	}
+	$first_order_row = ! empty( $campaign['first_order_only'] )
+		? '<p class="torobpay-promo-card-min">' . esc_html__( 'First order only', 'torobpay-for-woocommerce' ) . '</p>'
+		: '';
+
+	$expiry = torobpay_pdp_promo_expiry_html( $campaign );
 
 	return sprintf(
 		'<div id="torobpay-promo-overlay" class="torobpay-promo-overlay" hidden>'
 		. '<div id="torobpay-promo-dialog" class="torobpay-promo-dialog" role="dialog" aria-modal="true" aria-labelledby="torobpay-promo-title" tabindex="-1">'
-			. '<div class="torobpay-promo-confetti torobpay-confetti-stage" aria-hidden="true"></div>'
 			. '<h2 id="torobpay-promo-title" class="torobpay-promo-title">'
 				. '<span class="torobpay-promo-title-mark" aria-hidden="true">%%</span>'
 				. '<span>%1$s</span>'
@@ -492,22 +560,20 @@ function torobpay_get_pdp_promo_lightbox_html() {
 					. '<kbd class="torobpay-promo-card-code-value" dir="ltr">%7$s</kbd>'
 				. '</p>'
 				. '%8$s'
-				. '<button type="button" class="torobpay-promo-copy" data-promo-code="%9$s">%10$s</button>'
 			. '</div>'
-			. '<button type="button" class="torobpay-promo-dismiss">%11$s</button>'
+			. '<button type="button" class="torobpay-promo-dismiss" data-promo-code="%9$s">%10$s</button>'
 		. '</div>'
 		. '</div>',
 		esc_html__( 'Special discount', 'torobpay-for-woocommerce' ),
 		esc_html__( 'After adding the item to the cart, select TorobPay at checkout, then enter the discount code on TorobPay when paying the first installment.', 'torobpay-for-woocommerce' ),
 		esc_html__( 'Do not enter this code on the store website.', 'torobpay-for-woocommerce' ),
 		$amount_row,
-		$min_row,
+		$terms_rows . $first_order_row,
 		esc_html__( 'Discount code:', 'torobpay-for-woocommerce' ),
-		esc_html( $settings['code'] ),
+		esc_html( $campaign['code'] ),
 		$expiry,
-		esc_attr( $settings['code'] ),
-		esc_html__( 'Copy code', 'torobpay-for-woocommerce' ),
-		esc_html__( 'Got it', 'torobpay-for-woocommerce' )
+		esc_attr( $campaign['code'] ),
+		esc_html__( 'Copy the code', 'torobpay-for-woocommerce' )
 	);
 }
 
@@ -531,7 +597,7 @@ function torobpay_enqueue_pdp_promo_assets() {
 	if ( $done ) {
 		return;
 	}
-	if ( ! torobpay_is_pdp_promo_active() ) {
+	if ( ! torobpay_pdp_promo_dialog_active() ) {
 		return;
 	}
 
@@ -544,16 +610,10 @@ function torobpay_enqueue_pdp_promo_assets() {
 		TOROBPAY_VERSION
 	);
 
-	$script_deps = array( 'jquery', 'wp-i18n' );
-	if ( function_exists( 'torobpay_enqueue_topbar_confetti_script' ) ) {
-		torobpay_enqueue_topbar_confetti_script();
-		$script_deps[] = 'torobpay-topbar-confetti';
-	}
-
 	wp_enqueue_script(
 		'torobpay-pdp-promo',
 		plugins_url( 'assets/js/pdp-promo.js', TOROBPAY_PLUGIN_FILE ),
-		$script_deps,
+		array( 'jquery', 'wp-i18n' ),
 		TOROBPAY_VERSION,
 		true
 	);

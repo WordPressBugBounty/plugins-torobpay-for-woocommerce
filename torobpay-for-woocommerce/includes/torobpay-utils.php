@@ -33,16 +33,21 @@ function torobpay_mobile( $mobile ) {
 		return false;
 	}
 
-	if ( preg_match( "@^\+980@", $mobile ) && strlen( $mobile ) == 14 ) {
-		return "+98" . substr( $mobile, 4 );
+	if ( preg_match( '/^\+980\d{10}$/', $mobile ) ) {
+		return '+98' . substr( $mobile, 4 );
 	}
 
-	if ( preg_match( "@^\+98@", $mobile ) ) {
+	if ( preg_match( '/^980\d{10}$/', $mobile ) ) {
+		return '+98' . substr( $mobile, 3 );
+	}
+
+	// Exactly one Iranian mobile: 98 plus 10 digits. A bare "+98" is not a number.
+	if ( preg_match( '/^\+98\d{10}$/', $mobile ) ) {
 		return $mobile;
 	}
 
-	if ( preg_match( "@^98@", $mobile ) ) {
-		return "+" . $mobile;
+	if ( preg_match( '/^98\d{10}$/', $mobile ) ) {
+		return '+' . $mobile;
 	}
 
 	if ( preg_match( "@^09@", $mobile ) && strlen( $mobile ) == 11 ) {
@@ -57,6 +62,192 @@ function torobpay_mobile( $mobile ) {
 }
 
 /**
+ * Digits account mobile for a user, normalized to +98.
+ *
+ * Guests return false. A Digits value that does not normalize falls through
+ * to Digits user meta, matching the payment-token lookup.
+ *
+ * @param int $user_id WordPress user id.
+ * @return string|false
+ */
+function torobpay_digits_mobile( $user_id ) {
+	$user_id = (int) $user_id;
+	if ( ! $user_id ) {
+		return false;
+	}
+
+	$mobile = false;
+
+	if ( function_exists( 'digits_get_mobile' ) ) {
+		$digits_mobile = digits_get_mobile( $user_id );
+		if ( $digits_mobile ) {
+			$mobile = torobpay_mobile( $digits_mobile );
+		}
+	}
+
+	if ( ! $mobile ) {
+		$digits_phone = function_exists( 'get_user_meta' ) ? get_user_meta( $user_id, 'digits_phone', true ) : '';
+		if ( $digits_phone ) {
+			$mobile = torobpay_mobile( $digits_phone );
+		}
+		if ( ! $mobile && function_exists( 'get_user_meta' ) ) {
+			$digt_countrycode = get_user_meta( $user_id, 'digt_countrycode', true );
+			$digt_number      = get_user_meta( $user_id, 'digt_number', true );
+			if ( $digt_countrycode && $digt_number ) {
+				$mobile = torobpay_mobile( $digt_countrycode . $digt_number );
+			}
+		}
+	}
+
+	return $mobile ? $mobile : false;
+}
+
+/**
+ * Classic checkout, pay-for-order, update_order_review, or a checkout Store API request.
+ *
+ * @return bool
+ */
+function torobpay_is_checkout_request() {
+	if ( function_exists( 'is_checkout' ) && is_checkout() ) {
+		return true;
+	}
+
+	if ( defined( 'WOOCOMMERCE_CHECKOUT' ) && WOOCOMMERCE_CHECKOUT ) {
+		return true;
+	}
+
+	if ( function_exists( 'is_wc_endpoint_url' ) && is_wc_endpoint_url( 'order-pay' ) ) {
+		return true;
+	}
+
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only WooCommerce AJAX route name.
+	$wc_ajax = isset( $_GET['wc-ajax'] ) ? (string) $_GET['wc-ajax'] : '';
+	if ( '' !== $wc_ajax && function_exists( 'wp_unslash' ) ) {
+		$wc_ajax = wp_unslash( $wc_ajax );
+	}
+	if ( '' !== $wc_ajax && function_exists( 'sanitize_text_field' ) ) {
+		$wc_ajax = sanitize_text_field( $wc_ajax );
+	}
+
+	if ( 'update_order_review' === $wc_ajax ) {
+		return true;
+	}
+
+	return torobpay_is_store_api_checkout_request();
+}
+
+/**
+ * Store API request made from the checkout page, including checkout itself.
+ *
+ * Cart updates from the checkout block come in as /wc/store/ requests whose
+ * referer is the checkout page. Product-page cart updates are left out.
+ *
+ * @return bool
+ */
+function torobpay_is_store_api_checkout_request() {
+	if ( ! defined( 'REST_REQUEST' ) || ! REST_REQUEST ) {
+		return false;
+	}
+
+	return torobpay_store_api_request_is_checkout();
+}
+
+/**
+ * Whether the current URI is a checkout Store API call.
+ *
+ * Does not check REST_REQUEST, so tests can cover the route and referer rules.
+ *
+ * @return bool
+ */
+function torobpay_store_api_request_is_checkout() {
+	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Only a route-prefix check.
+	$uri = isset( $_SERVER['REQUEST_URI'] ) ? (string) $_SERVER['REQUEST_URI'] : '';
+	if ( function_exists( 'wp_unslash' ) ) {
+		$uri = wp_unslash( $uri );
+	}
+	if ( false === strpos( $uri, '/wc/store/' ) ) {
+		return false;
+	}
+	if ( false !== strpos( $uri, '/wc/store/v1/checkout' ) || false !== strpos( $uri, 'update-customer' ) ) {
+		return true;
+	}
+
+	if ( false !== strpos( $uri, '/batch' ) && torobpay_store_api_batch_updates_customer() ) {
+		return true;
+	}
+
+	if ( ! function_exists( 'wp_get_referer' ) || ! function_exists( 'wc_get_checkout_url' ) ) {
+		return false;
+	}
+
+	$referer  = wp_get_referer();
+	$checkout = wc_get_checkout_url();
+	if ( ! is_string( $referer ) || '' === $referer || ! is_string( $checkout ) || '' === $checkout ) {
+		return false;
+	}
+
+	$referer_path  = function_exists( 'wp_parse_url' ) ? wp_parse_url( $referer, PHP_URL_PATH ) : parse_url( $referer, PHP_URL_PATH );
+	$checkout_path = function_exists( 'wp_parse_url' ) ? wp_parse_url( $checkout, PHP_URL_PATH ) : parse_url( $checkout, PHP_URL_PATH );
+	if ( ! is_string( $referer_path ) || ! is_string( $checkout_path ) ) {
+		return false;
+	}
+
+	$referer_path  = rawurldecode( $referer_path );
+	$checkout_path = rawurldecode( $checkout_path );
+	if ( function_exists( 'untrailingslashit' ) ) {
+		$referer_path  = untrailingslashit( $referer_path );
+		$checkout_path = untrailingslashit( $checkout_path );
+	}
+
+	if ( $referer_path === $checkout_path ) {
+		return true;
+	}
+
+	$prefix = $checkout_path . '/';
+	return 0 === strpos( $referer_path, $prefix );
+}
+
+/**
+ * Checkout block saves the address inside a Store API batch request.
+ *
+ * @return bool
+ */
+function torobpay_store_api_batch_updates_customer() {
+	if ( ! function_exists( 'rest_get_server' ) ) {
+		return false;
+	}
+
+	$server = rest_get_server();
+	if ( ! is_object( $server ) || ! method_exists( $server, 'get_raw_data' ) ) {
+		return false;
+	}
+
+	$raw = $server->get_raw_data();
+
+	return is_string( $raw ) && false !== strpos( $raw, 'update-customer' );
+}
+
+/**
+ * Normalize a checkout phone, ignoring spaces and separators.
+ *
+ * @param mixed $raw Phone as typed or stored.
+ * @return string|false Normalized +98 number, or false.
+ */
+function torobpay_normalize_checkout_phone( $raw ) {
+	if ( null === $raw || false === $raw || '' === $raw ) {
+		return false;
+	}
+
+	$raw = torobpay_num_to_en( (string) $raw );
+	$raw = preg_replace( '/[^\d+]/', '', $raw );
+	if ( ! is_string( $raw ) || '' === $raw ) {
+		return false;
+	}
+
+	return torobpay_mobile( $raw );
+}
+
+/**
  * Phone fields for GetPaymentToken.
  *
  * `mobile` is WooCommerce checkout billing phone.
@@ -67,36 +258,161 @@ function torobpay_mobile( $mobile ) {
  * @return array{mobile: ?string, registration_phone_number: string}
  */
 function torobpay_token_phone_fields( $order ) {
-	$mobile = torobpay_mobile( $order->get_billing_phone() );
-
-	$registration_phone = false;
-	$customer_id        = (int) $order->get_customer_id();
-
-	if ( $customer_id && function_exists( 'digits_get_mobile' ) ) {
-		$digits_mobile = digits_get_mobile( $customer_id );
-		if ( $digits_mobile ) {
-			$registration_phone = torobpay_mobile( $digits_mobile );
-		}
-	}
-
-	if ( ! $registration_phone && $customer_id ) {
-		$digits_phone = function_exists( 'get_user_meta' ) ? get_user_meta( $customer_id, 'digits_phone', true ) : '';
-		if ( $digits_phone ) {
-			$registration_phone = torobpay_mobile( $digits_phone );
-		}
-		if ( ! $registration_phone && function_exists( 'get_user_meta' ) ) {
-			$digt_countrycode = get_user_meta( $customer_id, 'digt_countrycode', true );
-			$digt_number      = get_user_meta( $customer_id, 'digt_number', true );
-			if ( $digt_countrycode && $digt_number ) {
-				$registration_phone = torobpay_mobile( $digt_countrycode . $digt_number );
-			}
-		}
-	}
+	$mobile             = torobpay_mobile( $order->get_billing_phone() );
+	$registration_phone = torobpay_digits_mobile( (int) $order->get_customer_id() );
 
 	return array(
 		'mobile'                    => $mobile ? $mobile : null,
 		'registration_phone_number' => $registration_phone ? $registration_phone : '',
 	);
+}
+
+/**
+ * Order being paid on the order-pay page.
+ *
+ * @return object|null
+ */
+function torobpay_order_pay_order() {
+	if ( ! function_exists( 'is_wc_endpoint_url' ) || ! is_wc_endpoint_url( 'order-pay' ) ) {
+		return null;
+	}
+	if ( ! function_exists( 'wc_get_order' ) ) {
+		return null;
+	}
+
+	$order_id = 0;
+	if ( function_exists( 'get_query_var' ) ) {
+		$order_id = absint( get_query_var( 'order-pay' ) );
+	}
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only order key on the pay-for-order page.
+	if ( ! $order_id && isset( $_GET['key'] ) && function_exists( 'wc_get_order_id_by_order_key' ) ) {
+		$order_key = sanitize_text_field( wp_unslash( $_GET['key'] ) );
+		$order_id  = absint( wc_get_order_id_by_order_key( $order_key ) );
+	}
+	if ( ! $order_id ) {
+		return null;
+	}
+
+	$order = wc_get_order( $order_id );
+
+	return is_object( $order ) ? $order : null;
+}
+
+/**
+ * Amount and currency for an eligibility check.
+ *
+ * Order-pay uses the order being paid, including when the cart still has items.
+ * Other checkout requests use the cart total. Currency is null off order-pay so
+ * the caller uses the store currency.
+ *
+ * @return array{amount:float,currency:?string}
+ */
+function torobpay_checkout_payable() {
+	$order = torobpay_order_pay_order();
+	if ( is_object( $order ) && method_exists( $order, 'get_total' ) ) {
+		$currency = method_exists( $order, 'get_currency' ) ? (string) $order->get_currency() : '';
+
+		return array(
+			'amount'   => (float) $order->get_total(),
+			'currency' => '' !== $currency ? $currency : null,
+		);
+	}
+
+	$amount = 0.0;
+	if ( function_exists( 'WC' ) ) {
+		$wc = WC();
+		if ( is_object( $wc ) && isset( $wc->cart ) && is_object( $wc->cart ) && method_exists( $wc->cart, 'get_total' ) ) {
+			$amount = (float) $wc->cart->get_total( 'edit' );
+		}
+	}
+
+	return array(
+		'amount'   => $amount,
+		'currency' => null,
+	);
+}
+
+/**
+ * Mobile for the eligibility phone_number query parameter.
+ *
+ * Empty when nothing normalizes. A phone on the checkout form wins, billing
+ * before shipping. That covers classic post data and the block checkout
+ * customer. Digits is used only when the form has no mobile.
+ *
+ * @return string Normalized +98 number, or ''.
+ */
+function torobpay_eligibility_phone_number() {
+	// phpcs:disable WordPress.Security.NonceVerification.Missing -- Read-only checkout payload, same posture as fee stripping.
+	if ( ! empty( $_POST['post_data'] ) && is_string( $_POST['post_data'] ) ) {
+		$posted = array();
+		parse_str( wp_unslash( $_POST['post_data'] ), $posted ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- billing_phone is sanitized below.
+		foreach ( array( 'billing_phone', 'shipping_phone' ) as $field ) {
+			if ( empty( $posted[ $field ] ) || ! is_string( $posted[ $field ] ) ) {
+				continue;
+			}
+			$typed = torobpay_normalize_checkout_phone( sanitize_text_field( $posted[ $field ] ) );
+			if ( $typed ) {
+				return $typed;
+			}
+		}
+	}
+	// phpcs:enable WordPress.Security.NonceVerification.Missing
+
+	$order = torobpay_order_pay_order();
+	if ( is_object( $order ) ) {
+		foreach ( array( 'get_billing_phone', 'get_shipping_phone' ) as $method ) {
+			if ( ! method_exists( $order, $method ) ) {
+				continue;
+			}
+			$order_phone = torobpay_normalize_checkout_phone( $order->$method() );
+			if ( $order_phone ) {
+				return $order_phone;
+			}
+		}
+	}
+
+	$checkout_phone = torobpay_customer_checkout_phone();
+	if ( '' !== $checkout_phone ) {
+		return $checkout_phone;
+	}
+
+	$user_id = function_exists( 'get_current_user_id' ) ? (int) get_current_user_id() : 0;
+	$digits  = torobpay_digits_mobile( $user_id );
+
+	return $digits ? $digits : '';
+}
+
+/**
+ * Billing phone, then shipping phone, from the WooCommerce customer.
+ *
+ * Billing wins when both are set. The block copies the shipping phone onto
+ * billing while "use same address for billing" is on. A separate billing
+ * phone is the payer number.
+ *
+ * @return string
+ */
+function torobpay_customer_checkout_phone() {
+	if ( ! function_exists( 'WC' ) ) {
+		return '';
+	}
+
+	$wc       = WC();
+	$customer = ( is_object( $wc ) && isset( $wc->customer ) ) ? $wc->customer : null;
+	if ( ! is_object( $customer ) ) {
+		return '';
+	}
+
+	foreach ( array( 'get_billing_phone', 'get_shipping_phone' ) as $method ) {
+		if ( ! method_exists( $customer, $method ) ) {
+			continue;
+		}
+		$phone = torobpay_normalize_checkout_phone( $customer->$method() );
+		if ( $phone ) {
+			return $phone;
+		}
+	}
+
+	return '';
 }
 
 function torobpay_num_to_en( $string ) {

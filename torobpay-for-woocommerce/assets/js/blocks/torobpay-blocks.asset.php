@@ -13,6 +13,7 @@ return [
     'dependencies' => [
         // WordPress dependencies
         'wp-element',
+        'wp-data',
         'wp-components',
         'wp-polyfill',
         'wp-i18n',
@@ -21,8 +22,7 @@ return [
         // WooCommerce dependencies
         'wc-blocks-registry',
         'wc-settings',
-        'wc-blocks',
-        'wc-blocks-checkout',
+        'wc-blocks-data-store',
     ],
     'version' => TOROBPAY_VERSION,
 ];

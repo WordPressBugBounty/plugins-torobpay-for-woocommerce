@@ -640,7 +640,8 @@
     animation-name: torobpay-tb-spread-credit;
 }
 
-.torobpay-topbar--spread-has-custom .torobpay-topbar-spread-solo--credit {
+.torobpay-topbar--spread-has-custom .torobpay-topbar-spread-solo--credit,
+.torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-solo--credit {
     animation-name: torobpay-tb-spread-credit-x;
 }
 
@@ -1007,51 +1008,682 @@
     100% { opacity: 0; transform: translate(-50%, -50%); }
 }
 
+@keyframes torobpay-tb-spread-credit-y {
+    0%    { opacity: 0; transform: translate(-50%, -50%); }
+    2.3%  { opacity: 1; transform: translate(-50%, -50%); }
+    9.9%  { opacity: 1; transform: translate(-50%, -50%); }
+    13.7% { opacity: 0; transform: translate(-50%, -50%); }
+    100%  { opacity: 0; transform: translate(-50%, -50%); }
+}
 
-.torobpay-topbar--spread-has-custom .torobpay-topbar-spread-group--right {
+@keyframes torobpay-tb-spread-group-right-y {
+    0%    { opacity: 0; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+    13.7% { opacity: 0; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+    17.6% { opacity: 0; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+    19.4% { opacity: 1; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+    20.7% { opacity: 1; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+    27.8% { opacity: 1; transform: translateX(0); }
+    48%   { opacity: 1; transform: translateX(0); }
+    52.4% { opacity: 0; transform: translateX(0); }
+    57.8% { opacity: 0; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+    100%  { opacity: 0; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+}
+
+@keyframes torobpay-tb-spread-logo-end-y {
+    0%    { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    13.7% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    23.4% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    26.9% { opacity: 1; transform: translateY(-50%); }
+    48%   { opacity: 1; transform: translateY(-50%); }
+    52.4% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    57.8% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    100%  { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+}
+
+@keyframes torobpay-tb-spread-middle-y {
+    0%    { opacity: 0; }
+    13.7% { opacity: 0; }
+    27.8% { opacity: 0; }
+    30.4% { opacity: 1; }
+    48%   { opacity: 1; }
+    52.4% { opacity: 0; }
+    57.8% { opacity: 0; }
+    100%  { opacity: 0; }
+}
+
+@keyframes torobpay-tb-spread-group-left-y {
+    0%    { opacity: 0; transform: translateX(var(--torobpay-tb-spread-pull-left)); }
+    13.7% { opacity: 0; transform: translateX(var(--torobpay-tb-spread-pull-left)); }
+    34.4% { opacity: 0; transform: translateX(var(--torobpay-tb-spread-pull-left)); }
+    34.8% { opacity: 1; transform: translateX(var(--torobpay-tb-spread-pull-left)); }
+    42.8% { opacity: 1; transform: translateX(0); }
+    48%   { opacity: 1; transform: translateX(0); }
+    52.4% { opacity: 0; transform: translateX(0); }
+    57.8% { opacity: 0; transform: translateX(var(--torobpay-tb-spread-pull-left)); }
+    100%  { opacity: 0; transform: translateX(var(--torobpay-tb-spread-pull-left)); }
+}
+
+@keyframes torobpay-tb-spread-left-text-y {
+    0%    { opacity: 0; }
+    13.7% { opacity: 0; }
+    26%   { opacity: 0; }
+    28.7% { opacity: 1; }
+    52.4% { opacity: 1; }
+    57.8% { opacity: 0; }
+    100%  { opacity: 0; }
+}
+
+@keyframes torobpay-tb-spread-logo-start-y {
+    0%    { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    13.7% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    37.5% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    41.9% { opacity: 1; transform: translateY(-50%); }
+    48%   { opacity: 1; transform: translateY(-50%); }
+    52.4% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    57.8% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    100%  { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+}
+
+@keyframes torobpay-tb-spread-m-logo-end-y {
+    0%    { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    13.7% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    15.4% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    18.1% { opacity: 1; transform: translateY(-50%); }
+    52.4% { opacity: 1; transform: translateY(-50%); }
+    56%   { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    57.8% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    100%  { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+}
+
+@keyframes torobpay-tb-spread-m-logo-start-y {
+    0%    { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    13.7% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    15.4% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    18.1% { opacity: 1; transform: translateY(-50%); }
+    52.4% { opacity: 1; transform: translateY(-50%); }
+    56%   { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    57.8% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    100%  { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+}
+
+@keyframes torobpay-tb-spread-m-fee-y {
+    0%    { opacity: 0; transform: translate(-50%, -50%); }
+    13.7% { opacity: 0; transform: translate(-50%, -50%); }
+    18.1% { opacity: 0; transform: translate(-50%, -50%); }
+    19%   { opacity: 1; transform: translate(-50%, -50%); }
+    25.6% { opacity: 1; transform: translate(-50%, -50%); }
+    26.9% { opacity: 0; transform: translate(calc(-50% + 35vw), -50%); }
+    29.1% { opacity: 0; transform: translate(calc(-50% + var(--torobpay-tb-spread-m-exit-x)), -50%); }
+    57.8% { opacity: 0; transform: translate(-50%, -50%); }
+    100%  { opacity: 0; transform: translate(-50%, -50%); }
+}
+
+@keyframes torobpay-tb-spread-m-middle-y {
+    0%    { opacity: 0; transform: translate(-50%, -50%); }
+    13.7% { opacity: 0; transform: translate(-50%, -50%); }
+    29.1% { opacity: 0; transform: translate(-50%, -50%); }
+    30%   { opacity: 1; transform: translate(-50%, -50%); }
+    36.6% { opacity: 1; transform: translate(-50%, -50%); }
+    37.9% { opacity: 0; transform: translate(calc(-50% - 35vw), -50%); }
+    40.1% { opacity: 0; transform: translate(calc(-50% - var(--torobpay-tb-spread-m-exit-x)), -50%); }
+    57.8% { opacity: 0; transform: translate(-50%, -50%); }
+    100%  { opacity: 0; transform: translate(-50%, -50%); }
+}
+
+@keyframes torobpay-tb-spread-m-title-y {
+    0%    { opacity: 0; transform: translate(-50%, -50%); }
+    13.7% { opacity: 0; transform: translate(-50%, -50%); }
+    40.1% { opacity: 0; transform: translate(-50%, -50%); }
+    41%   { opacity: 1; transform: translate(-50%, -50%); }
+    47.7% { opacity: 1; transform: translate(-50%, -50%); }
+    48.9% { opacity: 0; transform: translate(-50%, calc(-50% - 80%)); }
+    51.1% { opacity: 0; transform: translate(-50%, calc(-50% - var(--torobpay-tb-spread-m-exit-y))); }
+    57.8% { opacity: 0; transform: translate(-50%, -50%); }
+    100%  { opacity: 0; transform: translate(-50%, -50%); }
+}
+
+
+/* Campaign Spread track: slots, then credit/custom without a gap. */
+@keyframes torobpay-tb-spread-credit-c {
+    0% { opacity: 0; transform: translate(-50%, -50%); }
+    1% { opacity: 1; transform: translate(-50%, -50%); }
+    25% { opacity: 1; transform: translate(-50%, -50%); }
+    27% { opacity: 0; transform: translate(-50%, -50%); }
+    100% { opacity: 0; transform: translate(-50%, -50%); }
+}
+
+@keyframes torobpay-tb-spread-group-right-c {
+    0% { opacity: 0; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+    7% { opacity: 0; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+    10.1% { opacity: 1; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+    12.5% { opacity: 1; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+    25% { opacity: 1; transform: translateX(0); }
+    60.8% { opacity: 1; transform: translateX(0); }
+    68.6% { opacity: 0; transform: translateX(0); }
+    100% { opacity: 0; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+}
+
+@keyframes torobpay-tb-spread-logo-end-c {
+    0% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    17.2% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    23.4% { opacity: 1; transform: translateY(-50%); }
+    60.8% { opacity: 1; transform: translateY(-50%); }
+    68.6% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    100% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+}
+
+@keyframes torobpay-tb-spread-middle-c {
+    0% { opacity: 0; }
+    25% { opacity: 0; }
+    29.6% { opacity: 1; }
+    60.8% { opacity: 1; }
+    68.6% { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+@keyframes torobpay-tb-spread-group-left-c {
+    0% { opacity: 0; transform: translateX(var(--torobpay-tb-spread-pull-left)); }
+    36.7% { opacity: 0; transform: translateX(var(--torobpay-tb-spread-pull-left)); }
+    37.4% { opacity: 1; transform: translateX(var(--torobpay-tb-spread-pull-left)); }
+    51.5% { opacity: 1; transform: translateX(0); }
+    60.8% { opacity: 1; transform: translateX(0); }
+    68.6% { opacity: 0; transform: translateX(0); }
+    100% { opacity: 0; transform: translateX(var(--torobpay-tb-spread-pull-left)); }
+}
+
+@keyframes torobpay-tb-spread-left-text-c {
+    0% { opacity: 0; pointer-events: none; }
+    21.8% { opacity: 0; pointer-events: none; }
+    26.5% { opacity: 1; pointer-events: none; }
+    37.4% { opacity: 1; pointer-events: auto; }
+    68.6% { opacity: 1; pointer-events: auto; }
+    70.6% { opacity: 0; pointer-events: none; }
+    100% { opacity: 0; pointer-events: none; }
+}
+
+@keyframes torobpay-tb-spread-logo-start-c {
+    0% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    42.1% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    49.9% { opacity: 1; transform: translateY(-50%); }
+    60.8% { opacity: 1; transform: translateY(-50%); }
+    68.6% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    100% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+}
+
+@keyframes torobpay-tb-spread-m-logo-end-c {
+    0% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    0.8% { opacity: 1; transform: translateY(-50%); }
+    60.3% { opacity: 1; transform: translateY(-50%); }
+    64.3% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    100% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+}
+
+@keyframes torobpay-tb-spread-m-logo-start-c {
+    0% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    0.8% { opacity: 1; transform: translateY(-50%); }
+    60.3% { opacity: 1; transform: translateY(-50%); }
+    64.3% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    100% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+}
+
+@keyframes torobpay-tb-spread-m-fee-c {
+    0% { opacity: 0; transform: translate(-50%, -50%); }
+    1.6% { opacity: 1; transform: translate(-50%, -50%); }
+    13.2% { opacity: 1; transform: translate(-50%, -50%); }
+    15.5% { opacity: 0; transform: translate(calc(-50% + 35vw), -50%); }
+    19.4% { opacity: 0; transform: translate(calc(-50% + var(--torobpay-tb-spread-m-exit-x)), -50%); }
+    100% { opacity: 0; transform: translate(-50%, -50%); }
+}
+
+@keyframes torobpay-tb-spread-m-middle-c {
+    0% { opacity: 0; transform: translate(-50%, -50%); }
+    19.4% { opacity: 0; transform: translate(-50%, -50%); }
+    21% { opacity: 1; transform: translate(-50%, -50%); }
+    32.6% { opacity: 1; transform: translate(-50%, -50%); }
+    34.9% { opacity: 0; transform: translate(calc(-50% - 35vw), -50%); }
+    38.7% { opacity: 0; transform: translate(calc(-50% - var(--torobpay-tb-spread-m-exit-x)), -50%); }
+    100% { opacity: 0; transform: translate(-50%, -50%); }
+}
+
+@keyframes torobpay-tb-spread-m-title-c {
+    0% { opacity: 0; transform: translate(-50%, -50%); pointer-events: none; }
+    38.7% { opacity: 0; transform: translate(-50%, -50%); pointer-events: none; }
+    40.3% { opacity: 1; transform: translate(-50%, -50%); pointer-events: auto; }
+    51.9% { opacity: 1; transform: translate(-50%, -50%); pointer-events: auto; }
+    54.2% { opacity: 0; transform: translate(-50%, calc(-50% - 80%)); pointer-events: none; }
+    58.1% { opacity: 0; transform: translate(-50%, calc(-50% - var(--torobpay-tb-spread-m-exit-y))); pointer-events: none; }
+    100% { opacity: 0; transform: translate(-50%, -50%); pointer-events: none; }
+}
+
+@keyframes torobpay-tb-spread-credit-cy {
+    0% { opacity: 0; transform: translate(-50%, -50%); }
+    1% { opacity: 1; transform: translate(-50%, -50%); }
+    16% { opacity: 1; transform: translate(-50%, -50%); }
+    18% { opacity: 0; transform: translate(-50%, -50%); }
+    100% { opacity: 0; transform: translate(-50%, -50%); }
+}
+
+@keyframes torobpay-tb-spread-group-right-cy {
+    0% { opacity: 0; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+    6.1% { opacity: 0; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+    8.8% { opacity: 1; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+    10.9% { opacity: 1; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+    21.7% { opacity: 1; transform: translateX(0); }
+    52.9% { opacity: 1; transform: translateX(0); }
+    59.6% { opacity: 0; transform: translateX(0); }
+    100% { opacity: 0; transform: translateX(calc(-1 * var(--torobpay-tb-spread-pull-right))); }
+}
+
+@keyframes torobpay-tb-spread-logo-end-cy {
+    0% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    15% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    20.3% { opacity: 1; transform: translateY(-50%); }
+    52.9% { opacity: 1; transform: translateY(-50%); }
+    59.6% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    100% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+}
+
+@keyframes torobpay-tb-spread-middle-cy {
+    0% { opacity: 0; }
+    21.7% { opacity: 0; }
+    25.7% { opacity: 1; }
+    52.9% { opacity: 1; }
+    59.6% { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+@keyframes torobpay-tb-spread-group-left-cy {
+    0% { opacity: 0; transform: translateX(var(--torobpay-tb-spread-pull-left)); }
+    31.9% { opacity: 0; transform: translateX(var(--torobpay-tb-spread-pull-left)); }
+    32.5% { opacity: 1; transform: translateX(var(--torobpay-tb-spread-pull-left)); }
+    44.8% { opacity: 1; transform: translateX(0); }
+    52.9% { opacity: 1; transform: translateX(0); }
+    59.6% { opacity: 0; transform: translateX(0); }
+    100% { opacity: 0; transform: translateX(var(--torobpay-tb-spread-pull-left)); }
+}
+
+@keyframes torobpay-tb-spread-left-text-cy {
+    0% { opacity: 0; pointer-events: none; }
+    19% { opacity: 0; pointer-events: none; }
+    23% { opacity: 1; pointer-events: none; }
+    32.5% { opacity: 1; pointer-events: auto; }
+    59.6% { opacity: 1; pointer-events: auto; }
+    61.6% { opacity: 0; pointer-events: none; }
+    100% { opacity: 0; pointer-events: none; }
+}
+
+@keyframes torobpay-tb-spread-logo-start-cy {
+    0% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    36.6% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    43.4% { opacity: 1; transform: translateY(-50%); }
+    52.9% { opacity: 1; transform: translateY(-50%); }
+    59.6% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    100% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+}
+
+@keyframes torobpay-tb-spread-m-logo-end-cy {
+    0% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    0.8% { opacity: 1; transform: translateY(-50%); }
+    44.3% { opacity: 1; transform: translateY(-50%); }
+    48.3% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+    100% { opacity: 0; transform: translateY(calc(-50% - 130%)); }
+}
+
+@keyframes torobpay-tb-spread-m-logo-start-cy {
+    0% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    0.8% { opacity: 1; transform: translateY(-50%); }
+    44.3% { opacity: 1; transform: translateY(-50%); }
+    48.3% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+    100% { opacity: 0; transform: translateY(calc(-50% + 130%)); }
+}
+
+@keyframes torobpay-tb-spread-m-fee-cy {
+    0% { opacity: 0; transform: translate(-50%, -50%); }
+    6.8% { opacity: 0; transform: translate(-50%, -50%); }
+    8.2% { opacity: 1; transform: translate(-50%, -50%); }
+    18.3% { opacity: 1; transform: translate(-50%, -50%); }
+    20.3% { opacity: 0; transform: translate(calc(-50% + 35vw), -50%); }
+    23.7% { opacity: 0; transform: translate(calc(-50% + var(--torobpay-tb-spread-m-exit-x)), -50%); }
+    100% { opacity: 0; transform: translate(-50%, -50%); }
+}
+
+@keyframes torobpay-tb-spread-m-middle-cy {
+    0% { opacity: 0; transform: translate(-50%, -50%); }
+    23.7% { opacity: 0; transform: translate(-50%, -50%); }
+    25.1% { opacity: 1; transform: translate(-50%, -50%); }
+    35.3% { opacity: 1; transform: translate(-50%, -50%); }
+    37.3% { opacity: 0; transform: translate(calc(-50% - 35vw), -50%); }
+    40.7% { opacity: 0; transform: translate(calc(-50% - var(--torobpay-tb-spread-m-exit-x)), -50%); }
+    100% { opacity: 0; transform: translate(-50%, -50%); }
+}
+
+@keyframes torobpay-tb-spread-m-title-cy {
+    0% { opacity: 0; transform: translate(-50%, -50%); pointer-events: none; }
+    40.7% { opacity: 0; transform: translate(-50%, -50%); pointer-events: none; }
+    42.1% { opacity: 1; transform: translate(-50%, -50%); pointer-events: auto; }
+    52.3% { opacity: 1; transform: translate(-50%, -50%); pointer-events: auto; }
+    54.3% { opacity: 0; transform: translate(-50%, calc(-50% - 80%)); pointer-events: none; }
+    57.6% { opacity: 0; transform: translate(-50%, calc(-50% - var(--torobpay-tb-spread-m-exit-y))); pointer-events: none; }
+    100% { opacity: 0; transform: translate(-50%, -50%); pointer-events: none; }
+}
+
+@keyframes torobpay-tb-spread-custom-cy {
+    0% { opacity: 0; transform: translate(-50%, -50%); }
+    1% { opacity: 1; transform: translate(-50%, -50%); }
+    16% { opacity: 1; transform: translate(-50%, -50%); }
+    18% { opacity: 0; transform: translate(-50%, -50%); }
+    100% { opacity: 0; transform: translate(-50%, -50%); }
+}
+
+.torobpay-topbar--spread-has-custom .torobpay-topbar-spread-group--right,
+.torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-group--right {
     animation-name: torobpay-tb-spread-group-right-x;
 }
 
-.torobpay-topbar--spread-has-custom .torobpay-topbar-spread-group--left {
+.torobpay-topbar--spread-has-custom .torobpay-topbar-spread-group--left,
+.torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-group--left {
     animation-name: torobpay-tb-spread-group-left-x;
 }
 
-.torobpay-topbar--spread-has-custom .torobpay-topbar-spread-text--fee {
+.torobpay-topbar--spread-has-custom .torobpay-topbar-spread-text--fee,
+.torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-text--fee {
     animation-name: torobpay-tb-spread-middle-x;
 }
 
-.torobpay-topbar--spread-has-custom .torobpay-topbar-spread-text--middle {
+.torobpay-topbar--spread-has-custom .torobpay-topbar-spread-text--middle,
+.torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-text--middle {
     animation-name: torobpay-tb-spread-left-text-x;
 }
 
-.torobpay-topbar--spread-has-custom .torobpay-topbar-spread-logo--end {
+.torobpay-topbar--spread-has-custom .torobpay-topbar-spread-logo--end,
+.torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-logo--end {
     animation-name: torobpay-tb-spread-logo-end-x;
 }
 
-.torobpay-topbar--spread-has-custom .torobpay-topbar-spread-logo--start {
+.torobpay-topbar--spread-has-custom .torobpay-topbar-spread-logo--start,
+.torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-logo--start {
     animation-name: torobpay-tb-spread-logo-start-x;
 }
 
+.torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-solo--credit {
+    animation-name: torobpay-tb-spread-credit-c;
+}
+
+.torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-group--right {
+    animation-name: torobpay-tb-spread-group-right-c;
+}
+
+.torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-group--left {
+    animation-name: torobpay-tb-spread-group-left-c;
+}
+
+.torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-text--fee {
+    animation-name: torobpay-tb-spread-middle-c;
+}
+
+.torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-text--middle {
+    animation-name: torobpay-tb-spread-left-text-c;
+}
+
+.torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-logo--end {
+    animation-name: torobpay-tb-spread-logo-end-c;
+}
+
+.torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-logo--start {
+    animation-name: torobpay-tb-spread-logo-start-c;
+}
+
+.torobpay-topbar--spread-has-custom.torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-solo--credit {
+    animation-name: torobpay-tb-spread-credit-cy;
+}
+
+.torobpay-topbar--spread-has-custom.torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-solo--custom {
+    animation-name: torobpay-tb-spread-custom-cy;
+}
+
+.torobpay-topbar--spread-has-custom.torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-group--right {
+    animation-name: torobpay-tb-spread-group-right-cy;
+}
+
+.torobpay-topbar--spread-has-custom.torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-group--left {
+    animation-name: torobpay-tb-spread-group-left-cy;
+}
+
+.torobpay-topbar--spread-has-custom.torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-text--fee {
+    animation-name: torobpay-tb-spread-middle-cy;
+}
+
+.torobpay-topbar--spread-has-custom.torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-text--middle {
+    animation-name: torobpay-tb-spread-left-text-cy;
+}
+
+.torobpay-topbar--spread-has-custom.torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-logo--end {
+    animation-name: torobpay-tb-spread-logo-end-cy;
+}
+
+.torobpay-topbar--spread-has-custom.torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-logo--start {
+    animation-name: torobpay-tb-spread-logo-start-cy;
+}
+
 @media (max-width: 849px) {
-    .torobpay-topbar--spread-has-custom .torobpay-topbar-spread-text--title {
+    .torobpay-topbar--spread-has-custom .torobpay-topbar-spread-text--title,
+    .torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-text--title {
         animation-name: torobpay-tb-spread-m-fee-x;
     }
 
-    .torobpay-topbar--spread-has-custom .torobpay-topbar-spread-text--fee {
+    .torobpay-topbar--spread-has-custom .torobpay-topbar-spread-text--fee,
+    .torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-text--fee {
         animation-name: torobpay-tb-spread-m-middle-x;
     }
 
-    .torobpay-topbar--spread-has-custom .torobpay-topbar-spread-text--middle {
+    .torobpay-topbar--spread-has-custom .torobpay-topbar-spread-text--middle,
+    .torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-text--middle {
         animation-name: torobpay-tb-spread-m-title-x;
     }
 
-    .torobpay-topbar--spread-has-custom .torobpay-topbar-spread-logo--end {
+    .torobpay-topbar--spread-has-custom .torobpay-topbar-spread-logo--end,
+    .torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-logo--end {
         animation-name: torobpay-tb-spread-m-logo-end-x;
     }
 
-    .torobpay-topbar--spread-has-custom .torobpay-topbar-spread-logo--start {
+    .torobpay-topbar--spread-has-custom .torobpay-topbar-spread-logo--start,
+    .torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-logo--start {
         animation-name: torobpay-tb-spread-m-logo-start-x;
     }
+
+    .torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-text--title {
+        animation-name: torobpay-tb-spread-m-fee-c;
+    }
+
+    .torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-text--fee {
+        animation-name: torobpay-tb-spread-m-middle-c;
+    }
+
+    .torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-text--middle {
+        animation-name: torobpay-tb-spread-m-title-c;
+    }
+
+    .torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-logo--end {
+        animation-name: torobpay-tb-spread-m-logo-end-c;
+    }
+
+    .torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-logo--start {
+        animation-name: torobpay-tb-spread-m-logo-start-c;
+    }
+
+    .torobpay-topbar--spread-has-custom.torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-text--title {
+        animation-name: torobpay-tb-spread-m-fee-cy;
+    }
+
+    .torobpay-topbar--spread-has-custom.torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-text--fee {
+        animation-name: torobpay-tb-spread-m-middle-cy;
+    }
+
+    .torobpay-topbar--spread-has-custom.torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-text--middle {
+        animation-name: torobpay-tb-spread-m-title-cy;
+    }
+
+    .torobpay-topbar--spread-has-custom.torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-logo--end {
+        animation-name: torobpay-tb-spread-m-logo-end-cy;
+    }
+
+    .torobpay-topbar--spread-has-custom.torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-logo--start {
+        animation-name: torobpay-tb-spread-m-logo-start-cy;
+    }
+}
+
+.torobpay-topbar-campaign-seq,
+.torobpay-topbar-standard {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    gap: 12px;
+}
+
+.torobpay-topbar--has-campaign .torobpay-topbar-standard {
+    display: none;
+}
+
+#torobpay-topbar:not(.torobpay-topbar--has-campaign) .torobpay-topbar-campaign-seq {
+    display: none;
+}
+
+/* Campaign Spread: credit/custom delays after the three-slot phase. */
+.torobpay-topbar--spread-has-campaign .torobpay-topbar-campaign-seq .torobpay-topbar-spread-solo--credit {
+    animation-delay: calc(var(--torobpay-tb-spread-duration, 8s) * 0.71);
+}
+
+.torobpay-topbar--spread-has-custom.torobpay-topbar--spread-has-campaign .torobpay-topbar-campaign-seq .torobpay-topbar-spread-solo--credit {
+    animation-delay: calc(var(--torobpay-tb-spread-duration, 8s) * 0.62);
+}
+
+.torobpay-topbar--spread-has-custom.torobpay-topbar--spread-has-campaign .torobpay-topbar-campaign-seq .torobpay-topbar-spread-solo--custom {
+    animation-delay: calc(var(--torobpay-tb-spread-duration, 8s) * 0.82);
+}
+
+.torobpay-topbar--spread-has-campaign .torobpay-topbar-campaign-seq .torobpay-topbar-spread-text--fee {
+    display: inline-block;
+    max-width: min(40vw, 14rem);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: bottom;
+}
+
+.torobpay-topbar--spread-has-campaign .torobpay-topbar-spread-text--middle .torobpay-topbar-campaign {
+    pointer-events: inherit;
+}
+
+.torobpay-topbar-ticker-item--campaign {
+    font-size: clamp(12px, 3.4vw, 1em);
+}
+
+.torobpay-topbar-campaign-line {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55em;
+    max-width: 100%;
+    min-width: 0;
+    color: #003D01;
+    direction: rtl;
+}
+
+.torobpay-topbar-campaign-title {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.torobpay-topbar-campaign {
+    appearance: none;
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    height: auto;
+    max-height: calc(var(--torobpay-topbar-h, 44px) - 12px);
+    margin: 0;
+    padding: 0.2em 0.75em;
+    border: 0;
+    border-radius: 9999px;
+    background: #003D01;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 700;
+    font-size: 1em;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    animation: torobpay-campaign-sonar 2.6s cubic-bezier(0.25, 0.8, 0.25, 1) infinite;
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.torobpay-topbar-campaign-labels {
+    display: grid;
+    place-items: center;
+    height: 1em;
+    line-height: 1;
+    overflow: hidden;
+}
+
+.torobpay-topbar-campaign-label {
+    grid-area: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 1em;
+    line-height: 1;
+    transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.28s ease;
+}
+
+.torobpay-topbar-campaign-label--alt {
+    transform: translateY(110%);
+    opacity: 0;
+}
+
+.torobpay-topbar-campaign:hover,
+.torobpay-topbar-campaign:focus-visible {
+    animation: none;
+    background: #146b12;
+    transform: translateY(-1.5px);
+    box-shadow: 0 0 0 5px rgba(0, 61, 1, 0.22);
+    outline: none;
+}
+
+.torobpay-topbar-campaign:hover .torobpay-topbar-campaign-label:not(.torobpay-topbar-campaign-label--alt),
+.torobpay-topbar-campaign:focus-visible .torobpay-topbar-campaign-label:not(.torobpay-topbar-campaign-label--alt) {
+    transform: translateY(-110%);
+    opacity: 0;
+}
+
+.torobpay-topbar-campaign:hover .torobpay-topbar-campaign-label--alt,
+.torobpay-topbar-campaign:focus-visible .torobpay-topbar-campaign-label--alt {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+@keyframes torobpay-campaign-sonar {
+    0%   { box-shadow: 0 0 0 0 rgba(0, 61, 1, 0.55); }
+    75%  { box-shadow: 0 0 0 11px rgba(0, 61, 1, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 61, 1, 0); }
+}
+
+#torobpay-topbar:has(.torobpay-topbar-ticker-item--campaign:hover) .torobpay-topbar-ticker-item,
+#torobpay-topbar:has(.torobpay-topbar-ticker-item--campaign:focus-within) .torobpay-topbar-ticker-item,
+#torobpay-topbar:has(.torobpay-topbar-spread-text--middle .torobpay-topbar-campaign:hover) .torobpay-topbar-spread-group,
+#torobpay-topbar:has(.torobpay-topbar-spread-text--middle .torobpay-topbar-campaign:focus-within) .torobpay-topbar-spread-group,
+#torobpay-topbar:has(.torobpay-topbar-spread-text--middle .torobpay-topbar-campaign:hover) .torobpay-topbar-spread-text,
+#torobpay-topbar:has(.torobpay-topbar-spread-text--middle .torobpay-topbar-campaign:focus-within) .torobpay-topbar-spread-text,
+#torobpay-topbar:has(.torobpay-topbar-spread-text--middle .torobpay-topbar-campaign:hover) .torobpay-topbar-spread-logo,
+#torobpay-topbar:has(.torobpay-topbar-spread-text--middle .torobpay-topbar-campaign:focus-within) .torobpay-topbar-spread-logo,
+#torobpay-topbar:has(.torobpay-topbar-spread-text--middle .torobpay-topbar-campaign:hover) .torobpay-topbar-spread-solo,
+#torobpay-topbar:has(.torobpay-topbar-spread-text--middle .torobpay-topbar-campaign:focus-within) .torobpay-topbar-spread-solo {
+    animation-play-state: paused;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1064,10 +1696,40 @@
     .torobpay-topbar-ticker-item:first-child {
         opacity: 1;
     }
+    #torobpay-topbar.torobpay-topbar--has-campaign:has(.torobpay-topbar-ticker-item--campaign) .torobpay-topbar-ticker-item {
+        opacity: 0;
+        pointer-events: none;
+        visibility: hidden;
+    }
+    #torobpay-topbar.torobpay-topbar--has-campaign:has(.torobpay-topbar-ticker-item--campaign) .torobpay-topbar-ticker-item--campaign {
+        opacity: 1;
+        pointer-events: auto;
+        visibility: visible;
+    }
     .torobpay-topbar--anim-spread .torobpay-topbar-spread-solo--credit {
         animation: none !important;
         opacity: 1;
         transform: translate(-50%, -50%) !important;
+    }
+    #torobpay-topbar.torobpay-topbar--has-campaign.torobpay-topbar--anim-spread .torobpay-topbar-campaign-seq .torobpay-topbar-spread-solo--credit,
+    #torobpay-topbar.torobpay-topbar--has-campaign.torobpay-topbar--anim-spread .torobpay-topbar-campaign-seq .torobpay-topbar-spread-solo--custom {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+    #torobpay-topbar.torobpay-topbar--has-campaign.torobpay-topbar--anim-spread .torobpay-topbar-campaign-seq .torobpay-topbar-spread-group,
+    #torobpay-topbar.torobpay-topbar--has-campaign.torobpay-topbar--anim-spread .torobpay-topbar-campaign-seq .torobpay-topbar-spread-text,
+    #torobpay-topbar.torobpay-topbar--has-campaign.torobpay-topbar--anim-spread .torobpay-topbar-campaign-seq .torobpay-topbar-spread-logo {
+        animation: none !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+    }
+    #torobpay-topbar.torobpay-topbar--has-campaign.torobpay-topbar--anim-spread .torobpay-topbar-campaign-seq .torobpay-topbar-spread-logo {
+        transform: translateY(-50%) !important;
+    }
+    #torobpay-topbar.torobpay-topbar--has-campaign.torobpay-topbar--anim-spread .torobpay-topbar-campaign-seq .torobpay-topbar-spread-text--middle .torobpay-topbar-campaign {
+        pointer-events: auto;
     }
     .torobpay-topbar--anim-spread .torobpay-topbar-spread-solo--custom,
     .torobpay-topbar--anim-spread .torobpay-topbar-spread-group,
@@ -1082,5 +1744,35 @@
     .torobpay-topbar-bg,
     .torobpay-topbar-confetti {
         display: none !important;
+    }
+    .torobpay-topbar-campaign,
+    .torobpay-topbar-campaign-label,
+    .torobpay-topbar-campaign-label--alt {
+        animation: none;
+        transition: none;
+    }
+}
+
+/* Reduced motion + phone: campaign slots stay on one row. */
+@media (max-width: 849px) and (prefers-reduced-motion: reduce) {
+    #torobpay-topbar.torobpay-topbar--has-campaign.torobpay-topbar--anim-spread .torobpay-topbar-campaign-seq .torobpay-topbar-spread-stage {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    }
+
+    #torobpay-topbar.torobpay-topbar--has-campaign.torobpay-topbar--anim-spread .torobpay-topbar-campaign-seq .torobpay-topbar-spread-slot,
+    #torobpay-topbar.torobpay-topbar--has-campaign.torobpay-topbar--anim-spread .torobpay-topbar-campaign-seq .torobpay-topbar-spread-group {
+        display: flex;
+    }
+
+    #torobpay-topbar.torobpay-topbar--has-campaign.torobpay-topbar--anim-spread .torobpay-topbar-campaign-seq .torobpay-topbar-spread-text--title,
+    #torobpay-topbar.torobpay-topbar--has-campaign.torobpay-topbar--anim-spread .torobpay-topbar-campaign-seq .torobpay-topbar-spread-text--fee,
+    #torobpay-topbar.torobpay-topbar--has-campaign.torobpay-topbar--anim-spread .torobpay-topbar-campaign-seq .torobpay-topbar-spread-text--middle {
+        position: static;
+        left: auto;
+        top: auto;
+        transform: none !important;
+        opacity: 1 !important;
+        animation: none !important;
     }
 }

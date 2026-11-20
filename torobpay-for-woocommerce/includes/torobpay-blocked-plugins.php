@@ -6,7 +6,8 @@
  * plugin is active, strip unauthorized positive fees from the cart when
  * TorobPay is the chosen payment method, and hide plugin-specific surcharge
  * UI on TorobPay. Discounts (negative fees) and other gateways are left
- * alone. Does not deactivate other plugins or write their options.
+ * alone. Does not deactivate other plugins or write their options. On cart
+ * and checkout, the TorobPay row is left out of Karmozd Pay's settings read.
  *
  * One file per fee plugin lives in includes/fee-plugins/. Register a new
  * plugin from its own file; the shared remover and notices pick it up.

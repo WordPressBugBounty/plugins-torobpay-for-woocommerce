@@ -1,0 +1,219 @@
+/**
+ * Discount highlight on the TorobPay payment method.
+ *
+ * discount and first_order_discount share this row. The sentence is the API
+ * description. Inline formatting such as strong and em is kept. Installment
+ * copy stays in the payment description.
+ */
+
+/* WooCommerce zeroes the classic method row margin. The theme then puts 10px
+   under the label, which sits inside this row. Keep that gap on the row. */
+.woocommerce-checkout #payment ul.payment_methods li.payment_method_WC_Gateway_TorobPay:has(.torobpay-offer),
+#add_payment_method #payment ul.payment_methods li.payment_method_WC_Gateway_TorobPay:has(.torobpay-offer),
+.woocommerce-cart #payment ul.payment_methods li.payment_method_WC_Gateway_TorobPay:has(.torobpay-offer) {
+	position: relative;
+	z-index: 1;
+	box-sizing: border-box;
+	overflow: visible;
+    margin-bottom:  10px;
+    padding: 10px 12px;
+	border: 2px solid #003d01;
+	border-radius: 8px;
+	color: #003d01;
+}
+
+/* Block checkout keeps WooCommerce's border, radio gutter, and stacking.
+   The green fill sits on the row behind that border. */
+.wc-block-checkout__payment-method .wc-block-components-radio-control-accordion-option:has(.torobpay-offer) {
+	position: relative;
+	z-index: 1;
+	overflow: visible;
+	background: #e9f7ea;
+}
+
+.wc-block-checkout__payment-method .wc-block-components-radio-control-accordion-option .wc-block-components-radio-control__option:has(.torobpay-offer) {
+	background: transparent;
+}
+
+.woocommerce-checkout #payment ul.payment_methods li.payment_method_WC_Gateway_TorobPay:has(.torobpay-offer) > label,
+#add_payment_method #payment ul.payment_methods li.payment_method_WC_Gateway_TorobPay:has(.torobpay-offer) > label,
+.woocommerce-cart #payment ul.payment_methods li.payment_method_WC_Gateway_TorobPay:has(.torobpay-offer) > label {
+	overflow: visible;
+	flex-wrap: wrap;
+	margin: 0;
+	color: #003d01;
+}
+
+.wc-block-components-radio-control__label:has(.torobpay-offer) {
+	display: flex;
+	overflow: visible;
+	flex-wrap: wrap;
+	align-items: center;
+	margin: 0;
+	color: #003d01;
+}
+
+/*
+ * Offer text: spring rise. Motion finishes by 55%; the rest is a pause.
+ * Timed with the elastic logo cycle (1.1s motion + ~0.9s pause = 2s).
+ */
+.torobpay-offer {
+	display: block;
+	box-sizing: border-box;
+	width: 100%;
+	clear: both;
+	flex: 1 0 100%;
+	margin: 0;
+	padding: 2px 0 0;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	color: #003d01;
+	font-weight: 600;
+	font-size: 0.92em;
+	line-height: 1.6;
+	text-align: start;
+	animation: torobpay-offer-spring-rise 2s linear infinite;
+}
+
+.torobpay-offer strong,
+.torobpay-offer b {
+	font-weight: 800;
+}
+
+@keyframes torobpay-offer-spring-rise {
+	0%,
+	8% {
+		opacity: 0;
+		transform: translateY(12px) scale(0.9);
+		animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	28% {
+		opacity: 1;
+		transform: translateY(-4px) scale(1.06);
+		animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+	}
+
+	40% {
+		transform: translateY(2px) scale(0.98);
+		animation-timing-function: ease-out;
+	}
+
+	55%,
+	100% {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+
+/* The logo is a box background, not an img, so checkout themes that
+   reposition payment images cannot move it. Outer and inner boxes each
+   own one transform. The circle drops the transparent corners. */
+.torobpay-checkout-logo {
+	display: inline-block;
+	width: 40px;
+	height: 40px;
+	margin-inline-end: 0.5em;
+	vertical-align: middle;
+	line-height: 0;
+	flex: 0 0 auto;
+	align-self: center;
+}
+
+.torobpay-checkout-logo .torobpay-logo-spin {
+	display: inline-block;
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+	border-radius: 100%;
+	vertical-align: top;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+	transform-origin: center center;
+}
+
+/* Elastic spin: scale on the outer box, elastic turn on the inner. */
+.torobpay-checkout-logo.torobpay-logo-elastic {
+	transform-origin: center center;
+	animation: torobpay-elastic-scale 2s linear infinite;
+}
+
+.torobpay-checkout-logo.torobpay-logo-elastic .torobpay-logo-spin {
+	animation: torobpay-elastic-spin 2s linear infinite;
+}
+
+@keyframes torobpay-elastic-scale {
+	0% {
+		transform: scale(1);
+	}
+
+	8% {
+		transform: scale(0.91);
+	}
+
+	24% {
+		transform: scale(1.1);
+	}
+
+	39% {
+		transform: scale(0.97);
+	}
+
+	55%,
+	100% {
+		transform: scale(1);
+	}
+}
+
+@keyframes torobpay-elastic-spin {
+	0% {
+		transform: rotate(0deg);
+		animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	8% {
+		transform: rotate(-16deg);
+		animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	29% {
+		transform: rotate(384deg);
+		animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+	}
+
+	40% {
+		transform: rotate(350deg);
+		animation-timing-function: ease-in-out;
+	}
+
+	47% {
+		transform: rotate(363deg);
+		animation-timing-function: ease-out;
+	}
+
+	55%,
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+.wc-block-components-radio-control__option-content:has(.torobpay-offer-shown-on-label) {
+	display: none;
+	margin: 0;
+	padding: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.torobpay-offer {
+		animation: none;
+		opacity: 1;
+		transform: none;
+	}
+
+	.torobpay-checkout-logo.torobpay-logo-elastic,
+	.torobpay-checkout-logo .torobpay-logo-spin {
+		animation: none;
+	}
+}

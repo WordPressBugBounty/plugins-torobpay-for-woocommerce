@@ -29,10 +29,9 @@ final class TorobPay_Blocks_Support extends AbstractPaymentMethodType {
 	protected $name = 'WC_Gateway_TorobPay';
 
 	/**
-	 * Cached result of the eligibility API call so that we don't hit the
-	 * endpoint multiple times within the same request lifecycle.
+	 * Normalized eligibility result for this request, including description_type.
 	 *
-	 * @var mixed|null
+	 * @var array<string,mixed>|null
 	 */
 	protected $eligibility_response = null;
 
@@ -56,26 +55,15 @@ final class TorobPay_Blocks_Support extends AbstractPaymentMethodType {
 		}
 
 		/*
-		 * Determine the payable amount.
-		 * – During normal checkout we use the cart total.
-		 * – On the order-pay page we fall back to order total if cart is empty.
+		 * Cart total during checkout. On order-pay, the order being paid,
+		 * even when the cart still has items.
 		 */
-		$amount = 0;
-		if ( function_exists( 'WC' ) && WC()->cart ) {
-			$amount = WC()->cart->get_total( 'edit' );
+		if ( ! function_exists( 'torobpay_checkout_payable' ) ) {
+			require_once dirname( TOROBPAY_PLUGIN_FILE ) . '/includes/torobpay-utils.php';
 		}
-
-		// Fallback: order-pay context (not thank-you — eligibility is skipped there).
-		if ( ! $amount && function_exists( 'is_wc_endpoint_url' ) && is_wc_endpoint_url( 'order-pay' ) && isset( $_GET['key'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only order key for eligibility display.
-			$order_key = sanitize_text_field( wp_unslash( $_GET['key'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only order key for eligibility display.
-			$order_id  = wc_get_order_id_by_order_key( $order_key );
-			if ( $order_id ) {
-				$order  = wc_get_order( $order_id );
-				$amount = $order ? $order->get_total() : 0;
-			}
-		}
-
-		$currency = get_woocommerce_currency();
+		$payable  = torobpay_checkout_payable();
+		$amount   = $payable['amount'];
+		$currency = null !== $payable['currency'] ? $payable['currency'] : get_woocommerce_currency();
 
 		// Shared helper ensures single responsibility and DRY.
 		if ( ! function_exists( 'torobpay_resolve_eligibility' ) ) {
@@ -83,7 +71,7 @@ final class TorobPay_Blocks_Support extends AbstractPaymentMethodType {
 		}
 
 		$eligibility                = torobpay_resolve_eligibility( $amount, $currency );
-		$this->eligibility_response = $eligibility['raw_response'];
+		$this->eligibility_response = $eligibility;
 
 		// If API errored or merchant/amount not eligible, gateway is inactive.
 		if ( $eligibility['wp_error'] || ! $eligibility['eligible'] ) {
@@ -108,7 +96,22 @@ final class TorobPay_Blocks_Support extends AbstractPaymentMethodType {
 			$dependencies = $asset['dependencies'] ?? [];
 		} else {
 			// Fallback dependencies if asset file doesn't exist
-			$dependencies = [ 'wc-blocks-registry', 'wc-settings', 'wp-element', 'wp-components', 'wp-polyfill', 'wp-i18n' ];
+			$dependencies = [ 'wc-blocks-registry', 'wc-settings', 'wc-blocks-data-store', 'wp-element', 'wp-data', 'wp-components', 'wp-polyfill', 'wp-i18n' ];
+		}
+
+		// An unregistered handle makes WordPress skip this file entirely, and the
+		// checkout block then waits forever for TorobPay to register.
+		$dependencies = array_values(
+			array_filter(
+				$dependencies,
+				static function ( $handle ) {
+					return function_exists( 'wp_script_is' ) && wp_script_is( $handle, 'registered' );
+				}
+			)
+		);
+
+		if ( function_exists( 'torobpay_enqueue_checkout_offer_style' ) ) {
+			torobpay_enqueue_checkout_offer_style();
 		}
 
 		// Register the script
@@ -143,34 +146,40 @@ final class TorobPay_Blocks_Support extends AbstractPaymentMethodType {
 		}
 
 		// Default title/description - description will be overridden by API response
-		$title       = $this->get_setting( 'title', __( 'Pay in installments with TorobPay', 'torobpay-for-woocommerce' ) );
-		$description = __( 'Installments based on TorobPay credit', 'torobpay-for-woocommerce' ); // Default fallback
+		$title            = $this->get_setting( 'title', __( 'Pay in installments with TorobPay', 'torobpay-for-woocommerce' ) );
+		$description      = __( 'Installments based on TorobPay credit', 'torobpay-for-woocommerce' ); // Default fallback
+		$description_type = 'installment';
 
 		// If eligibility call succeeded, prefer API-provided messages (keeps behaviour in sync with classic checkout).
-		if ( $this->eligibility_response && isset( $this->eligibility_response['title_message'] ) ) {
+		if ( is_array( $this->eligibility_response ) && ! empty( $this->eligibility_response['raw_response'] ) ) {
 			$api_resp = $this->eligibility_response;
-			if ( ! empty( $api_resp['title_message'] ) ) {
-				$title = $api_resp['title_message'];
+			if ( ! empty( $api_resp['title'] ) ) {
+				$title = $api_resp['title'];
 			}
 			if ( ! empty( $api_resp['description'] ) ) {
 				$description = $api_resp['description'];
 			}
+			if ( ! empty( $api_resp['description_type'] ) ) {
+				$description_type = function_exists( 'torobpay_normalize_description_type' )
+					? torobpay_normalize_description_type( $api_resp['description_type'] )
+					: (string) $api_resp['description_type'];
+			}
 		}
 
 		return [
-			'title'          => $title,
-			'description'    => $description,
-			'supports'       => [
+			'title'           => $title,
+			'description'     => $description,
+			'descriptionType' => $description_type,
+			'supports'        => [
 				'showSavedCards' => false,
 				'showSaveOption' => false,
 				'features'       => $this->get_supported_features(),
 			],
-			'icon'           => apply_filters( 'torobpay_logo', plugins_url( '/assets/images/logo_favicon.svg', TOROBPAY_PLUGIN_FILE ) ),
-			'mobile_enabled' => $this->get_setting( 'mobile_enabled', 'yes' ),
-			'postal_enabled' => $this->get_setting( 'postal_enabled', 'no' ),
-			'gatewayId'      => 'WC_Gateway_TorobPay',
+			'icon'            => apply_filters( 'torobpay_logo', plugins_url( '/assets/images/logo_favicon.svg', TOROBPAY_PLUGIN_FILE ) ),
+			'postal_enabled'  => $this->get_setting( 'postal_enabled', 'no' ),
+			'gatewayId'       => 'WC_Gateway_TorobPay',
 			// Enable React-based settings UI compatibility
-			'settingsUrl'    => admin_url( 'admin.php?page=wc-settings&tab=checkout&section=WC_Gateway_TorobPay' ),
+			'settingsUrl'     => admin_url( 'admin.php?page=wc-settings&tab=checkout&section=WC_Gateway_TorobPay' ),
 		];
 	}
 

@@ -122,7 +122,7 @@ function torobpay_get_api_error_catalog() {
 			),
 			'1011' => array(
 				'title'   => __( 'Cart amount outside the TorobPay range', 'torobpay-for-woocommerce' ),
-				'message' => __( 'TorobPay accepts orders between 200,000 and 1,000,000,000 Rial.', 'torobpay-for-woocommerce' ),
+				'message' => __( 'TorobPay accepts orders of 200,000 Rial or more.', 'torobpay-for-woocommerce' ),
 				'tier'    => 'notice',
 				'notify'  => false,
 				'action'  => '',

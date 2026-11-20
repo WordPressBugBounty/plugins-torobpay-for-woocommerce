@@ -27,52 +27,6 @@
 	box-sizing: border-box;
 }
 
-/* Same piece motion as assets/js/topbar-confetti.js. The stage clips to the dialog. */
-.torobpay-promo-confetti {
-	position: absolute;
-	inset: 0;
-	z-index: 2;
-	overflow: hidden;
-	border-radius: inherit;
-	pointer-events: none;
-}
-
-.torobpay-topbar-confetti-piece {
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	width: 6px;
-	height: 8px;
-	border-radius: 1px;
-	background: var(--torobpay-tb-confetti-color, #F46344);
-	opacity: 0;
-	animation: torobpay-tb-confetti var(--torobpay-tb-confetti-duration, 900ms) ease-out var(--torobpay-tb-confetti-delay, 0ms) forwards;
-	will-change: transform, opacity;
-}
-
-.torobpay-topbar-confetti-piece--round {
-	width: 6px;
-	height: 6px;
-	border-radius: 50%;
-}
-
-@keyframes torobpay-tb-confetti {
-	0% {
-		opacity: 0;
-		transform: translate(-50%, -50%) translate(var(--x0, 0px), var(--y0, -70px)) rotate(0deg);
-	}
-	18% {
-		opacity: 1;
-	}
-	72% {
-		opacity: 1;
-	}
-	100% {
-		opacity: 0;
-		transform: translate(-50%, -50%) translate(var(--x, 0px), var(--y, 70px)) rotate(var(--r, 180deg));
-	}
-}
-
 .torobpay-promo-dialog:focus {
 	outline: none;
 }
@@ -133,7 +87,6 @@
 }
 
 .torobpay-promo-expiry {
-	grid-column: 1;
 	margin: 0.2rem 0 0;
 	font-size: 0.82rem;
 	font-weight: 700;
@@ -145,8 +98,7 @@
 .torobpay-promo-card {
 	position: relative;
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) auto;
-	column-gap: 12px;
+	grid-template-columns: minmax(0, 1fr);
 	row-gap: 4px;
 	align-items: center;
 	margin: 0 0 1rem;
@@ -181,7 +133,6 @@
 }
 
 .torobpay-promo-card-amount {
-	grid-column: 1;
 	margin: 0;
 	font-size: 0.98rem;
 	font-weight: 800;
@@ -189,14 +140,12 @@
 }
 
 .torobpay-promo-card-min {
-	grid-column: 1;
 	margin: 0;
 	font-size: 0.82rem;
 	color: #6b6f7a;
 }
 
 .torobpay-promo-card-code {
-	grid-column: 1;
 	display: flex;
 	flex-wrap: wrap;
 	align-items: baseline;
@@ -223,32 +172,6 @@
 	unicode-bidi: isolate;
 }
 
-.torobpay-promo-copy {
-	grid-column: 2;
-	grid-row: 1 / span 4;
-	align-self: center;
-	min-width: 4.5rem;
-	min-height: 2.5rem;
-	padding: 0.45rem 0.85rem;
-	border: 0;
-	border-radius: 10px;
-	background: #9ce76a;
-	color: #003d01;
-	font-size: 0.88rem;
-	font-weight: 800;
-	cursor: pointer;
-}
-
-.torobpay-promo-copy:hover,
-.torobpay-promo-copy:focus {
-	background: #8bd85a;
-}
-
-.torobpay-promo-copy.is-copied {
-	background: #003d01;
-	color: #fff;
-}
-
 .torobpay-promo-dismiss {
 	display: flex;
 	align-items: center;
@@ -271,25 +194,16 @@
 	background: #8bd85a;
 }
 
+.torobpay-promo-dismiss.is-copied,
+.torobpay-promo-dismiss.is-copied:hover,
+.torobpay-promo-dismiss.is-copied:focus,
+.torobpay-promo-dismiss.is-copied:disabled {
+	background: #003d01;
+	color: #fff;
+	cursor: default;
+	opacity: 1;
+}
+
 body.torobpay-promo-open {
 	overflow: hidden;
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.torobpay-promo-confetti {
-		display: none;
-	}
-}
-
-@media (max-width: 420px) {
-	.torobpay-promo-card {
-		grid-template-columns: 1fr;
-	}
-
-	.torobpay-promo-copy {
-		grid-column: 1;
-		grid-row: auto;
-		justify-self: start;
-		margin-top: 8px;
-	}
 }

@@ -851,12 +851,117 @@
 	width: 200px;
 }
 
-.color-picker {
-	width: 60px;
-	height: 40px;
-	border: 1px solid #ddd;
-	border-radius: 4px;
+.torobpay-green-color {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	max-width: 460px;
+}
+
+.torobpay-green-color__swatch {
+	width: 44px;
+	height: 44px;
+	flex-shrink: 0;
+	margin-top: auto;
+	margin-bottom: auto;
+	border: 1px solid #c3c4c7;
+	border-radius: 8px;
+	box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
+}
+
+.torobpay-green-color__sliders {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	min-width: 0;
+}
+
+.torobpay-green-color__slider {
+	display: grid;
+	grid-template-columns: 88px minmax(0, 1fr);
+	align-items: center;
+	gap: 8px;
+	margin: 0;
+	color: #50575e;
+	font-size: 12px;
+	line-height: 1.3;
+}
+
+.torobpay-visual-settings-wrap .torobpay-green-color__slider input[type="range"] {
+	width: 100%;
+	height: 18px;
+	margin: 0;
+	padding: 0;
+	background: transparent;
+	appearance: none;
+	-webkit-appearance: none;
 	cursor: pointer;
+}
+
+.torobpay-visual-settings-wrap .torobpay-green-color__slider input[type="range"]::-webkit-slider-runnable-track {
+	height: 8px;
+	border: 0;
+	border-radius: 999px;
+	background: var(--torobpay-green-track, linear-gradient(to right, #183d00, #9ce76a, #f7faf5));
+}
+
+.torobpay-visual-settings-wrap .torobpay-green-color__slider input[type="range"]::-webkit-slider-thumb {
+	width: 16px;
+	height: 16px;
+	margin-top: -4px;
+	border: 2px solid #003d01;
+	border-radius: 50%;
+	background: #fff;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+	appearance: none;
+	-webkit-appearance: none;
+}
+
+.torobpay-visual-settings-wrap .torobpay-green-color__slider input[type="range"]::-moz-range-track {
+	height: 8px;
+	border: 0;
+	border-radius: 999px;
+	background: var(--torobpay-green-track, linear-gradient(to right, #183d00, #9ce76a, #f7faf5));
+}
+
+.torobpay-visual-settings-wrap .torobpay-green-color__slider input[type="range"]::-moz-range-thumb {
+	width: 16px;
+	height: 16px;
+	border: 2px solid #003d01;
+	border-radius: 50%;
+	background: #fff;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.torobpay-visual-settings-wrap .torobpay-green-color__slider input[type="range"]:focus {
+	outline: none;
+}
+
+.torobpay-visual-settings-wrap .torobpay-green-color__slider input[type="range"]:focus-visible::-webkit-slider-thumb {
+	outline: 2px solid #003d01;
+	outline-offset: 2px;
+}
+
+.torobpay-visual-settings-wrap .torobpay-green-color__slider input[type="range"]:focus-visible::-moz-range-thumb {
+	outline: 2px solid #003d01;
+	outline-offset: 2px;
+}
+
+.torobpay-green-color-opacity {
+	margin-top: 8px;
+}
+
+@media (max-width: 782px) {
+	.torobpay-green-color {
+		align-items: flex-start;
+		flex-wrap: wrap;
+	}
+
+	.torobpay-green-color__slider {
+		grid-template-columns: 1fr;
+		gap: 4px;
+	}
 }
 
 input[type="number"] {
@@ -1004,16 +1109,6 @@ jdp-container .jdp-time-container .jdp-time select {
 }
 
 /* Badge positioning in preview — pill collapse/hover comes from widget.css. */
-.torobpay-product-badge {
-	position: absolute;
-	top: 8px;
-	right: 8px;
-	z-index: 99;
-	direction: rtl;
-	margin: 0;
-	pointer-events: none;
-}
-
 .badge-preview-section .torobpay-product-badge-inner {
 	pointer-events: auto;
 }
@@ -1035,212 +1130,6 @@ jdp-container .jdp-time-container .jdp-time select {
 	border-style: solid;
 	transition: all 0.3s ease;
 	position: relative;
-}
-
-.torobpay-widget-image {
-	width: 60px;
-	height: auto;
-	border-radius: 15px;
-	display: block;
-}
-
-.torobpay-widget-media {
-	display: flex;
-	align-items: center;
-}
-
-.torobpay-widget-title {
-	font-size: 14px;
-	font-weight: bold;
-	line-height: 180%;
-	margin-bottom: 2px;
-}
-
-.torobpay-widget-description {
-	font-weight: 300;
-	font-size: 12px;
-	line-height: 180%;
-	letter-spacing: -0.36px;
-}
-
-/* Animation keyframes */
-@keyframes pulse {
-	0% {
-		transform: scale(1);
-	}
-
-	50% {
-		transform: scale(1.1);
-	}
-
-	100% {
-		transform: scale(1);
-	}
-}
-
-@keyframes wobble {
-
-	0%,
-	100% {
-		transform: translateX(0%);
-	}
-
-	15% {
-		transform: translateX(-25%) rotate(-5deg);
-	}
-
-	30% {
-		transform: translateX(20%) rotate(3deg);
-	}
-
-	45% {
-		transform: translateX(-15%) rotate(-3deg);
-	}
-
-	60% {
-		transform: translateX(10%) rotate(2deg);
-	}
-
-	75% {
-		transform: translateX(-5%) rotate(-1deg);
-	}
-}
-
-@keyframes bounce {
-
-	0%,
-	20%,
-	50%,
-	80%,
-	100% {
-		transform: translateY(0);
-	}
-
-	40% {
-		transform: translateY(-15px);
-	}
-
-	60% {
-		transform: translateY(-7px);
-	}
-}
-
-@keyframes ping {
-	0% {
-		transform: scale(1);
-		box-shadow: 0 0 0 0 rgba(156, 231, 106, 0.45);
-	}
-
-	70% {
-		transform: scale(1.05);
-		box-shadow: 0 0 0 18px rgba(156, 231, 106, 0);
-	}
-
-	100% {
-		transform: scale(1);
-		box-shadow: 0 0 0 0 rgba(156, 231, 106, 0);
-	}
-}
-
-/* Animation classes */
-.torobpay-logo-pulse {
-	animation: pulse 1s ease-in-out infinite;
-}
-
-.torobpay-logo-wobble {
-	animation: wobble 1.2s ease-in-out infinite;
-}
-
-.torobpay-logo-bounce {
-	animation: bounce 1.2s ease-in-out infinite;
-}
-
-.torobpay-logo-ping {
-	animation: ping 1.6s ease-out infinite;
-}
-
-.torobpay-widget-media.torobpay-logo-light-sweep {
-	position: relative;
-	overflow: hidden;
-	border-radius: 15px;
-}
-
-.torobpay-widget-media.torobpay-logo-light-sweep::after {
-	content: '';
-	position: absolute;
-	top: -35%;
-	left: 0;
-	width: 60%;
-	height: 170%;
-	background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.75) 50%, rgba(255, 255, 255, 0) 100%);
-	transform: translateX(0) rotate(25deg);
-	opacity: 0;
-	pointer-events: none;
-	animation: torobpay-light-sweep 1.8s ease-in-out infinite;
-}
-
-.torobpay-widget-status-indicator {
-	position: absolute;
-	top: -8px;
-	right: -8px;
-	width: 18px;
-	height: 18px;
-	pointer-events: none;
-}
-
-.torobpay-widget-status-indicator .torobpay-status-heartbeat,
-.torobpay-widget-status-indicator .torobpay-status-dot {
-	position: absolute;
-	inset: 0;
-	border-radius: 9999px;
-}
-
-.torobpay-widget-status-indicator .torobpay-status-dot {
-	background: #9ce76a;
-}
-
-.torobpay-widget-status-indicator .torobpay-status-heartbeat {
-	background: #9ce76a;
-	opacity: 0.7;
-	animation: torobpay-status-ping 1.4s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-
-@keyframes torobpay-status-ping {
-	0% {
-		transform: scale(1);
-		opacity: 0.7;
-	}
-
-	75% {
-		transform: scale(2.1);
-		opacity: 0;
-	}
-
-	100% {
-		transform: scale(2.3);
-		opacity: 0;
-	}
-}
-
-@keyframes torobpay-light-sweep {
-	0% {
-		transform: translateX(-120%) rotate(25deg);
-		opacity: 0;
-	}
-
-	30% {
-		opacity: 0.85;
-	}
-
-	60% {
-		transform: translateX(160%) rotate(25deg);
-		opacity: 0;
-	}
-
-	100% {
-		transform: translateX(160%) rotate(25deg);
-		opacity: 0;
-	}
 }
 
 /* Marquee Preview Styles - kept in sync with assets/css/marquee.css */

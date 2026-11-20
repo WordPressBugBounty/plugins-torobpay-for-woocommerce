@@ -31,6 +31,11 @@ function torobpay_load_gateway() {
 			if ( $delete_token_transient ) {
 				delete_transient( 'torobpay_bearer_token' );
 				delete_transient( 'torobpay_online_features' );
+				if ( function_exists( 'torobpay_forget_discount_campaigns_cache' ) ) {
+					torobpay_forget_discount_campaigns_cache();
+				} else {
+					delete_transient( 'torobpay_discount_campaigns' );
+				}
 			}
 
 			$has_all_credentials = is_array( $new_value )
@@ -112,6 +117,20 @@ function torobpay_load_gateway() {
 			public $success_message;
 			public $failed_message;
 
+			/**
+			 * Eligible description_type for this request. Unknown types are installment.
+			 *
+			 * @var string
+			 */
+			public $torobpay_description_type = 'installment';
+
+			/**
+			 * Discount sentence shown on the method label. Empty for installment.
+			 *
+			 * @var string
+			 */
+			public $torobpay_offer_text = '';
+
 			public function __construct() {
 				add_action( 'init', array( $this, 'init_gateway' ) );
 
@@ -172,6 +191,21 @@ function torobpay_load_gateway() {
 				$icon_html = '<img src="' . esc_url( $icon_url ) . '" alt="' . esc_attr( $this->get_title() ) . '" style="width:40px;" />';
 				// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WooCommerce core filter.
 				return apply_filters( 'woocommerce_gateway_icon', $icon_html, $this->id );
+			}
+
+			/**
+			 * Payment box copy.
+			 *
+			 * Discount sentences are rendered on the method label instead, so the
+			 * box is left empty for those types.
+			 */
+			public function payment_fields() {
+				$type = isset( $this->torobpay_description_type ) ? (string) $this->torobpay_description_type : 'installment';
+				if ( function_exists( 'torobpay_description_type_is_offer' ) && torobpay_description_type_is_offer( $type ) ) {
+					return;
+				}
+
+				parent::payment_fields();
 			}
 
 			protected function get_gateway_icon_url() {
@@ -265,7 +299,7 @@ function torobpay_load_gateway() {
 						'mobile_enabled'            => array(
 							'title'       => __( 'Require mobile number', 'torobpay-for-woocommerce' ),
 							'type'        => 'checkbox',
-							'label'       => __( 'If you use WooCommerce block checkout, also mark phone as required in the block settings so the phone field does not show "optional".', 'torobpay-for-woocommerce' ),
+							'label'       => __( 'Supports block checkout and classic checkout.', 'torobpay-for-woocommerce' ),
 							'description' => __( 'Check this box to require a mobile number', 'torobpay-for-woocommerce' ),
 							'default'     => 'yes',
 							'desc_tip'    => true,

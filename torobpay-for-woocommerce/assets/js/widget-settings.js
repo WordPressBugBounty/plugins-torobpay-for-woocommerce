@@ -395,8 +395,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	initSectionCollapse();
 
-	initPromoJalaliDatepicker();
-
 	initDeviceSwitchers();
 
 	initWidgetLayoutPresets();
@@ -705,6 +703,13 @@ function updateWidgetPreview() {
 		logo.classList.add('torobpay-logo-' + logoAnimation);
 	} else if (logoAnimation === 'light-sweep' && media) {
 		media.classList.add('torobpay-logo-light-sweep');
+	} else if (logoAnimation === 'elastic-spin') {
+		if (media) {
+			media.classList.add('torobpay-logo-elastic');
+		}
+		if (logo) {
+			logo.classList.add('torobpay-logo-elastic-spin');
+		}
 	} else if (logoAnimation === 'status-dot') {
 		const indicator = document.createElement('div');
 		indicator.className = 'torobpay-widget-status-indicator';
@@ -766,7 +771,7 @@ function promoMarqueeSet(label, code, hideAll) {
 }
 
 /**
- * Live-update the widget preview promo chip from the special-discount fields.
+ * Live-update the widget preview promo chip from the campaign data attributes.
  *
  * @param {HTMLElement} preview
  */
@@ -775,12 +780,11 @@ function syncPromoPreview(preview) {
 		return;
 	}
 
-	var enabled = document.getElementById('pdp_promo_enabled');
-	var codeInput = document.getElementById('pdp_promo_code');
+	var widget = document.getElementById('pdp_promo_widget');
 	var content = preview.querySelector('.torobpay-widget-content');
 	var existing = preview.querySelector('.torobpay-widget-promo');
-	var code = codeInput ? codeInput.value.trim() : '';
-	var show = enabled && enabled.checked && code;
+	var code = preview.getAttribute('data-promo-code') || '';
+	var show = widget && widget.checked && code;
 	var marquee = promoStyleValue() === 'marquee';
 
 	preview.classList.toggle('has-torobpay-promo', !!show);
@@ -794,11 +798,11 @@ function syncPromoPreview(preview) {
 		return;
 	}
 
+	var label = preview.getAttribute('data-promo-label') || __('Special TorobPay discount', 'torobpay-for-woocommerce');
 	var button = document.createElement('button');
 	button.type = 'button';
 	button.className = 'torobpay-widget-promo';
 	button.tabIndex = -1;
-	var label = __( 'Special TorobPay discount', 'torobpay-for-woocommerce' );
 
 	if (marquee) {
 		button.classList.add('torobpay-widget-promo--marquee');
@@ -825,128 +829,6 @@ function syncPromoPreview(preview) {
 	button.appendChild(labelEl);
 	button.appendChild(kbd);
 	content.appendChild(button);
-}
-
-/**
- * Toggle amount/percent suffix and the min-total / amount-cap field copy.
- */
-function syncPromoDiscountTypeUi() {
-	var type = document.getElementById('pdp_promo_discount_type');
-	var suffix = document.getElementById('pdp_promo_value_suffix');
-	var preview = document.getElementById('torobpay-widget-preview');
-	var minLabel = document.getElementById('pdp_promo_min_total_label');
-	var minHelp = document.getElementById('pdp_promo_min_total_help');
-	if (!type || !suffix) {
-		return;
-	}
-	var isPercent = type.value === 'percent';
-	if (isPercent) {
-		suffix.textContent = __( '%', 'torobpay-for-woocommerce' );
-	} else {
-		suffix.textContent = preview && preview.getAttribute('data-promo-currency')
-			? preview.getAttribute('data-promo-currency')
-			: '';
-	}
-	if (minLabel) {
-		minLabel.textContent = isPercent
-			? __( 'Amount cap (optional)', 'torobpay-for-woocommerce' )
-			: __( 'Minimum purchase (optional)', 'torobpay-for-woocommerce' );
-	}
-	if (minHelp) {
-		minHelp.hidden = !isPercent;
-	}
-}
-
-/**
- * Require the discount code only while the promo is enabled.
- */
-function syncPromoCodeRequired() {
-	var enabled = document.getElementById('pdp_promo_enabled');
-	var code = document.getElementById('pdp_promo_code');
-	if (!code) {
-		return;
-	}
-	if (enabled && enabled.checked) {
-		code.setAttribute('required', 'required');
-	} else {
-		code.removeAttribute('required');
-	}
-}
-
-function padPromoDatePart(n) {
-	n = String(n);
-	return n.length < 2 ? '0' + n : n;
-}
-
-function gregorianToJalali(gy, gm, gd) {
-	var g_d_m = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
-	var jy = (gy <= 1600) ? 0 : 979;
-	gy -= (gy <= 1600) ? 621 : 1600;
-	var gy2 = (gm > 2) ? (gy + 1) : gy;
-	var days = (365 * gy) + (parseInt((gy2 + 3) / 4, 10)) - (parseInt((gy2 + 99) / 100, 10)) +
-		(parseInt((gy2 + 399) / 400, 10)) - 80 + gd + g_d_m[gm - 1];
-	jy += 33 * (parseInt(days / 12053, 10));
-	days %= 12053;
-	jy += 4 * (parseInt(days / 1461, 10));
-	days %= 1461;
-	jy += parseInt((days - 1) / 365, 10);
-	if (days > 365) {
-		days = (days - 1) % 365;
-	}
-	var jm = (days < 186) ? 1 + parseInt(days / 31, 10) : 7 + parseInt((days - 186) / 30, 10);
-	var jd = 1 + ((days < 186) ? (days % 31) : ((days - 186) % 30));
-	return [jy, jm, jd];
-}
-
-function hydratePromoExpiresJalali() {
-	var hidden = document.getElementById('pdp_promo_expires_at');
-	var visible = document.getElementById('pdp_promo_expires_display');
-	if (!hidden || !visible || !hidden.value) {
-		return;
-	}
-
-	var dateParts = String(hidden.value).trim().split(/[T\s]/)[0].split(/[-/]/);
-	if (dateParts.length !== 3) {
-		return;
-	}
-
-	var year = parseInt(dateParts[0], 10);
-	var month = parseInt(dateParts[1], 10);
-	var day = parseInt(dateParts[2], 10);
-	if (!year || !month || !day) {
-		return;
-	}
-
-	var jalali = gregorianToJalali(year, month, day);
-	visible.value = jalali[0] + '/' + padPromoDatePart(jalali[1]) + '/' + padPromoDatePart(jalali[2]);
-}
-
-function initPromoJalaliDatepicker() {
-	var visible = document.getElementById('pdp_promo_expires_display');
-	if (!visible) {
-		return;
-	}
-
-	if (window.jalaliDatepicker && typeof window.jalaliDatepicker.startWatch === 'function') {
-		window.jalaliDatepicker.startWatch({
-			mode: 'attr',
-			targetValueInput: 'attr',
-			targetValueType: 'attr',
-			useDropDownYears: false,
-			persianDigits: true
-		});
-	}
-
-	hydratePromoExpiresJalali();
-
-	visible.addEventListener('input', function() {
-		if (this.value === '') {
-			var hidden = document.getElementById('pdp_promo_expires_at');
-			if (hidden) {
-				hidden.value = '';
-			}
-		}
-	});
 }
 
 /**
@@ -1036,6 +918,7 @@ function updateBadgePreview() {
 	const offsetHorizontalUnit = fieldValue('badge_offset_horizontal_unit', 'px');
 	const offsetVerticalUnit = fieldValue('badge_offset_vertical_unit', 'px');
 	const backgroundColor = fieldValue('badge_background_color', '#9CE76A');
+	const borderColor = fieldValue('badge_border_color', '#9CE76A');
 	const textColor = fieldValue('badge_text_color', '#003D01');
 	const borderRadius = fieldValue('badge_border_radius', '8');
 	const fontSize = fieldValue('badge_font_size', '12');
@@ -1058,6 +941,7 @@ function updateBadgePreview() {
 	const inner = preview.querySelector('.torobpay-product-badge-inner');
 	const paintTarget = inner || preview;
 	paintTarget.style.backgroundColor = backgroundColor;
+	paintTarget.style.borderColor = borderColor;
 	paintTarget.style.borderRadius = borderRadius + 'px';
 
 	const badgeText = preview.querySelector('.torobpay-product-badge-text');
@@ -1182,8 +1066,251 @@ function updateMarqueePreview() {
 	});
 }
 
+/**
+ * Green slider bounds. PHP localizes the same numbers as torobpayGreenColor.
+ *
+ * @return {{hue:number,saturationMin:number,saturationMax:number,lightnessMin:number,lightnessMax:number}}
+ */
+function greenColorLimits() {
+	var cfg = window.torobpayGreenColor || {};
+	return {
+		hue: Number(cfg.hue) || 96,
+		saturationMin: Number(cfg.saturationMin) || 35,
+		saturationMax: Number(cfg.saturationMax) || 100,
+		lightnessMin: Number(cfg.lightnessMin) || 8,
+		lightnessMax: Number(cfg.lightnessMax) || 97
+	};
+}
+
+function normalizeHexColor(color) {
+	var value = String(color || '').trim();
+	if (!value) {
+		return '';
+	}
+	if (value.charAt(0) !== '#') {
+		value = '#' + value;
+	}
+	var match = value.match(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/);
+	if (!match) {
+		return '';
+	}
+	var hex = match[1].toLowerCase();
+	if (hex.length === 3) {
+		hex = hex.charAt(0) + hex.charAt(0) + hex.charAt(1) + hex.charAt(1) + hex.charAt(2) + hex.charAt(2);
+	}
+	return '#' + hex;
+}
+
+function hexToRgb(hex) {
+	return [
+		parseInt(hex.slice(1, 3), 16),
+		parseInt(hex.slice(3, 5), 16),
+		parseInt(hex.slice(5, 7), 16)
+	];
+}
+
+function rgbToHsl(red, green, blue) {
+	var r = red / 255;
+	var g = green / 255;
+	var b = blue / 255;
+	var max = Math.max(r, g, b);
+	var min = Math.min(r, g, b);
+	var l = (max + min) / 2;
+	var d = max - min;
+	var h = 0;
+	var s = 0;
+	if (d > 0) {
+		s = d / (1 - Math.abs((2 * l) - 1));
+		if (max === r) {
+			h = ((g - b) / d) % 6;
+		} else if (max === g) {
+			h = ((b - r) / d) + 2;
+		} else {
+			h = ((r - g) / d) + 4;
+		}
+		h *= 60;
+		if (h < 0) {
+			h += 360;
+		}
+	}
+	return { h: h, s: s * 100, l: l * 100 };
+}
+
+function hslToHex(hue, saturation, lightness) {
+	var s = saturation / 100;
+	var l = lightness / 100;
+	var c = (1 - Math.abs((2 * l) - 1)) * s;
+	var hp = (((hue % 360) + 360) % 360) / 60;
+	var x = c * (1 - Math.abs((hp % 2) - 1));
+	var r = 0;
+	var g = 0;
+	var b = 0;
+	if (hp < 1) {
+		r = c;
+		g = x;
+	} else if (hp < 2) {
+		r = x;
+		g = c;
+	} else if (hp < 3) {
+		g = c;
+		b = x;
+	} else if (hp < 4) {
+		g = x;
+		b = c;
+	} else if (hp < 5) {
+		r = x;
+		b = c;
+	} else {
+		r = c;
+		b = x;
+	}
+	var m = l - (c / 2);
+	function channel(value) {
+		var n = Math.round((value + m) * 255);
+		if (n < 0) {
+			return 0;
+		}
+		if (n > 255) {
+			return 255;
+		}
+		return n;
+	}
+	function byte(n) {
+		var text = n.toString(16);
+		return text.length === 1 ? '0' + text : text;
+	}
+	return '#' + byte(channel(r)) + byte(channel(g)) + byte(channel(b));
+}
+
+function projectHexOntoGreen(hex) {
+	var limits = greenColorLimits();
+	var rgb = hexToRgb(hex);
+	var hsl = rgbToHsl(rgb[0], rgb[1], rgb[2]);
+	var s = Math.round(hsl.s);
+	var l = Math.round(hsl.l);
+	s = Math.min(limits.saturationMax, Math.max(limits.saturationMin, s));
+	l = Math.min(limits.lightnessMax, Math.max(limits.lightnessMin, l));
+	return hslToHex(limits.hue, s, l);
+}
+
+function clampHexToGreen(color, fallback) {
+	var hex = normalizeHexColor(color);
+	if (!hex) {
+		hex = normalizeHexColor(fallback || '#9CE76A');
+	}
+	if (!hex) {
+		hex = '#9ce76a';
+	}
+	var current = hex;
+	var i;
+	for (i = 0; i < 4; i++) {
+		var next = projectHexOntoGreen(current);
+		if (next === current) {
+			return current;
+		}
+		current = next;
+	}
+	return current;
+}
+
+function greenSliderState(color) {
+	var limits = greenColorLimits();
+	var hex = clampHexToGreen(color, '#9CE76A');
+	var rgb = hexToRgb(hex);
+	var hsl = rgbToHsl(rgb[0], rgb[1], rgb[2]);
+	var s = Math.round(hsl.s);
+	var l = Math.round(hsl.l);
+	s = Math.min(limits.saturationMax, Math.max(limits.saturationMin, s));
+	l = Math.min(limits.lightnessMax, Math.max(limits.lightnessMin, l));
+	return { hex: hex, saturation: s, lightness: l };
+}
+
+function greenTrackDirection() {
+	var dir = (document.documentElement.getAttribute('dir') || '').toLowerCase();
+	if (dir === 'rtl' || getComputedStyle(document.documentElement).direction === 'rtl') {
+		return 'left';
+	}
+	return 'right';
+}
+
+function hslCss(hue, saturation, lightness) {
+	return 'hsl(' + hue + ', ' + saturation + '%, ' + lightness + '%)';
+}
+
+function bindGreenColorControl(root) {
+	var hidden = root.querySelector('input[type="hidden"]');
+	var lightness = root.querySelector('.torobpay-green-color__lightness');
+	var saturation = root.querySelector('.torobpay-green-color__saturation');
+	var swatch = root.querySelector('.torobpay-green-color__swatch');
+	if (!hidden || !lightness || !saturation) {
+		return;
+	}
+
+	var writing = false;
+
+	function updateTracks() {
+		var limits = greenColorLimits();
+		var direction = greenTrackDirection();
+		var s = Number(saturation.value);
+		var l = Number(lightness.value);
+		lightness.style.setProperty(
+			'--torobpay-green-track',
+			'linear-gradient(to ' + direction + ', ' + hslCss(limits.hue, s, limits.lightnessMin) + ', ' + hslCss(limits.hue, s, limits.lightnessMax) + ')'
+		);
+		saturation.style.setProperty(
+			'--torobpay-green-track',
+			'linear-gradient(to ' + direction + ', ' + hslCss(limits.hue, limits.saturationMin, l) + ', ' + hslCss(limits.hue, limits.saturationMax, l) + ')'
+		);
+	}
+
+	function paint(hex) {
+		if (swatch) {
+			swatch.style.backgroundColor = hex;
+		}
+		updateTracks();
+	}
+
+	function emit(hex) {
+		writing = true;
+		hidden.value = hex;
+		paint(hex);
+		hidden.dispatchEvent(new Event('input', { bubbles: true }));
+		hidden.dispatchEvent(new Event('change', { bubbles: true }));
+		writing = false;
+	}
+
+	function syncFromHidden() {
+		var state = greenSliderState(hidden.value);
+		lightness.value = String(state.lightness);
+		saturation.value = String(state.saturation);
+		hidden.value = state.hex;
+		paint(state.hex);
+	}
+
+	function paintFromSliders() {
+		var limits = greenColorLimits();
+		emit(clampHexToGreen(hslToHex(limits.hue, Number(saturation.value), Number(lightness.value)), '#9CE76A'));
+	}
+
+	lightness.addEventListener('input', paintFromSliders);
+	saturation.addEventListener('input', paintFromSliders);
+	hidden.addEventListener('input', function() {
+		if (writing) {
+			return;
+		}
+		syncFromHidden();
+	});
+	syncFromHidden();
+}
+
+function initGreenColorControls() {
+	document.querySelectorAll('.torobpay-green-color').forEach(bindGreenColorControl);
+}
+
 // Add event listeners for live preview
 document.addEventListener('DOMContentLoaded', function() {
+	initGreenColorControls();
+
 	const widgetInputs = [
 		'widget_background_color',
 		'widget_border_color',
@@ -1195,10 +1322,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		'widget_desc_font_size',
 		'widget_desc_font_weight',
 		'widget_logo_animation',
-		'pdp_promo_enabled',
-		'pdp_promo_code',
-		'pdp_promo_discount_type',
-		'pdp_promo_discount_value',
+		'pdp_promo_widget',
 		'pdp_promo_style'
 	];
 
@@ -1210,18 +1334,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	});
 
-	var promoType = document.getElementById('pdp_promo_discount_type');
-	if (promoType) {
-		promoType.addEventListener('change', syncPromoDiscountTypeUi);
-		syncPromoDiscountTypeUi();
-	}
-
-	var promoEnabled = document.getElementById('pdp_promo_enabled');
-	if (promoEnabled) {
-		promoEnabled.addEventListener('change', syncPromoCodeRequired);
-		syncPromoCodeRequired();
-	}
-
 	const badgeInputs = [
 		'badge_position_horizontal',
 		'badge_position_vertical',
@@ -1230,6 +1342,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		'badge_offset_horizontal_unit',
 		'badge_offset_vertical_unit',
 		'badge_background_color',
+		'badge_border_color',
 		'badge_text_color',
 		'badge_border_radius',
 		'badge_font_size',

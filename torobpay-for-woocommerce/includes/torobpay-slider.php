@@ -179,7 +179,6 @@ function torobpay_slider_slide_size_fields() {
 			'unit'                 => __( 'px', 'torobpay-for-woocommerce' ),
 			'step'                 => 1,
 			'label'                => __( 'TorobPay icon size', 'torobpay-for-woocommerce' ),
-			'tip'                  => __( 'TorobPay logo size on this slide (empty = default).', 'torobpay-for-woocommerce' ),
 			'default'              => 28,
 			'hero_skip_placeholder' => true,
 		),
@@ -189,14 +188,12 @@ function torobpay_slider_slide_size_fields() {
 			'unit'                 => __( 'px', 'torobpay-for-woocommerce' ),
 			'step'                 => 1,
 			'label'                => __( 'Title font size', 'torobpay-for-woocommerce' ),
-			'tip'                  => __( 'Title font size (empty = default).', 'torobpay-for-woocommerce' ),
 			'default'              => 30,
 			'hero_skip_placeholder' => true,
 		),
 		'heading_weight' => array(
 			'type'    => 'weight',
 			'label'   => __( 'Title font weight', 'torobpay-for-woocommerce' ),
-			'tip'     => __( 'Title font weight (empty = default).', 'torobpay-for-woocommerce' ),
 			'default' => 800,
 		),
 		'subtext_size'   => array(
@@ -205,13 +202,11 @@ function torobpay_slider_slide_size_fields() {
 			'unit'    => __( 'px', 'torobpay-for-woocommerce' ),
 			'step'    => 1,
 			'label'   => __( 'Description font size', 'torobpay-for-woocommerce' ),
-			'tip'     => __( 'Description font size (empty = default).', 'torobpay-for-woocommerce' ),
 			'default' => 16,
 		),
 		'subtext_weight' => array(
 			'type'    => 'weight',
 			'label'   => __( 'Description font weight', 'torobpay-for-woocommerce' ),
-			'tip'     => __( 'Description font weight (empty = default).', 'torobpay-for-woocommerce' ),
 			'default' => 500,
 		),
 		'bg_icon_size'   => array(
@@ -220,7 +215,6 @@ function torobpay_slider_slide_size_fields() {
 			'unit'  => __( 'Percent', 'torobpay-for-woocommerce' ),
 			'step'  => 5,
 			'label' => __( 'Background icon size', 'torobpay-for-woocommerce' ),
-			'tip'   => __( 'Decorative icon scale (percent). Empty = slide default. Lower = smaller, higher = larger.', 'torobpay-for-woocommerce' ),
 		),
 		'bg_aurora_scale' => array(
 			'min'   => 25,
@@ -228,7 +222,6 @@ function torobpay_slider_slide_size_fields() {
 			'unit'  => __( 'Percent', 'torobpay-for-woocommerce' ),
 			'step'  => 5,
 			'label' => __( 'Aurora blob size', 'torobpay-for-woocommerce' ),
-			'tip'   => __( 'Aurora light blob scale (percent). Empty = slide default. Lower = smaller, higher = larger.', 'torobpay-for-woocommerce' ),
 		),
 	);
 }
@@ -1951,8 +1944,7 @@ function torobpay_slider_render_placement_row( $index, $placement, $active = fal
 					</select>
 				</p>
 				<p class="torobpay-slider-placement-custom-hook" style="<?php echo esc_attr( $is_custom ? '' : 'display:none;' ); ?>">
-					<label><?php esc_html_e( 'Custom hook', 'torobpay-for-woocommerce' ); ?><span class="torobpay-tooltip" data-tip="<?php echo esc_attr__( 'For theme hooks, set dimensions appropriate to the placement.', 'torobpay-for-woocommerce' ); ?>" title="<?php echo esc_attr__( 'Custom hook', 'torobpay-for-woocommerce' ); ?>"><?php esc_html_e( '?', 'torobpay-for-woocommerce' ); ?></span>
-					</label>
+					<label><?php esc_html_e( 'Custom hook', 'torobpay-for-woocommerce' ); ?></label>
 					<input type="text"
 						class="regular-text torobpay-slider-placement-hook-custom"
 						name="<?php echo esc_attr( $base ); ?>[hook_custom]"

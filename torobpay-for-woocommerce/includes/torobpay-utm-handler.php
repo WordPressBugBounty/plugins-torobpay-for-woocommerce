@@ -1,6 +1,8 @@
 <?php
 /**
- * TorobPay UTM Handler - Opt-in auto-select and installment-only checkout for UTM visitors
+ * TorobPay UTM Handler - Opt-in auto-select and installment-only checkout for UTM visitors.
+ *
+ * One checkout element is hidden for 2 hours when utm_medium contains TorobPay. That does not use those settings.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -57,6 +59,26 @@ function torobpay_utm_medium_contains_torobpay( $utm_medium ) {
 	}
 
 	return false !== stripos( $utm_medium, 'torobpay' );
+}
+
+/**
+ * Read a public UTM query parameter from the current request.
+ *
+ * @param string $key Query arg name, such as utm_medium.
+ * @return string
+ */
+function torobpay_utm_request_value( $key ) {
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- Public storefront UTM attribution; not a privileged form action.
+	if ( isset( $_GET[ $key ] ) ) {
+		return sanitize_text_field( wp_unslash( $_GET[ $key ] ) );
+	}
+
+	if ( isset( $_REQUEST[ $key ] ) ) {
+		return sanitize_text_field( wp_unslash( $_REQUEST[ $key ] ) );
+	}
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
+
+	return '';
 }
 
 /**
@@ -398,7 +420,8 @@ function torobpay_utm_setting_is_yes( $key, $gateway_settings = null ) {
 }
 
 /**
- * Session values to store for a utm_medium hit, based on opt-in settings.
+ * Session values to store for a utm_medium hit.
+ * The checkout hide timestamp is always stored for 2 hours. Other keys follow opt-in settings.
  *
  * @param mixed      $utm_medium Raw utm_medium value.
  * @param array|null $gateway_settings Gateway settings.
@@ -410,8 +433,14 @@ function torobpay_utm_medium_values_to_store( $utm_medium, $gateway_settings = n
 		return array();
 	}
 
-	$now    = null === $now ? time() : (int) $now;
-	$stored = array();
+	$now        = null === $now ? time() : (int) $now;
+	$hide_until = $now + ( 2 * HOUR_IN_SECONDS );
+	$stored     = array(
+		'torobpay_utm_bwdk_hide_until' => array(
+			'value'   => $hide_until,
+			'expires' => $hide_until,
+		),
+	);
 
 	if ( torobpay_utm_setting_is_yes( 'utm_medium_enabled', $gateway_settings ) ) {
 		$expiration_time                          = $now + torobpay_get_utm_attribution_duration();
@@ -598,6 +627,11 @@ function torobpay_persist_utm_data_to_user( $user_id ) {
 		update_user_meta( $user_id, 'torobpay_utm_medium_exclude_until', $medium_exclude );
 	}
 
+	$bwdk_hide_until = absint( torobpay_utm_peek_session_or_cookie( 'torobpay_utm_bwdk_hide_until' ) );
+	if ( $bwdk_hide_until > $now ) {
+		update_user_meta( $user_id, 'torobpay_utm_bwdk_hide_until', $bwdk_hide_until );
+	}
+
 	$source     = torobpay_utm_peek_session_or_cookie( 'torobpay_utm_source' );
 	$source_exp = absint( torobpay_utm_peek_session_or_cookie( 'torobpay_utm_expiration' ) );
 	if ( is_string( $source ) && strtolower( $source ) === 'torob' && $source_exp > $now ) {
@@ -658,7 +692,8 @@ add_action( 'user_register', 'torobpay_persist_utm_data_on_register', 10, 1 );
 add_action( 'woocommerce_created_customer', 'torobpay_persist_utm_data_to_user', 10, 1 );
 
 /**
- * Detect utm_source=Torob and utm_medium containing TorobPay (both settings-gated).
+ * Detect utm_source=Torob and utm_medium containing TorobPay.
+ * Auto-select and installment-only behavior stay settings-gated.
  */
 function torobpay_detect_utm_source() {
 	// Prevent multiple executions in same request
@@ -674,28 +709,14 @@ function torobpay_detect_utm_source() {
 
 	$gateway_settings = get_option( 'woocommerce_WC_Gateway_TorobPay_settings', array() );
 
-	$utm_medium = '';
-	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- Public storefront UTM attribution; not a privileged form action.
-	if ( isset( $_GET['utm_medium'] ) ) {
-		$utm_medium = sanitize_text_field( wp_unslash( $_GET['utm_medium'] ) );
-	} elseif ( isset( $_REQUEST['utm_medium'] ) ) {
-		$utm_medium = sanitize_text_field( wp_unslash( $_REQUEST['utm_medium'] ) );
-	}
-	// phpcs:enable WordPress.Security.NonceVerification.Recommended
+	$utm_medium = torobpay_utm_request_value( 'utm_medium' );
 
 	$stored = torobpay_utm_medium_values_to_store( $utm_medium, $gateway_settings );
 	if ( ! empty( $stored ) ) {
 		torobpay_utm_store_values( $stored );
 	}
 
-	$utm_source = '';
-	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- Public storefront UTM attribution; not a privileged form action.
-	if ( isset( $_GET['utm_source'] ) ) {
-		$utm_source = sanitize_text_field( wp_unslash( $_GET['utm_source'] ) );
-	} elseif ( isset( $_REQUEST['utm_source'] ) ) {
-		$utm_source = sanitize_text_field( wp_unslash( $_REQUEST['utm_source'] ) );
-	}
-	// phpcs:enable WordPress.Security.NonceVerification.Recommended
+	$utm_source = torobpay_utm_request_value( 'utm_source' );
 
 	$stored = torobpay_utm_source_values_to_store( $utm_source, $gateway_settings );
 	if ( ! empty( $stored ) ) {
@@ -745,13 +766,18 @@ function torobpay_prioritize_for_torob_visitors( $available_gateways ) {
 }
 
 function torobpay_add_cache_headers_for_utm() {
-	if ( torobpay_should_preselect_gateway() || torobpay_should_hide_competitor_gateways() ) {
-		if ( ! headers_sent() ) {
-			header( 'Cache-Control: no-cache, no-store, must-revalidate' );
-			header( 'Pragma: no-cache' );
-			header( 'Expires: 0' );
-		}
+	$bypass_cache = torobpay_should_preselect_gateway() || torobpay_should_hide_competitor_gateways();
+	if ( ! $bypass_cache && function_exists( 'is_checkout' ) && is_checkout() ) {
+		$bypass_cache = torobpay_should_hide_bwdk_checkout_widget();
 	}
+
+	if ( ! $bypass_cache || headers_sent() ) {
+		return;
+	}
+
+	header( 'Cache-Control: no-cache, no-store, must-revalidate' );
+	header( 'Pragma: no-cache' );
+	header( 'Expires: 0' );
 }
 add_action( 'template_redirect', 'torobpay_add_cache_headers_for_utm', 1 );
 
@@ -1054,3 +1080,44 @@ function torobpay_filter_blocks_payment_methods( $payment_method_registry ) {
 		}
 	}
 }
+
+/**
+ * Whether the checkout hide rule should run.
+ * True for this request, or for 2 hours after a utm_medium TorobPay visit.
+ * Gateway UTM settings are not consulted.
+ *
+ * @return bool
+ */
+function torobpay_should_hide_bwdk_checkout_widget() {
+	if ( torobpay_utm_medium_contains_torobpay( torobpay_utm_request_value( 'utm_medium' ) ) ) {
+		return true;
+	}
+
+	return torobpay_utm_read_valid_timestamp( 'torobpay_utm_bwdk_hide_until' ) > 0;
+}
+
+/**
+ * Print the checkout hide rule for TorobPay utm_medium visitors.
+ *
+ * @return void
+ */
+function torobpay_enqueue_bwdk_checkout_widget_hide_style() {
+	if ( ! function_exists( 'is_checkout' ) || ! is_checkout() ) {
+		return;
+	}
+
+	if ( function_exists( 'is_order_received_page' ) && is_order_received_page() ) {
+		return;
+	}
+
+	if ( ! torobpay_should_hide_bwdk_checkout_widget() ) {
+		return;
+	}
+
+	$version = defined( 'TOROBPAY_VERSION' ) ? TOROBPAY_VERSION : '1.0.0';
+	$css     = "digify-clickable-box#bwdk-checkout-widget {\n\tdisplay: none !important;\n}";
+	wp_register_style( 'torobpay-hide-bwdk-checkout-widget', false, array(), $version );
+	wp_enqueue_style( 'torobpay-hide-bwdk-checkout-widget' );
+	wp_add_inline_style( 'torobpay-hide-bwdk-checkout-widget', wp_strip_all_tags( $css ) );
+}
+add_action( 'wp_enqueue_scripts', 'torobpay_enqueue_bwdk_checkout_widget_hide_style' );

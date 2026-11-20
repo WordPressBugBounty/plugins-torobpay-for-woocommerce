@@ -7,24 +7,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * TorobPay Sitewide Topbar
  *
- * A full-width banner injected at the very top of <body> via wp_body_open, or
- * placed manually with the [torobpay_topbar] shortcode in theme headers.
- * Note: WooCommerce coming-soon mode calls get_header() before its landing
- * template on classic themes, so wp_body_open still fires — unlike WC store
- * hooks that never run on that screen. torobpay_should_hide_for_wc_coming_soon()
- * guards against leaking the bar on top of the landing page.
- * Ticker animations cycle 4 hardcoded slogans (a credit line first, then 3
- * brand lines) plus an optional custom sentence. Spread opens with the credit
- * line alone, then the 3 brand slots, then the custom sentence when one is
- * set. The TorobPay logo is fixed on both sides.
+ * Full-width banner via wp_body_open or [torobpay_topbar]. Coming-soon classic
+ * themes still fire wp_body_open; torobpay_should_hide_for_wc_coming_soon()
+ * keeps the bar off the landing page. Ticker: credit + 3 brand lines + optional
+ * custom sentence. Spread: credit solo, then slots, then custom. Active discount
+ * campaigns use a second track; the standard track stays for after expiry.
+ * Logos are fixed on both sides.
  *
- * Settings namespace : torobpay_topbar_*
- * Configurable       : height, font_size, font_weight, logo_size, speed, animation
- * Hardcoded (brand)  : background #9CE76A, text color #003D01
- *
- * Each ticker slogan is stacked and animated within its own time-slot using
- * a staggered animation-delay; the chosen animation style swaps the keyframe
- * set via a CSS modifier class. (Mirrors the marquee in torobpay-marquee.php.)
+ * Settings: torobpay_topbar_* (height, font_size, font_weight, logo_size, speed, animation)
+ * Brand colors: background #9CE76A, text #003D01
  */
 
 add_action( 'init', 'torobpay_topbar_register_placement', 20 );
@@ -188,11 +179,7 @@ function torobpay_get_topbar_html( $embed = false ) {
 		$animation = 'slide-up';
 	}
 
-	/*
-	 * Brand slogans stay in this order for both layouts. Ticker modes prepend
-	 * the credit line. Spread keeps these three slots and shows the credit
-	 * line, then the slots, on its own timeline.
-	 */
+	// Standard-track order. Ticker prepends credit; Spread times credit separately.
 	$credit_line = __( 'Initial credit of up to 30 million tomans', 'torobpay-for-woocommerce' );
 	$slogans     = array(
 		__( 'Buy in installments with TorobPay', 'torobpay-for-woocommerce' ),
@@ -204,6 +191,10 @@ function torobpay_get_topbar_html( $embed = false ) {
 	}
 
 	$custom_sentence = trim( (string) torobpay_get_topbar_setting( 'custom_sentence' ) );
+	if ( '' !== $custom_sentence && function_exists( 'torobpay_pdp_promo_hides_topbar_custom_sentence' ) && torobpay_pdp_promo_hides_topbar_custom_sentence() ) {
+		// Omit only while the campaign slide is on the top bar (see pdp-promo.js expiry).
+		$custom_sentence = '';
+	}
 	if ( '' !== $custom_sentence && 'spread' !== $animation ) {
 		$slogans[] = $custom_sentence;
 	}
@@ -420,36 +411,93 @@ function torobpay_get_topbar_html( $embed = false ) {
 		$logo_size
 	);
 
-	// slogans appear sequentially within one full cycle of length $speed.
-	$count      = count( $slogans );
-	$cycle      = max( 1, $speed );
-	$items_html = '';
-	foreach ( $slogans as $index => $slogan ) {
-		$delay      = ( $cycle * $index ) / $count;
-		$item_style = sprintf(
-			'animation-duration:%ds;animation-delay:%ss;',
-			$cycle,
-			rtrim( rtrim( number_format( $delay, 3, '.', '' ), '0' ), '.' )
-		);
-		$item_class = 'torobpay-topbar-ticker-item';
-		// First ticker slot is the credit line. Spread uses its own solo for confetti.
-		if ( 0 === $index && 'spread' !== $animation ) {
-			$item_class .= ' torobpay-topbar-ticker-item--confetti torobpay-topbar-confetti-target';
+	$campaign             = null;
+	$campaign_button_html = '';
+	$has_campaign_slide   = false;
+	if ( function_exists( 'torobpay_is_pdp_promo_topbar_active' ) && torobpay_is_pdp_promo_topbar_active() && function_exists( 'torobpay_pdp_promo_topbar_sentence_html' ) ) {
+		$campaign = torobpay_get_pdp_promo_campaign();
+		if ( is_array( $campaign ) ) {
+			$campaign_button_html = torobpay_pdp_promo_topbar_sentence_html( $campaign );
+			$has_campaign_slide   = '' !== $campaign_button_html;
 		}
-		$items_html .= sprintf(
-			'<div class="%1$s" style="%2$s">%3$s</div>',
-			esc_attr( $item_class ),
-			esc_attr( $item_style ),
-			esc_html( $slogan )
-		) . "\n";
+	}
+	if ( $has_campaign_slide && function_exists( 'torobpay_pdp_promo_mark_needed' ) ) {
+		torobpay_pdp_promo_mark_needed();
+	}
+
+	// Standard ticker: equal slots in $speed. Campaign track: own delays (removed on expiry).
+	$count               = count( $slogans );
+	$cycle               = max( 1, $speed );
+	$items_html          = '';
+	$campaign_items_html = '';
+	$campaign_schedule   = null;
+	$format_seconds      = static function ( $seconds ) {
+		return rtrim( rtrim( number_format( (float) $seconds, 3, '.', '' ), '0' ), '.' );
+	};
+	if ( $count > 0 ) {
+		foreach ( $slogans as $index => $slogan ) {
+			$item_style = sprintf(
+				'animation-duration:%ss;animation-delay:%ss;',
+				$format_seconds( $cycle ),
+				$format_seconds( ( $cycle * $index ) / $count )
+			);
+			$item_class = 'torobpay-topbar-ticker-item';
+			// Credit line is slot 0 on ticker; Spread uses its own solo.
+			if ( 0 === $index && 'spread' !== $animation ) {
+				$item_class .= ' torobpay-topbar-ticker-item--confetti torobpay-topbar-confetti-target';
+			}
+			$items_html .= sprintf(
+				'<div class="%1$s" style="%2$s">%3$s</div>',
+				esc_attr( $item_class ),
+				esc_attr( $item_style ),
+				esc_html( $slogan )
+			) . "\n";
+		}
+	}
+	if ( $has_campaign_slide && 'spread' !== $animation ) {
+		$campaign_schedule = torobpay_topbar_campaign_beat_schedule(
+			torobpay_topbar_campaign_ticker_beats( $credit_line ),
+			$cycle
+		);
+		foreach ( $campaign_schedule['schedule'] as $row ) {
+			$beat       = $row['beat'];
+			$item_class = 'torobpay-topbar-ticker-item';
+			if ( isset( $beat['type'] ) && 'campaign' === $beat['type'] ) {
+				$item_class .= ' torobpay-topbar-ticker-item--campaign';
+				$inner       = $campaign_button_html;
+			} else {
+				if ( ! empty( $beat['confetti'] ) ) {
+					$item_class .= ' torobpay-topbar-ticker-item--confetti torobpay-topbar-confetti-target';
+				}
+				$inner = esc_html( isset( $beat['text'] ) ? $beat['text'] : '' );
+			}
+			$campaign_items_html .= sprintf(
+				'<div class="%1$s" style="%2$s">%3$s</div>',
+				esc_attr( $item_class ),
+				esc_attr(
+					sprintf(
+						'animation-duration:%ss;animation-delay:%ss;',
+						$format_seconds( $campaign_schedule['timing']['cycle'] ),
+						$format_seconds( $row['delay'] )
+					)
+				),
+				$inner
+			) . "\n";
+		}
 	}
 
 	$topbar_classes = 'torobpay-topbar--anim-' . $animation;
+	if ( $has_campaign_slide ) {
+		$topbar_classes .= ' torobpay-topbar--has-campaign';
+	}
 	if ( $count > 3 && 'spread' !== $animation ) {
 		$topbar_classes .= ' torobpay-topbar--ticker-count-' . (int) $count;
 	}
 	if ( 'spread' === $animation && '' !== $custom_sentence ) {
 		$topbar_classes .= ' torobpay-topbar--spread-has-custom';
+	}
+	if ( 'spread' === $animation && $has_campaign_slide ) {
+		$topbar_classes .= ' torobpay-topbar--spread-has-campaign';
 	}
 	if ( $embed ) {
 		$topbar_classes .= ' torobpay-topbar--embed';
@@ -463,7 +511,13 @@ function torobpay_get_topbar_html( $embed = false ) {
 			torobpay_enqueue_topbar_bg_script();
 		}
 	}
-	// $inline_css is composed from sanitized selector text, integers, and an alphanumeric font-weight only.
+	if ( is_array( $campaign_schedule ) && $campaign_schedule['timing']['cycle'] > 0 ) {
+		$normal_pct   = ( $campaign_schedule['timing']['normal_slot'] / $campaign_schedule['timing']['cycle'] ) * 100;
+		$campaign_pct = ( $campaign_schedule['timing']['campaign_slot'] / $campaign_schedule['timing']['cycle'] ) * 100;
+		$inline_css  .= torobpay_topbar_campaign_ticker_css( $animation, $normal_pct, $campaign_pct, $campaign_schedule['timing']['cycle'] );
+	}
+
+	// $inline_css uses sanitized values: integers, a font-weight, and campaign keyframe rules.
 	$version = defined( 'TOROBPAY_VERSION' ) ? TOROBPAY_VERSION : '1.0.0';
 	wp_register_style( 'torobpay-topbar-inline', false, array( 'torobpay-topbar' ), $version );
 	wp_enqueue_style( 'torobpay-topbar-inline' );
@@ -508,57 +562,74 @@ function torobpay_get_topbar_html( $embed = false ) {
 		echo '</div>';
 	}
 
-	// Confetti sits above the backdrop and behind the text. Both layouts use it
-	// for the credit line.
+	// Confetti host for the credit line (above backdrop, behind text).
 	echo '<div class="torobpay-topbar-confetti" aria-hidden="true"></div>';
 	torobpay_enqueue_topbar_confetti_script();
 
 	echo '<div class="torobpay-topbar-inner">';
 
 	if ( 'spread' === $animation ) {
-		$spread_style = sprintf( '--torobpay-tb-spread-duration:%ds;', $cycle );
-		echo '<div class="torobpay-topbar-spread-stage" style="' . esc_attr( $spread_style ) . '">';
-		echo '<span class="torobpay-topbar-spread-solo torobpay-topbar-spread-solo--credit torobpay-topbar-confetti-target">';
-		echo '<span class="torobpay-topbar-spread-solo-logo" aria-hidden="true">' . wp_kses( $logo_img, torobpay_kses_allowed_html() ) . '</span>';
-		echo '<span class="torobpay-topbar-spread-solo-text">' . esc_html( $credit_line ) . '</span>';
-		echo '<span class="torobpay-topbar-spread-solo-logo" aria-hidden="true">' . wp_kses( $logo_img, torobpay_kses_allowed_html() ) . '</span>';
-		echo '</span>';
-		echo '<div class="torobpay-topbar-spread-slot torobpay-topbar-spread-slot--right">';
-		echo '<div class="torobpay-topbar-spread-group torobpay-topbar-spread-group--right">';
-		echo '<div class="torobpay-topbar-spread-logo torobpay-topbar-spread-logo--end">' . wp_kses( $logo_img, torobpay_kses_allowed_html() ) . '</div>';
-		echo '<span class="torobpay-topbar-spread-text torobpay-topbar-spread-text--title"><strong>' . esc_html( $slogans[0] ) . '</strong></span>';
-		echo '</div>';
-		echo '</div>';
-		echo '<div class="torobpay-topbar-spread-slot torobpay-topbar-spread-slot--center">';
-		echo '<span class="torobpay-topbar-spread-text torobpay-topbar-spread-text--fee">' . esc_html( $slogans[1] ) . '</span>';
-		echo '</div>';
-		echo '<div class="torobpay-topbar-spread-slot torobpay-topbar-spread-slot--left">';
-		echo '<div class="torobpay-topbar-spread-group torobpay-topbar-spread-group--left">';
-		echo '<span class="torobpay-topbar-spread-text torobpay-topbar-spread-text--middle">' . esc_html( $slogans[2] ) . '</span>';
-		echo '<div class="torobpay-topbar-spread-logo torobpay-topbar-spread-logo--start">' . wp_kses( $logo_img, torobpay_kses_allowed_html() ) . '</div>';
-		echo '</div>';
-		echo '</div>';
-		if ( '' !== $custom_sentence ) {
-			echo '<span class="torobpay-topbar-spread-solo torobpay-topbar-spread-solo--custom">';
-			echo '<span class="torobpay-topbar-spread-solo-logo" aria-hidden="true">' . wp_kses( $logo_img, torobpay_kses_allowed_html() ) . '</span>';
-			echo '<span class="torobpay-topbar-spread-solo-text">' . esc_html( $custom_sentence ) . '</span>';
-			echo '<span class="torobpay-topbar-spread-solo-logo" aria-hidden="true">' . wp_kses( $logo_img, torobpay_kses_allowed_html() ) . '</span>';
-			echo '</span>';
+		$standard_style = sprintf( '--torobpay-tb-spread-duration:%ss;', torobpay_topbar_css_num( $cycle ) );
+		// Slightly longer cycle when the merchant custom sentence follows the three slots.
+		$campaign_seconds = '' !== $custom_sentence ? $cycle * 1.15 : $cycle;
+		$campaign_style   = sprintf( '--torobpay-tb-spread-duration:%ss;', torobpay_topbar_css_num( $campaign_seconds ) );
+		if ( $has_campaign_slide && is_array( $campaign ) ) {
+			$spread_parts  = torobpay_topbar_campaign_spread_parts( $campaign );
+			$spread_button = function_exists( 'torobpay_pdp_promo_topbar_spread_button_html' ) ? torobpay_pdp_promo_topbar_spread_button_html() : '';
+			echo '<div class="torobpay-topbar-campaign-seq">';
+			echo torobpay_topbar_spread_stage_html(
+				array(
+					'logo_img'     => $logo_img,
+					'title'        => $spread_parts['title'],
+					'center'       => $spread_parts['center'],
+					'left'         => $spread_button,
+					'left_is_html' => true,
+					'credit'       => $credit_line,
+					'custom'       => $custom_sentence,
+					'style'        => $campaign_style,
+				)
+			);
+			echo '</div>';
+			echo '<div class="torobpay-topbar-standard">';
 		}
-		echo '</div>';
+		echo torobpay_topbar_spread_stage_html(
+			array(
+				'logo_img' => $logo_img,
+				'title'    => $slogans[0],
+				'center'   => $slogans[1],
+				'left'     => $slogans[2],
+				'credit'   => $credit_line,
+				'custom'   => $custom_sentence,
+				'style'    => $standard_style,
+			)
+		);
+		if ( $has_campaign_slide && is_array( $campaign ) ) {
+			echo '</div>';
+		}
 		$spread_measure_js =
 		'( function () {' . "\n" .
-		'	var stage = document.querySelector( \'#torobpay-topbar .torobpay-topbar-spread-stage\' );' . "\n" .
-		'	if ( ! stage ) {' . "\n" .
+		'	var bar = document.getElementById( \'torobpay-topbar\' );' . "\n" .
+		'	if ( ! bar ) {' . "\n" .
 		'		return;' . "\n" .
 		'	}' . "\n" .
+		'	var mobileMq = window.matchMedia( \'(max-width: 849px)\' );' . "\n" .
 		'' . "\n" .
-		'	var centerSlot = stage.querySelector( \'.torobpay-topbar-spread-slot--center\' );' . "\n" .
-		'	var rightGroup = stage.querySelector( \'.torobpay-topbar-spread-group--right\' );' . "\n" .
-		'	var leftGroup  = stage.querySelector( \'.torobpay-topbar-spread-group--left\' );' . "\n" .
-		'	var mobileMq   = window.matchMedia( \'(max-width: 849px)\' );' . "\n" .
+		'	function currentStage() {' . "\n" .
+		'		var campaign = bar.querySelector( \'.torobpay-topbar-campaign-seq .torobpay-topbar-spread-stage\' );' . "\n" .
+		'		if ( campaign && bar.classList.contains( \'torobpay-topbar--has-campaign\' ) ) {' . "\n" .
+		'			return campaign;' . "\n" .
+		'		}' . "\n" .
+		'		return bar.querySelector( \'.torobpay-topbar-standard .torobpay-topbar-spread-stage\' ) || bar.querySelector( \'.torobpay-topbar-spread-stage\' );' . "\n" .
+		'	}' . "\n" .
 		'' . "\n" .
 		'	function measure() {' . "\n" .
+		'		var stage = currentStage();' . "\n" .
+		'		if ( ! stage ) {' . "\n" .
+		'			return;' . "\n" .
+		'		}' . "\n" .
+		'		var centerSlot = stage.querySelector( \'.torobpay-topbar-spread-slot--center\' );' . "\n" .
+		'		var rightGroup = stage.querySelector( \'.torobpay-topbar-spread-group--right\' );' . "\n" .
+		'		var leftGroup  = stage.querySelector( \'.torobpay-topbar-spread-group--left\' );' . "\n" .
 		'		if ( ! centerSlot || ! rightGroup || ! leftGroup ) {' . "\n" .
 		'			return;' . "\n" .
 		'		}' . "\n" .
@@ -613,6 +684,9 @@ function torobpay_get_topbar_html( $embed = false ) {
 		'	if ( document.fonts && document.fonts.ready ) {' . "\n" .
 		'		document.fonts.ready.then( schedule );' . "\n" .
 		'	}' . "\n" .
+		'	if ( window.MutationObserver ) {' . "\n" .
+		'		new MutationObserver( schedule ).observe( bar, { attributes: true, attributeFilter: [ \'class\' ] } );' . "\n" .
+		'	}' . "\n" .
 		'	schedule();' . "\n" .
 		'	window.setTimeout( schedule, 300 );' . "\n" .
 		'}() );';
@@ -620,21 +694,342 @@ function torobpay_get_topbar_html( $embed = false ) {
 		wp_enqueue_script( 'torobpay-topbar-spread-measure' );
 		wp_add_inline_script( 'torobpay-topbar-spread-measure', $spread_measure_js );
 	} else {
-		echo '<div class="torobpay-topbar-logo-wrap">' . wp_kses( $logo_img, torobpay_kses_allowed_html() ) . '</div>';
-
-		echo '<div class="torobpay-topbar-ticker-wrap">';
-		echo '<div class="torobpay-topbar-ticker-track">';
-		echo wp_kses( $items_html, torobpay_kses_allowed_html() );
-		echo '</div>';
-		echo '</div>';
-
-		echo '<div class="torobpay-topbar-logo-wrap" aria-hidden="true">' . wp_kses( $logo_img, torobpay_kses_allowed_html() ) . '</div>';
+		$echo_ticker = static function ( $html ) use ( $logo_img ) {
+			$allowed = torobpay_kses_allowed_html();
+			echo '<div class="torobpay-topbar-logo-wrap">' . wp_kses( $logo_img, $allowed ) . '</div>';
+			echo '<div class="torobpay-topbar-ticker-wrap">';
+			echo '<div class="torobpay-topbar-ticker-track">';
+			echo wp_kses( $html, $allowed );
+			echo '</div>';
+			echo '</div>';
+			echo '<div class="torobpay-topbar-logo-wrap" aria-hidden="true">' . wp_kses( $logo_img, $allowed ) . '</div>';
+		};
+		if ( $has_campaign_slide && '' !== $campaign_items_html ) {
+			echo '<div class="torobpay-topbar-campaign-seq">';
+			$echo_ticker( $campaign_items_html );
+			echo '</div>';
+			echo '<div class="torobpay-topbar-standard">';
+			$echo_ticker( $items_html );
+			echo '</div>';
+		} else {
+			$echo_ticker( $items_html );
+		}
 	}
 
 	echo '</div>';
 	echo '</div>';
 
 	return ob_get_clean();
+}
+
+/**
+ * One Spread stage (credit, three slots, optional custom).
+ *
+ * @param array $args logo_img, title, center, left, left_is_html, credit, custom, style.
+ * @return string Escaped HTML.
+ */
+function torobpay_topbar_spread_stage_html( $args ) {
+	$allowed   = torobpay_kses_allowed_html();
+	$logo      = isset( $args['logo_img'] ) ? $args['logo_img'] : '';
+	$left      = isset( $args['left'] ) ? $args['left'] : '';
+	$custom    = isset( $args['custom'] ) ? (string) $args['custom'] : '';
+	$style     = isset( $args['style'] ) ? (string) $args['style'] : '';
+	$left_html = ! empty( $args['left_is_html'] ) ? wp_kses( $left, $allowed ) : esc_html( $left );
+
+	$html  = '<div class="torobpay-topbar-spread-stage" style="' . esc_attr( $style ) . '">';
+	$html .= '<span class="torobpay-topbar-spread-solo torobpay-topbar-spread-solo--credit torobpay-topbar-confetti-target">';
+	$html .= '<span class="torobpay-topbar-spread-solo-logo" aria-hidden="true">' . wp_kses( $logo, $allowed ) . '</span>';
+	$html .= '<span class="torobpay-topbar-spread-solo-text">' . esc_html( isset( $args['credit'] ) ? $args['credit'] : '' ) . '</span>';
+	$html .= '<span class="torobpay-topbar-spread-solo-logo" aria-hidden="true">' . wp_kses( $logo, $allowed ) . '</span>';
+	$html .= '</span>';
+	$html .= '<div class="torobpay-topbar-spread-slot torobpay-topbar-spread-slot--right">';
+	$html .= '<div class="torobpay-topbar-spread-group torobpay-topbar-spread-group--right">';
+	$html .= '<div class="torobpay-topbar-spread-logo torobpay-topbar-spread-logo--end">' . wp_kses( $logo, $allowed ) . '</div>';
+	$html .= '<span class="torobpay-topbar-spread-text torobpay-topbar-spread-text--title"><strong>' . esc_html( isset( $args['title'] ) ? $args['title'] : '' ) . '</strong></span>';
+	$html .= '</div></div>';
+	$html .= '<div class="torobpay-topbar-spread-slot torobpay-topbar-spread-slot--center">';
+	$html .= '<span class="torobpay-topbar-spread-text torobpay-topbar-spread-text--fee">' . esc_html( isset( $args['center'] ) ? $args['center'] : '' ) . '</span>';
+	$html .= '</div>';
+	$html .= '<div class="torobpay-topbar-spread-slot torobpay-topbar-spread-slot--left">';
+	$html .= '<div class="torobpay-topbar-spread-group torobpay-topbar-spread-group--left">';
+	$html .= '<span class="torobpay-topbar-spread-text torobpay-topbar-spread-text--middle">' . $left_html . '</span>';
+	$html .= '<div class="torobpay-topbar-spread-logo torobpay-topbar-spread-logo--start">' . wp_kses( $logo, $allowed ) . '</div>';
+	$html .= '</div></div>';
+	if ( '' !== $custom ) {
+		$html .= '<span class="torobpay-topbar-spread-solo torobpay-topbar-spread-solo--custom">';
+		$html .= '<span class="torobpay-topbar-spread-solo-logo" aria-hidden="true">' . wp_kses( $logo, $allowed ) . '</span>';
+		$html .= '<span class="torobpay-topbar-spread-solo-text">' . esc_html( $custom ) . '</span>';
+		$html .= '<span class="torobpay-topbar-spread-solo-logo" aria-hidden="true">' . wp_kses( $logo, $allowed ) . '</span>';
+		$html .= '</span>';
+	}
+	$html .= '</div>';
+
+	return $html;
+}
+
+/**
+ * Campaign-track ticker beats (campaign, installments, credit).
+ *
+ * @param string $credit_line Credit sentence.
+ * @return array<int, array<string, mixed>>
+ */
+function torobpay_topbar_campaign_ticker_beats( $credit_line ) {
+	return array(
+		array(
+			'type' => 'campaign',
+		),
+		array(
+			'type' => 'text',
+			'text' => __( 'Buy in 4 installments with TorobPay', 'torobpay-for-woocommerce' ),
+		),
+		array(
+			'type'     => 'text',
+			'text'     => (string) $credit_line,
+			'confetti' => true,
+		),
+	);
+}
+
+/**
+ * Campaign Spread slot copy (installments title, campaign center, button label).
+ *
+ * @param array $campaign Sanitized campaign.
+ * @return array{title:string,center:string,button:string}
+ */
+function torobpay_topbar_campaign_spread_parts( $campaign ) {
+	$center = is_array( $campaign ) && function_exists( 'torobpay_pdp_promo_topbar_title' )
+		? (string) torobpay_pdp_promo_topbar_title( $campaign )
+		: '';
+
+	return array(
+		'title'  => __( 'Buy in 4 installments with TorobPay', 'torobpay-for-woocommerce' ),
+		'center' => $center,
+		'button' => __( 'Get discount code', 'torobpay-for-woocommerce' ),
+	);
+}
+
+/**
+ * Campaign ticker delays (campaign beat = 2× a text line).
+ *
+ * @param array<int, array<string, mixed>> $beats From torobpay_topbar_campaign_ticker_beats().
+ * @param float                             $speed Text-line cycle length in seconds.
+ * @return array{timing:array{normal_slot:float,campaign_slot:float,cycle:float},schedule:array<int, array{beat:array,delay:float,slot:float}>}
+ */
+function torobpay_topbar_campaign_beat_schedule( $beats, $speed ) {
+	$text_count = 0;
+	foreach ( $beats as $beat ) {
+		if ( ! isset( $beat['type'] ) || 'campaign' !== $beat['type'] ) {
+			++$text_count;
+		}
+	}
+	$timing   = torobpay_topbar_campaign_timing( $text_count, $speed );
+	$elapsed  = 0.0;
+	$schedule = array();
+	foreach ( $beats as $beat ) {
+		$slot       = ( isset( $beat['type'] ) && 'campaign' === $beat['type'] ) ? $timing['campaign_slot'] : $timing['normal_slot'];
+		$schedule[] = array(
+			'beat'  => $beat,
+			'delay' => $elapsed,
+			'slot'  => $slot,
+		);
+		$elapsed   += $slot;
+	}
+	$timing['cycle'] = $elapsed;
+
+	return array(
+		'timing'   => $timing,
+		'schedule' => $schedule,
+	);
+}
+
+/**
+ * Format a CSS number without trailing zeros.
+ *
+ * @param float $value Number.
+ * @return string
+ */
+function torobpay_topbar_css_num( $value ) {
+	$text = number_format( (float) $value, 3, '.', '' );
+	return rtrim( rtrim( $text, '0' ), '.' );
+}
+
+/**
+ * Campaign slot timing: normal = speed/count; campaign = 2× normal; cycle grows.
+ *
+ * @param int   $slogan_count Text beats on the bar (≥ 1).
+ * @param float $speed        Base cycle length in seconds.
+ * @return array{normal_slot:float,campaign_slot:float,cycle:float}
+ */
+function torobpay_topbar_campaign_timing( $slogan_count, $speed ) {
+	$slogan_count = max( 1, (int) $slogan_count );
+	$speed        = max( 1, (float) $speed );
+	$normal       = $speed / $slogan_count;
+	$campaign     = $normal * 2;
+
+	return array(
+		'normal_slot'   => $normal,
+		'campaign_slot' => $campaign,
+		'cycle'         => $speed + $campaign,
+	);
+}
+
+/**
+ * Keyframe stops for one ticker motion inside a slot that is $slot_pct of the cycle.
+ *
+ * Phase-in and phase-out stay about 0.4s. A long campaign hold does not stretch them.
+ *
+ * @param string $animation     Animation slug.
+ * @param float  $slot_pct      Visible window as a percentage of the full cycle.
+ * @param float  $cycle_seconds Full ticker cycle in seconds.
+ * @return array<int, array{at:float,decl:string}>
+ */
+function torobpay_topbar_campaign_motion_stops( $animation, $slot_pct, $cycle_seconds ) {
+	$motions = array(
+		'slide-up'   => array(
+			'in'     => 0.12,
+			'out'    => 0.88,
+			'frames' => array(
+				array( 0, 'opacity:0;transform:translateY(100%);pointer-events:none;visibility:hidden' ),
+				array( 0.12, 'opacity:1;transform:translateY(0);pointer-events:auto;visibility:visible' ),
+				array( 0.88, 'opacity:1;transform:translateY(0);pointer-events:auto;visibility:visible' ),
+				array( 1, 'opacity:0;transform:translateY(-100%);pointer-events:none;visibility:hidden' ),
+			),
+		),
+		'slide-down' => array(
+			'in'     => 0.12,
+			'out'    => 0.88,
+			'frames' => array(
+				array( 0, 'opacity:0;transform:translateY(-100%);pointer-events:none;visibility:hidden' ),
+				array( 0.12, 'opacity:1;transform:translateY(0);pointer-events:auto;visibility:visible' ),
+				array( 0.88, 'opacity:1;transform:translateY(0);pointer-events:auto;visibility:visible' ),
+				array( 1, 'opacity:0;transform:translateY(100%);pointer-events:none;visibility:hidden' ),
+			),
+		),
+		'fade'       => array(
+			'in'     => 0.2,
+			'out'    => 0.8,
+			'frames' => array(
+				array( 0, 'opacity:0;transform:translateY(20%);pointer-events:none;visibility:hidden' ),
+				array( 0.2, 'opacity:1;transform:translateY(0);pointer-events:auto;visibility:visible' ),
+				array( 0.8, 'opacity:1;transform:translateY(0);pointer-events:auto;visibility:visible' ),
+				array( 1, 'opacity:0;transform:translateY(-20%);pointer-events:none;visibility:hidden' ),
+			),
+		),
+		'flip'       => array(
+			'in'     => 0.16,
+			'out'    => 0.84,
+			'frames' => array(
+				array( 0, 'opacity:0;transform:rotateX(-90deg);pointer-events:none;visibility:hidden' ),
+				array( 0.16, 'opacity:1;transform:rotateX(0deg);pointer-events:auto;visibility:visible' ),
+				array( 0.84, 'opacity:1;transform:rotateX(0deg);pointer-events:auto;visibility:visible' ),
+				array( 1, 'opacity:0;transform:rotateX(90deg);pointer-events:none;visibility:hidden' ),
+			),
+		),
+		'zoom'       => array(
+			'in'     => 0.16,
+			'out'    => 0.84,
+			'frames' => array(
+				array( 0, 'opacity:0;transform:scale(0.4);pointer-events:none;visibility:hidden' ),
+				array( 0.16, 'opacity:1;transform:scale(1);pointer-events:auto;visibility:visible' ),
+				array( 0.84, 'opacity:1;transform:scale(1);pointer-events:auto;visibility:visible' ),
+				array( 1, 'opacity:0;transform:scale(1.6);pointer-events:none;visibility:hidden' ),
+			),
+		),
+		'blur'       => array(
+			'in'     => 0.2,
+			'out'    => 0.8,
+			'frames' => array(
+				array( 0, 'opacity:0;filter:blur(8px);transform:scale(1.08);pointer-events:none;visibility:hidden' ),
+				array( 0.2, 'opacity:1;filter:blur(0);transform:scale(1);pointer-events:auto;visibility:visible' ),
+				array( 0.8, 'opacity:1;filter:blur(0);transform:scale(1);pointer-events:auto;visibility:visible' ),
+				array( 1, 'opacity:0;filter:blur(8px);transform:scale(0.96);pointer-events:none;visibility:hidden' ),
+			),
+		),
+		'bounce'     => array(
+			'in'     => 0.56,
+			'out'    => 0.88,
+			'frames' => array(
+				array( 0, 'opacity:0;transform:translateY(-130%);pointer-events:none;visibility:hidden' ),
+				array( 0.12, 'opacity:1;pointer-events:auto;visibility:visible' ),
+				array( 0.28, 'transform:translateY(12%)' ),
+				array( 0.44, 'transform:translateY(-6%)' ),
+				array( 0.56, 'transform:translateY(0)' ),
+				array( 0.88, 'opacity:1;transform:translateY(0);pointer-events:auto;visibility:visible' ),
+				array( 1, 'opacity:0;transform:translateY(130%);pointer-events:none;visibility:hidden' ),
+			),
+		),
+	);
+
+	$motion   = isset( $motions[ $animation ] ) ? $motions[ $animation ] : $motions['slide-up'];
+	$slot_pct = (float) $slot_pct;
+	$fade_pct = ( 0.4 / max( 0.001, (float) $cycle_seconds ) ) * 100;
+	$fade_pct = min( $fade_pct, $slot_pct * 0.2 );
+	$in       = (float) $motion['in'];
+	$out      = (float) $motion['out'];
+	$hold     = max( 0.001, $out - $in );
+	$exit     = max( 0.001, 1 - $out );
+	$stops    = array();
+	$end_decl = 'opacity:0;pointer-events:none';
+	foreach ( $motion['frames'] as $frame ) {
+		$t        = (float) $frame[0];
+		$end_decl = $frame[1];
+		if ( $t <= 0 ) {
+			$at = 0;
+		} elseif ( $t >= 1 ) {
+			$at = $slot_pct;
+		} elseif ( $t <= $in ) {
+			$at = ( $t / $in ) * $fade_pct;
+		} elseif ( $t >= $out ) {
+			$at = ( $slot_pct - $fade_pct ) + ( ( $t - $out ) / $exit ) * $fade_pct;
+		} else {
+			$at = $fade_pct + ( ( $t - $in ) / $hold ) * ( $slot_pct - ( 2 * $fade_pct ) );
+		}
+		$stops[] = array(
+			'at'   => $at,
+			'decl' => $end_decl,
+		);
+	}
+	$stops[] = array(
+		'at'   => 100,
+		'decl' => $end_decl,
+	);
+
+	return $stops;
+}
+
+/**
+ * Inline keyframes for unequal campaign ticker slots.
+ *
+ * @param string $animation     Active ticker animation.
+ * @param float  $normal_pct    Normal slot % of cycle.
+ * @param float  $campaign_pct  Campaign slot % of cycle.
+ * @param float  $cycle_seconds Full ticker cycle in seconds.
+ * @return string CSS.
+ */
+function torobpay_topbar_campaign_ticker_css( $animation, $normal_pct, $campaign_pct, $cycle_seconds ) {
+	$animation = sanitize_key( (string) $animation );
+	$allowed   = array( 'slide-up', 'slide-down', 'fade', 'flip', 'zoom', 'blur', 'bounce' );
+	if ( ! in_array( $animation, $allowed, true ) ) {
+		$animation = 'slide-up';
+	}
+
+	$css = '';
+	foreach ( array(
+		'torobpay-tb-campaign-slot' => $normal_pct,
+		'torobpay-tb-campaign-long' => $campaign_pct,
+	) as $name => $slot_pct ) {
+		$css .= '@keyframes ' . $name . '{';
+		foreach ( torobpay_topbar_campaign_motion_stops( $animation, $slot_pct, $cycle_seconds ) as $stop ) {
+			$css .= torobpay_topbar_css_num( $stop['at'] ) . '%{' . $stop['decl'] . '}';
+		}
+		$css .= '}';
+	}
+
+	$scope = '#torobpay-topbar.torobpay-topbar--has-campaign.torobpay-topbar--anim-' . $animation;
+	$css  .= $scope . ' .torobpay-topbar-ticker-item{animation-name:torobpay-tb-campaign-slot;}';
+	$css  .= $scope . ' .torobpay-topbar-ticker-item--campaign{animation-name:torobpay-tb-campaign-long;}';
+
+	return $css;
 }
 
 /**
@@ -657,11 +1052,10 @@ function torobpay_enqueue_topbar_styles() {
 }
 
 /**
- * Enqueue the shared confetti burst.
+ * Enqueue the topbar confetti burst.
  *
  * On the topbar the script finds .torobpay-topbar-confetti-target and fills
  * .torobpay-topbar-confetti. Ticker and spread both mark the credit line.
- * The promo dialog calls window.torobpayBurstConfetti() on the same handle.
  */
 function torobpay_enqueue_topbar_confetti_script() {
 	static $enqueued = false;
