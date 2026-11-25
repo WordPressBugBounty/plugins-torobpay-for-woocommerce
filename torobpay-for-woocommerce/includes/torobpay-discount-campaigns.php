@@ -320,10 +320,67 @@ function torobpay_fetch_discount_campaigns( $previous = null ) {
 }
 
 /**
+ * Option key for the single in-flight campaigns refresh.
+ *
+ * @return string
+ */
+function torobpay_discount_campaigns_refresh_lock_key() {
+	return 'torobpay_discount_campaigns_refresh';
+}
+
+/**
+ * How long a refresh lock blocks other requests after the holder dies.
+ *
+ * Longer than the campaigns HTTP timeout so a live request is not joined
+ * by a second one, and short enough that a crashed request does not stall
+ * the next refresh.
+ *
+ * @return int Seconds.
+ */
+function torobpay_discount_campaigns_refresh_lock_ttl() {
+	return 15;
+}
+
+/**
+ * Become the one request allowed to call the campaigns API.
+ *
+ * add_option is the atomic insert. A lock older than the TTL is abandoned.
+ *
+ * @return bool
+ */
+function torobpay_discount_campaigns_acquire_refresh_lock() {
+	$key = torobpay_discount_campaigns_refresh_lock_key();
+	$now = time();
+	if ( add_option( $key, $now, '', false ) ) {
+		return true;
+	}
+
+	$started = (int) get_option( $key, 0 );
+	if ( $started > 0 && ( $now - $started ) < torobpay_discount_campaigns_refresh_lock_ttl() ) {
+		return false;
+	}
+
+	delete_option( $key );
+
+	return (bool) add_option( $key, $now, '', false );
+}
+
+/**
+ * Let the next stale read refresh again.
+ *
+ * @return void
+ */
+function torobpay_discount_campaigns_release_refresh_lock() {
+	delete_option( torobpay_discount_campaigns_refresh_lock_key() );
+}
+
+/**
  * All cached discount campaigns (sanitized). Empty array when unavailable.
  *
  * The torobpay_discount_campaigns filter short-circuits the cache and the
  * API; it must return an array of sanitized campaigns (or null to continue).
+ * A stale cache is refreshed by one request. Others keep the last list
+ * instead of each waiting on the gateway.
  *
  * @return array
  */
@@ -342,7 +399,19 @@ function torobpay_get_discount_campaigns() {
 		return torobpay_discount_campaigns_remember( $cached['campaigns'], $cached['ok'] ? 'ok' : 'error' );
 	}
 
-	return torobpay_fetch_discount_campaigns( $cached );
+	if ( ! torobpay_discount_campaigns_acquire_refresh_lock() ) {
+		if ( null !== $cached ) {
+			return torobpay_discount_campaigns_remember( $cached['campaigns'], $cached['ok'] ? 'ok' : 'error' );
+		}
+
+		return torobpay_discount_campaigns_remember( array(), 'error' );
+	}
+
+	try {
+		return torobpay_fetch_discount_campaigns( $cached );
+	} finally {
+		torobpay_discount_campaigns_release_refresh_lock();
+	}
 }
 
 /**

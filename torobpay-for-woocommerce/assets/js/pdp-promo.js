@@ -49,6 +49,7 @@ jQuery(function($) {
 		$( '.torobpay-widget.has-torobpay-promo' ).removeClass( 'has-torobpay-promo torobpay-promo-marquee' );
 		$( '.torobpay-topbar-ticker-item--campaign' ).remove();
 		closePromo();
+		$overlay.remove();
 	}
 
 	function watchExpiry() {

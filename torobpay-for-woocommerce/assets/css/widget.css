@@ -273,8 +273,8 @@
     width: auto;
     margin: 0;
     overflow: hidden;
-    color: var(--torobpay-widget-accent-dark);
-    border-radius: 0;
+    color: var(--torobpay-widget-accent-dark) !important;
+    border-radius: 0 !important;
     line-height: 26px;
     direction: ltr;
     pointer-events: none;
@@ -370,6 +370,31 @@
 .torobpay-widget:hover .torobpay-widget-promo-set,
 .torobpay-widget-promo--marquee:focus-visible .torobpay-widget-promo-set {
     animation-play-state: paused;
+}
+
+/* Themes style every button, including :hover. This control covers the widget. */
+.torobpay-widget button.torobpay-widget-promo,
+.torobpay-widget button.torobpay-widget-promo:hover,
+.torobpay-widget button.torobpay-widget-promo:focus,
+.torobpay-widget button.torobpay-widget-promo:focus-visible,
+.torobpay-widget button.torobpay-widget-promo:active {
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    background-color: transparent;
+    box-shadow: none;
+    text-transform: none;
+    letter-spacing: normal;
+    text-shadow: none;
+}
+
+.torobpay-widget button.torobpay-widget-promo--marquee,
+.torobpay-widget button.torobpay-widget-promo--marquee:hover,
+.torobpay-widget button.torobpay-widget-promo--marquee:focus,
+.torobpay-widget button.torobpay-widget-promo--marquee:focus-visible,
+.torobpay-widget button.torobpay-widget-promo--marquee:active {
+    color: var(--torobpay-widget-accent-dark);
 }
 
 .torobpay-widget-promo--marquee:focus-visible .torobpay-widget-promo-track {

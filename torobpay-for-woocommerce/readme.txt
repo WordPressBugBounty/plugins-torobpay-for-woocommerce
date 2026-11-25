@@ -4,7 +4,7 @@ Tags: torobpay, ترب‌پی, woocommerce, payment gateway, installments
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 4.9.0
+Stable tag: 4.9.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -63,6 +63,12 @@ It was removed in 4.7.2. If you had custom CSS there, copy it into your theme or
 5. WooCommerce payment settings for the TorobPay gateway.
 
 == Changelog ==
+
+= 4.9.1 =
+* The top bar discount button keeps the TorobPay style when the theme styles every button.
+* The discount dialog's "Copied" message follows the store language when a performance plugin defers scripts.
+* When a discount campaign cache expires, one page request refreshes it. Other requests keep showing the last campaign instead of waiting on TorobPay.
+* The discount dialog is removed when the campaign expires while the shopper still has the page open.
 
 = 4.9.0 =
 * Special discount campaigns now come from TorobPay instead of manual code and terms in settings. The product widget and top bar show what TorobPay sends; you choose where they appear and the widget row style.
@@ -131,6 +137,9 @@ It was removed in 4.7.2. If you had custom CSS there, copy it into your theme or
 * First WordPress.org release. Updates now come through WordPress.org. Re-activate the plugin if the main file name changed.
 
 == Upgrade Notice ==
+
+= 4.9.1 =
+Top bar discount button styling, translated copy confirmation, and quieter campaign refresh. Upgrade recommended.
 
 = 4.9.0 =
 Special discounts are now driven by TorobPay campaigns. Upgrade recommended.

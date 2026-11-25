@@ -172,7 +172,7 @@
 	unicode-bidi: isolate;
 }
 
-.torobpay-promo-dismiss {
+#torobpay-promo-overlay .torobpay-promo-dismiss {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -186,18 +186,20 @@
 	color: #003d01;
 	font-size: 1rem;
 	font-weight: 800;
+	letter-spacing: normal;
+	text-transform: none;
 	cursor: pointer;
 }
 
-.torobpay-promo-dismiss:hover,
-.torobpay-promo-dismiss:focus {
+#torobpay-promo-overlay .torobpay-promo-dismiss:hover,
+#torobpay-promo-overlay .torobpay-promo-dismiss:focus {
 	background: #8bd85a;
 }
 
-.torobpay-promo-dismiss.is-copied,
-.torobpay-promo-dismiss.is-copied:hover,
-.torobpay-promo-dismiss.is-copied:focus,
-.torobpay-promo-dismiss.is-copied:disabled {
+#torobpay-promo-overlay .torobpay-promo-dismiss.is-copied,
+#torobpay-promo-overlay .torobpay-promo-dismiss.is-copied:hover,
+#torobpay-promo-overlay .torobpay-promo-dismiss.is-copied:focus,
+#torobpay-promo-overlay .torobpay-promo-dismiss.is-copied:disabled {
 	background: #003d01;
 	color: #fff;
 	cursor: default;
