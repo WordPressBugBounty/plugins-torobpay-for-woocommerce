@@ -169,6 +169,18 @@ function torobpay_has_cached_auth_state() {
 	return true;
 }
 
+/** @return array<string, string> */
+function &torobpay_display_toggle_cache() {
+	static $display_settings = array();
+	return $display_settings;
+}
+
+/** Reset display-toggle request cache. */
+function torobpay_reset_display_toggle_cache() {
+	$display_settings = &torobpay_display_toggle_cache();
+	$display_settings = array();
+}
+
 /**
  * Read a yes/no display toggle from its dedicated option.
  *
@@ -177,7 +189,7 @@ function torobpay_has_cached_auth_state() {
  * @return string 'yes' or 'no'
  */
 function torobpay_get_display_toggle_setting( $option_name, $default = 'no' ) {
-	static $display_settings = array();
+	$display_settings = &torobpay_display_toggle_cache();
 
 	if ( array_key_exists( $option_name, $display_settings ) ) {
 		return $display_settings[ $option_name ];
@@ -211,6 +223,11 @@ function torobpay_has_marquee() {
 	}
 
 	return torobpay_get_display_toggle_setting( 'torobpay_marquee_enabled', 'no' ) === 'yes';
+}
+
+/** Live installment preview follows quantity on the product page. */
+function torobpay_live_price_preview_enabled() {
+	return torobpay_get_display_toggle_setting( 'torobpay_live_price_preview', 'yes' ) === 'yes';
 }
 
 /** Jet/Crocoblock grids bypass loop hooks, so enable the JS badge fallback. */

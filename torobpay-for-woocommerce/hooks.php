@@ -2513,6 +2513,10 @@ function torobpay_ajax_save_display_toggles() {
 	}
 
 	update_option( 'torobpay_widget_enabled', ( isset( $_POST['widget_enabled'] ) && '1' === $_POST['widget_enabled'] ) ? 'yes' : 'no' );
+	if ( isset( $_POST['live_price_preview'] ) ) {
+		$live_price_preview = '1' === $_POST['live_price_preview'] ? 'yes' : 'no';
+		update_option( 'torobpay_live_price_preview', $live_price_preview );
+	}
 	update_option( 'torobpay_badge_enabled', ( isset( $_POST['badge_enabled'] ) && '1' === $_POST['badge_enabled'] ) ? 'yes' : 'no' );
 	update_option( 'torobpay_marquee_enabled', ( isset( $_POST['marquee_enabled'] ) && '1' === $_POST['marquee_enabled'] ) ? 'yes' : 'no' );
 	update_option( 'torobpay_topbar_enabled', ( isset( $_POST['topbar_enabled'] ) && '1' === $_POST['topbar_enabled'] ) ? 'yes' : 'no' );

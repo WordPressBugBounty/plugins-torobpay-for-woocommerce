@@ -146,67 +146,6 @@ function torobpay_get_widget_html( $args = [] ) {
 	);
 }
 
-add_action( 'wp_ajax_torobpay_get_variation_widget', 'torobpay_ajax_get_variation_widget' );
-add_action( 'wp_ajax_nopriv_torobpay_get_variation_widget', 'torobpay_ajax_get_variation_widget' );
-
-function torobpay_ajax_get_variation_widget() {
-	check_ajax_referer( 'torobpay_variation_widget', 'nonce' );
-
-	if ( empty( $_POST['product_id'] ) ) {
-		wp_send_json_error( array( 'message' => 'missing_params' ), 400 );
-	}
-
-	$product_id   = absint( wp_unslash( $_POST['product_id'] ) );
-	$variation_id = isset( $_POST['variation_id'] ) ? absint( wp_unslash( $_POST['variation_id'] ) ) : 0;
-	$quantity     = isset( $_POST['quantity'] ) ? absint( wp_unslash( $_POST['quantity'] ) ) : 1;
-	if ( $quantity < 1 ) {
-		$quantity = 1;
-	}
-
-	$widget_variation_id = 0;
-
-	if ( $variation_id > 0 ) {
-		$product = wc_get_product( $variation_id );
-
-		if ( ! $product || ! $product->is_type( 'variation' ) ) {
-			wp_send_json_error( array( 'message' => 'invalid_variation' ), 404 );
-		}
-
-		// Ensure the variation belongs to the requested parent product.
-		if ( (int) $product->get_parent_id() !== $product_id ) {
-			wp_send_json_error( array( 'message' => 'variation_mismatch' ), 400 );
-		}
-
-		$widget_variation_id = $variation_id;
-	} else {
-		$product = wc_get_product( $product_id );
-
-		if ( ! $product || ! $product->is_type( 'simple' ) || ! $product->is_purchasable() ) {
-			wp_send_json_error( array( 'message' => 'invalid_product' ), 404 );
-		}
-	}
-
-	// Unit × quantity, the same total the storefront uses for the threshold check.
-	$unit_price = wc_get_price_to_display( $product );
-	$price      = $unit_price * $quantity;
-	$validation = torobpay_validate_pdp_amount( $price );
-	if ( ! $product->is_in_stock() || ! $validation['valid'] ) {
-		wp_send_json_error( array( 'message' => 'unavailable' ), 400 );
-	}
-
-	$installment_price = $price / 4;
-	$formatted_price   = wc_price( $installment_price );
-	$html              = torobpay_get_widget_html(
-		[
-			'variation_id'    => $widget_variation_id,
-			'show_price'      => $validation['is_under_threshold'],
-			'formatted_price' => $formatted_price,
-		]
-	);
-
-	wp_send_json_success( [ 'html' => wp_kses( $html, torobpay_kses_allowed_html() ) ] );
-}
-
 /**
  * Product-page widget for simple and variable products. Once per request.
  */
@@ -270,6 +209,54 @@ function torobpay_get_pdp_initial_line_total( $unit_price, $product = null, $var
 	return (float) $unit_price * $quantity;
 }
 
+/** @return array{bounds: array<int, array>, badges: array<int, array|false>} */
+function &torobpay_storefront_price_cache() {
+	static $cache = array(
+		'bounds' => array(),
+		'badges' => array(),
+	);
+	return $cache;
+}
+
+/** Reset storefront bounds and badge cache. */
+function torobpay_reset_storefront_price_cache() {
+	$cache           = &torobpay_storefront_price_cache();
+	$cache['bounds'] = array();
+	$cache['badges'] = array();
+}
+
+/**
+ * Shown qty on the PDP widget: min purchase qty when live preview is on, else 1.
+ *
+ * @param int $stored_quantity Minimum purchase quantity.
+ * @return int
+ */
+function torobpay_pdp_shown_quantity( $stored_quantity ) {
+	if ( ! function_exists( 'torobpay_live_price_preview_enabled' ) || ! torobpay_live_price_preview_enabled() ) {
+		return 1;
+	}
+	$stored_quantity = (int) $stored_quantity;
+	return $stored_quantity > 0 ? $stored_quantity : 1;
+}
+
+/**
+ * Installment for the PDP first paint.
+ *
+ * @param float|int|string $unit_price Displayed unit price.
+ * @param int              $stored_quantity Minimum purchase quantity.
+ * @return array{show_price: bool, formatted_installment: string}
+ */
+function torobpay_get_pdp_shown_installment( $unit_price, $stored_quantity ) {
+	$total      = (float) $unit_price * torobpay_pdp_shown_quantity( $stored_quantity );
+	$validation = torobpay_validate_pdp_amount( $total );
+	$show_price = $validation['valid'] && $validation['is_under_threshold'];
+
+	return [
+		'show_price'            => $show_price,
+		'formatted_installment' => $show_price ? wc_price( $total / 4 ) : '',
+	];
+}
+
 /**
  * Cheapest and dearest in-stock variations of a variable product.
  *
@@ -280,29 +267,23 @@ function torobpay_get_pdp_initial_line_total( $unit_price, $product = null, $var
  * @return array{cheapest: array|null, dearest: array|null}
  */
 function torobpay_get_variable_pdp_bounds( $product ) {
-	$cheapest      = null;
-	$dearest       = null;
-	$variation_ids = method_exists( $product, 'get_children' ) ? $product->get_children() : [];
+	$cache      = &torobpay_storefront_price_cache();
+	$product_id = is_object( $product ) && method_exists( $product, 'get_id' ) ? (int) $product->get_id() : 0;
+	if ( $product_id && array_key_exists( $product_id, $cache['bounds'] ) ) {
+		return $cache['bounds'][ $product_id ];
+	}
 
-	foreach ( $variation_ids as $vid ) {
-		$variation = wc_get_product( $vid );
-		if ( ! $variation || ! is_a( $variation, 'WC_Product' ) || ! $variation->is_purchasable() || ! $variation->is_in_stock() ) {
-			continue;
-		}
+	$rows     = torobpay_collect_variation_bound_rows( $product );
+	$cheapest = null;
+	$dearest  = null;
 
-		$unit_price = wc_get_price_to_display( $variation );
-		if ( $unit_price <= 0 ) {
-			continue;
-		}
-
-		$quantity   = max(
-			torobpay_get_pdp_initial_quantity( $product ),
-			torobpay_get_pdp_initial_quantity( $variation )
-		);
+	foreach ( $rows as $row ) {
+		$unit_price = (float) $row['unit_price'];
+		$quantity   = max( 1, (int) $row['quantity'] );
 		$line_total = (float) $unit_price * $quantity;
 		$entry      = [
-			'id'         => (int) $variation->get_id(),
-			'unit_price' => (float) $unit_price,
+			'id'         => (int) $row['id'],
+			'unit_price' => $unit_price,
 			'quantity'   => $quantity,
 			'line_total' => $line_total,
 			'validation' => torobpay_validate_pdp_amount( $line_total ),
@@ -316,10 +297,223 @@ function torobpay_get_variable_pdp_bounds( $product ) {
 		}
 	}
 
-	return [
+	$result = [
 		'cheapest' => $cheapest,
 		'dearest'  => $dearest,
 	];
+	if ( $product_id ) {
+		$cache['bounds'][ $product_id ] = $result;
+	}
+	return $result;
+}
+
+/**
+ * In-stock variation rows from the price map when possible, else each child.
+ *
+ * @param WC_Product $product Variable product.
+ * @return array<int, array{id: int, unit_price: float, quantity: int}>
+ */
+function torobpay_collect_variation_bound_rows( $product ) {
+	$from_prices = torobpay_variation_rows_from_price_map( $product );
+	if ( null !== $from_prices ) {
+		return $from_prices;
+	}
+	return torobpay_variation_rows_from_objects( $product );
+}
+
+/**
+ * Whether a plugin can change is_purchasable() for the current visitor.
+ *
+ * The price map does not apply these filters. Dokan uses the first one to
+ * mark a vendor's own product unpurchasable.
+ *
+ * @return bool
+ */
+function torobpay_purchasable_filter_is_active() {
+	if ( ! function_exists( 'has_filter' ) ) {
+		return false;
+	}
+
+	return (bool) ( has_filter( 'woocommerce_is_purchasable' ) || has_filter( 'woocommerce_variation_is_purchasable' ) );
+}
+
+/**
+ * @param WC_Product $product Variable product.
+ * @return array<int, array{id: int, unit_price: float, quantity: int}>|null
+ */
+function torobpay_variation_rows_from_price_map( $product ) {
+	if ( ! is_object( $product ) || ! method_exists( $product, 'get_variation_prices' ) ) {
+		return null;
+	}
+
+	$map = $product->get_variation_prices( true );
+	if ( ! is_array( $map ) || ! isset( $map['price'] ) || ! is_array( $map['price'] ) ) {
+		return null;
+	}
+	if ( ! $map['price'] ) {
+		return array();
+	}
+
+	$stock = torobpay_query_variation_stock_and_min_qty( array_keys( $map['price'] ) );
+	if ( null === $stock ) {
+		return null;
+	}
+
+	$parent_qty             = torobpay_get_pdp_initial_quantity( $product );
+	$use_qty_filter         = function_exists( 'has_filter' ) && has_filter( 'woocommerce_quantity_input_min' );
+	$use_purchasable_filter = torobpay_purchasable_filter_is_active();
+	$load_variation         = ( $use_qty_filter || $use_purchasable_filter ) && function_exists( 'wc_get_product' );
+	$rows                   = array();
+
+	foreach ( $map['price'] as $variation_id => $unit_price ) {
+		$variation_id = (int) $variation_id;
+		if ( ! isset( $stock[ $variation_id ] ) || empty( $stock[ $variation_id ]['in_stock'] ) ) {
+			continue;
+		}
+
+		$unit_price = (float) $unit_price;
+		if ( $unit_price <= 0 ) {
+			continue;
+		}
+
+		$min_qty = isset( $stock[ $variation_id ]['min_qty'] ) ? (int) $stock[ $variation_id ]['min_qty'] : 1;
+		if ( $load_variation ) {
+			$variation = wc_get_product( $variation_id );
+			if ( ! $variation || ! is_a( $variation, 'WC_Product' ) ) {
+				continue;
+			}
+			// Dokan filters woocommerce_is_purchasable and does not hook quantity.
+			if ( $use_purchasable_filter && ! $variation->is_purchasable() ) {
+				continue;
+			}
+			if ( $use_qty_filter ) {
+				$min_qty = torobpay_get_pdp_initial_quantity( $variation );
+			}
+		}
+
+		$rows[] = array(
+			'id'         => $variation_id,
+			'unit_price' => $unit_price,
+			'quantity'   => max( $parent_qty, $min_qty > 0 ? $min_qty : 1 ),
+		);
+	}
+
+	return $rows;
+}
+
+/**
+ * Stock and min qty for variation ids. Null when incomplete; caller loads objects.
+ *
+ * @param array<int, int|string> $ids Variation ids.
+ * @return array<int, array{in_stock: bool, min_qty: int}>|null
+ */
+function torobpay_query_variation_stock_and_min_qty( array $ids ) {
+	global $wpdb;
+
+	if ( ! isset( $wpdb ) || ! is_object( $wpdb ) || ! method_exists( $wpdb, 'prepare' ) || ! method_exists( $wpdb, 'get_results' ) ) {
+		return null;
+	}
+
+	$ids = array_values( array_unique( array_filter( array_map( 'absint', $ids ) ) ) );
+	if ( ! $ids ) {
+		return array();
+	}
+
+	$placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
+	$lookup       = $wpdb->prefix . 'wc_product_meta_lookup';
+	$stock_sql    = "SELECT product_id, stock_status FROM {$lookup} WHERE product_id IN ({$placeholders})";
+	$stock_rows   = $wpdb->get_results( $wpdb->prepare( $stock_sql, ...$ids ), 'ARRAY_A' );
+	if ( ! is_array( $stock_rows ) ) {
+		return null;
+	}
+
+	$found = array();
+	foreach ( $stock_rows as $row ) {
+		if ( ! is_array( $row ) || ! isset( $row['product_id'] ) ) {
+			continue;
+		}
+		$id            = (int) $row['product_id'];
+		$status        = isset( $row['stock_status'] ) ? (string) $row['stock_status'] : '';
+		$found[ $id ]  = array(
+			'in_stock' => 'outofstock' !== $status,
+			'min_qty'  => 1,
+		);
+	}
+	if ( count( $found ) < count( $ids ) ) {
+		return null;
+	}
+
+	$meta_keys          = array( 'variation_minimum_allowed_quantity', 'minimum_allowed_quantity', 'min_quantity', '_min_qty' );
+	$meta_placeholders  = implode( ',', array_fill( 0, count( $meta_keys ), '%s' ) );
+	$postmeta           = isset( $wpdb->postmeta ) ? $wpdb->postmeta : $wpdb->prefix . 'postmeta';
+	$meta_sql           = "SELECT post_id, meta_key, meta_value FROM {$postmeta} WHERE post_id IN ({$placeholders}) AND meta_key IN ({$meta_placeholders})";
+	$meta_rows          = $wpdb->get_results( $wpdb->prepare( $meta_sql, ...array_merge( $ids, $meta_keys ) ), 'ARRAY_A' );
+	if ( ! is_array( $meta_rows ) ) {
+		return $found;
+	}
+
+	$priority = array_flip( $meta_keys );
+	$best     = array();
+	foreach ( $meta_rows as $row ) {
+		if ( ! is_array( $row ) ) {
+			continue;
+		}
+		$id  = isset( $row['post_id'] ) ? (int) $row['post_id'] : 0;
+		$key = isset( $row['meta_key'] ) ? (string) $row['meta_key'] : '';
+		if ( ! isset( $found[ $id ] ) || ! isset( $priority[ $key ] ) ) {
+			continue;
+		}
+		$qty = (int) $row['meta_value'];
+		if ( $qty < 1 ) {
+			continue;
+		}
+		if ( ! isset( $best[ $id ] ) || $priority[ $key ] < $best[ $id ]['priority'] ) {
+			$best[ $id ] = array(
+				'priority' => $priority[ $key ],
+				'qty'      => $qty,
+			);
+		}
+	}
+	foreach ( $best as $id => $pick ) {
+		$found[ $id ]['min_qty'] = $pick['qty'];
+	}
+
+	return $found;
+}
+
+/**
+ * Variation rows by loading each child. Used when the price map is unavailable.
+ *
+ * @param WC_Product $product Variable product.
+ * @return array<int, array{id: int, unit_price: float, quantity: int}>
+ */
+function torobpay_variation_rows_from_objects( $product ) {
+	$rows          = array();
+	$variation_ids = is_object( $product ) && method_exists( $product, 'get_children' ) ? $product->get_children() : array();
+
+	foreach ( $variation_ids as $vid ) {
+		$variation = wc_get_product( $vid );
+		if ( ! $variation || ! is_a( $variation, 'WC_Product' ) || ! $variation->is_purchasable() || ! $variation->is_in_stock() ) {
+			continue;
+		}
+
+		$unit_price = wc_get_price_to_display( $variation );
+		if ( $unit_price <= 0 ) {
+			continue;
+		}
+
+		$quantity = max(
+			torobpay_get_pdp_initial_quantity( $product ),
+			torobpay_get_pdp_initial_quantity( $variation )
+		);
+		$rows[]   = array(
+			'id'         => (int) $variation->get_id(),
+			'unit_price' => (float) $unit_price,
+			'quantity'   => $quantity,
+		);
+	}
+
+	return $rows;
 }
 
 /**
@@ -328,10 +522,6 @@ function torobpay_get_variable_pdp_bounds( $product ) {
  * @param array $data Keys for assets/js/variation-widget.js.
  */
 function torobpay_localize_pdp_variation_widget( $data ) {
-	if ( isset( $data['fallbackHtml'] ) ) {
-		$data['fallbackHtml'] = wp_kses( $data['fallbackHtml'], torobpay_kses_allowed_html() );
-	}
-
 	wp_add_inline_script(
 		'torobpay-variation-widget',
 		'window.torobpayVariationWidget = ' . wp_json_encode( $data ) . ';',
@@ -351,14 +541,10 @@ function torobpay_render_variable_widget( $product ) {
 		return;
 	}
 
-	$cheapest   = $bounds['cheapest'];
-	$validation = $cheapest['validation'];
-	$price_less = torobpay_get_widget_html(
-		[
-			'variation_id' => (int) $cheapest['id'],
-			'show_price'   => false,
-		]
-	);
+	$cheapest    = $bounds['cheapest'];
+	$shown_qty   = torobpay_pdp_shown_quantity( $cheapest['quantity'] );
+	$shown_total = (float) $cheapest['unit_price'] * $shown_qty;
+	$validation  = torobpay_validate_pdp_amount( $shown_total );
 
 	wp_enqueue_script(
 		'torobpay-variation-widget',
@@ -372,13 +558,10 @@ function torobpay_render_variable_widget( $product ) {
 		array_merge(
 			torobpay_get_pdp_widget_client_config( $cheapest['unit_price'] ),
 			[
-				'ajaxUrl'            => admin_url( 'admin-ajax.php' ),
-				'nonce'              => wp_create_nonce( 'torobpay_variation_widget' ),
 				'productId'          => (int) $product->get_id(),
 				'productType'        => 'variable',
-				'initialQuantity'    => (int) $cheapest['quantity'],
+				'initialQuantity'    => $shown_qty,
 				'previewVariationId' => (int) $cheapest['id'],
-				'fallbackHtml'       => $price_less,
 			]
 		)
 	);
@@ -388,11 +571,16 @@ function torobpay_render_variable_widget( $product ) {
 			[
 				'variation_id'    => $cheapest['id'],
 				'show_price'      => $validation['is_under_threshold'],
-				'formatted_price' => wc_price( $cheapest['line_total'] / 4 ),
+				'formatted_price' => wc_price( $shown_total / 4 ),
 			]
 		);
 	} else {
-		$initial_html = $price_less;
+		$initial_html = torobpay_get_widget_html(
+			[
+				'variation_id' => (int) $cheapest['id'],
+				'show_price'   => false,
+			]
+		);
 	}
 
 	echo '<div id="torobpay-variation-widget-container">' . wp_kses( $initial_html, torobpay_kses_allowed_html() ) . '</div>';
@@ -408,14 +596,17 @@ function torobpay_render_simple_widget( $product ) {
 		return;
 	}
 
-	$quantity   = torobpay_get_pdp_initial_quantity( $product );
 	$unit_price = wc_get_price_to_display( $product );
 	$price      = torobpay_get_pdp_initial_line_total( $unit_price, $product );
-	$validation = torobpay_validate_pdp_amount( $price );
+	$gate       = torobpay_validate_pdp_amount( $price );
 
-	if ( ! $validation['valid'] ) {
+	if ( ! $gate['valid'] ) {
 		return;
 	}
+
+	$quantity   = torobpay_pdp_shown_quantity( torobpay_get_pdp_initial_quantity( $product ) );
+	$shown      = (float) $unit_price * $quantity;
+	$validation = torobpay_validate_pdp_amount( $shown );
 
 	wp_enqueue_script(
 		'torobpay-variation-widget',
@@ -429,28 +620,29 @@ function torobpay_render_simple_widget( $product ) {
 		array_merge(
 			torobpay_get_pdp_widget_client_config( $unit_price ),
 			[
-				'ajaxUrl'         => admin_url( 'admin-ajax.php' ),
-				'nonce'           => wp_create_nonce( 'torobpay_variation_widget' ),
 				'productId'       => (int) $product->get_id(),
 				'productType'     => 'simple',
 				'initialQuantity' => $quantity,
-				'fallbackHtml'    => torobpay_get_widget_html(
-					[
-						'variation_id' => 0,
-						'show_price'   => false,
-					]
-				),
 			]
 		)
 	);
 
-	$html = torobpay_get_widget_html(
-		[
-			'variation_id'    => 0,
-			'show_price'      => $validation['is_under_threshold'],
-			'formatted_price' => wc_price( $price / 4 ),
-		]
-	);
+	if ( $validation['valid'] ) {
+		$html = torobpay_get_widget_html(
+			[
+				'variation_id'    => 0,
+				'show_price'      => $validation['is_under_threshold'],
+				'formatted_price' => wc_price( $shown / 4 ),
+			]
+		);
+	} else {
+		$html = torobpay_get_widget_html(
+			[
+				'variation_id' => 0,
+				'show_price'   => false,
+			]
+		);
+	}
 
 	echo '<div id="torobpay-variation-widget-container">' . wp_kses( $html, torobpay_kses_allowed_html() ) . '</div>';
 	torobpay_inject_pdp_styles();
@@ -552,6 +744,28 @@ function torobpay_prepare_product_badge_data( $product ) {
 		return false;
 	}
 
+	$cache      = &torobpay_storefront_price_cache();
+	$product_id = (int) $product->get_id();
+	if ( $product_id && array_key_exists( $product_id, $cache['badges'] ) ) {
+		return $cache['badges'][ $product_id ];
+	}
+
+	$data = torobpay_build_product_badge_data( $product );
+	if ( $product_id ) {
+		$cache['badges'][ $product_id ] = $data;
+	}
+	return $data;
+}
+
+/**
+ * @param WC_Product $product Product.
+ * @return array|false
+ */
+function torobpay_build_product_badge_data( $product ) {
+	if ( ! is_a( $product, 'WC_Product' ) ) {
+		return false;
+	}
+
 	$product_id         = $product->get_id();
 	$variation_id       = 0;
 	$base_price         = null;
@@ -570,14 +784,14 @@ function torobpay_prepare_product_badge_data( $product ) {
 			return false;
 		}
 
-		$cheapest   = $bounds['cheapest'];
-		$show_price = $cheapest['validation']['valid'] && $cheapest['validation']['is_under_threshold'];
+		$cheapest = $bounds['cheapest'];
+		$shown    = torobpay_get_pdp_shown_installment( $cheapest['unit_price'], $cheapest['quantity'] );
 
 		return [
 			'product_id'            => $product_id,
 			'variation_id'          => $cheapest['id'],
-			'show_price'            => $show_price,
-			'formatted_installment' => $show_price ? wc_price( $cheapest['line_total'] / 4 ) : '',
+			'show_price'            => $shown['show_price'],
+			'formatted_installment' => $shown['formatted_installment'],
 		];
 	} elseif ( $is_variation || $product->is_type( 'simple' ) ) {
 		if ( ! $product->is_in_stock() || ! $product->is_purchasable() ) {
@@ -601,21 +815,23 @@ function torobpay_prepare_product_badge_data( $product ) {
 		return false;
 	}
 
-	// Same total as the PDP widget's first paint: unit price × minimum quantity.
 	$line_total = torobpay_get_pdp_initial_line_total( $base_price, $quantity_product, $quantity_variation );
-	$validation = torobpay_validate_pdp_amount( $line_total );
-	if ( ! $validation['valid'] ) {
+	$gate       = torobpay_validate_pdp_amount( $line_total );
+	if ( ! $gate['valid'] ) {
 		return false;
 	}
 
-	$installment_amount    = $line_total / 4;
-	$formatted_installment = wc_price( $installment_amount );
+	$stored_quantity = torobpay_get_pdp_initial_quantity( $quantity_product );
+	if ( $quantity_variation ) {
+		$stored_quantity = max( $stored_quantity, torobpay_get_pdp_initial_quantity( $quantity_variation ) );
+	}
+	$shown = torobpay_get_pdp_shown_installment( $base_price, $stored_quantity );
 
 	return [
 		'product_id'            => $product_id,
 		'variation_id'          => $variation_id,
-		'show_price'            => (bool) $validation['is_under_threshold'],
-		'formatted_installment' => $formatted_installment,
+		'show_price'            => $shown['show_price'],
+		'formatted_installment' => $shown['formatted_installment'],
 	];
 }
 
@@ -753,11 +969,24 @@ function torobpay_enqueue_product_badge_styles() {
  */
 function torobpay_get_pdp_widget_client_config( $unit_price ) {
 	$unit_price = is_numeric( $unit_price ) ? (float) $unit_price : 0.0;
+	$symbol     = function_exists( 'get_woocommerce_currency_symbol' ) ? (string) get_woocommerce_currency_symbol() : '';
 
 	return [
-		'unitPrice'      => $unit_price > 0 ? $unit_price : 0,
-		'currencyFactor' => (int) torobpay_get_currency_amount_factor(),
-		'threshold'      => (int) torobpay_get_pdp_display_threshold(),
+		'unitPrice'       => $unit_price > 0 ? $unit_price : 0,
+		'currencyFactor'  => (int) torobpay_get_currency_amount_factor(),
+		'threshold'       => (int) torobpay_get_pdp_display_threshold(),
+		'minAmount'       => 200000,
+		'livePreview'     => function_exists( 'torobpay_live_price_preview_enabled' ) && torobpay_live_price_preview_enabled(),
+		'pricedTitle'     => __( 'Each installment with TorobPay: %s', 'torobpay-for-woocommerce' ),
+		'plainTitle'      => __( 'Installments based on TorobPay credit', 'torobpay-for-woocommerce' ),
+		'currency'        => array(
+			'decimals'          => function_exists( 'wc_get_price_decimals' ) ? (int) wc_get_price_decimals() : 0,
+			'decimalSeparator'  => function_exists( 'wc_get_price_decimal_separator' ) ? (string) wc_get_price_decimal_separator() : '.',
+			'thousandSeparator' => function_exists( 'wc_get_price_thousand_separator' ) ? (string) wc_get_price_thousand_separator() : ',',
+			'symbol'            => html_entity_decode( $symbol, ENT_QUOTES, 'UTF-8' ),
+			'format'            => function_exists( 'get_woocommerce_price_format' ) ? (string) get_woocommerce_price_format() : '%1$s%2$s',
+			'trimZeros'         => function_exists( 'apply_filters' ) ? (bool) apply_filters( 'woocommerce_price_trim_zeros', false ) : false,
+		),
 	];
 }
 
@@ -926,7 +1155,9 @@ function torobpay_ajax_get_badge_data() {
 		return;
 	}
 
-	$product_ids = isset( $_POST['product_ids'] ) ? array_map( 'absint', (array) wp_unslash( $_POST['product_ids'] ) ) : array();
+	$product_ids = isset( $_POST['product_ids'] )
+		? array_slice( array_unique( array_map( 'absint', (array) wp_unslash( $_POST['product_ids'] ) ) ), 0, 50 )
+		: array();
 
 	if ( empty( $product_ids ) ) {
 		wp_send_json_success( array() );

@@ -449,11 +449,10 @@
             subtree: true
         });
         
-        // Re-process on common events
-        $(document).on('yith-wcan-ajax-filtered', processProducts);
-        $(document).on('berocket_ajax_products_loaded', processProducts);
-        $(window).on('load', processProducts);
-    }
+		// Re-process on common events.
+		$(document).on('yith-wcan-ajax-filtered', processProducts);
+		$(document).on('berocket_ajax_products_loaded', processProducts);
+	}
     
     // Start when DOM is ready
     $(document).ready(init);

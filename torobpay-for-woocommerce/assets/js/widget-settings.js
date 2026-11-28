@@ -1396,7 +1396,7 @@ function initDisplayToggles() {
 		status.className = 'torobpay-display-toggle-status';
 	}
 
-	var ids = ['torobpay_widget_enabled', 'torobpay_badge_enabled', 'torobpay_marquee_enabled', 'torobpay_topbar_enabled', 'torobpay_slider_enabled'];
+	var ids = ['torobpay_widget_enabled', 'torobpay_live_price_preview', 'torobpay_badge_enabled', 'torobpay_marquee_enabled', 'torobpay_topbar_enabled', 'torobpay_slider_enabled'];
 	ids.forEach(function(id) {
 		var el = document.getElementById(id);
 		if (el) {
@@ -1416,6 +1416,10 @@ function saveDisplayToggles() {
 	data.append('action', 'torobpay_save_display_toggles');
 	data.append('nonce', torobpayDisplayToggles.nonce);
 	data.append('widget_enabled', document.getElementById('torobpay_widget_enabled').checked ? '1' : '0');
+	var livePreviewToggle = document.getElementById('torobpay_live_price_preview');
+	if (livePreviewToggle) {
+		data.append('live_price_preview', livePreviewToggle.checked ? '1' : '0');
+	}
 	data.append('badge_enabled', document.getElementById('torobpay_badge_enabled').checked ? '1' : '0');
 	data.append('marquee_enabled', document.getElementById('torobpay_marquee_enabled').checked ? '1' : '0');
 	data.append('topbar_enabled', document.getElementById('torobpay_topbar_enabled').checked ? '1' : '0');

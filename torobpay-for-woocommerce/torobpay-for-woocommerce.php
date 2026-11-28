@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       TorobPay for WooCommerce
  * Description:       Accept TorobPay installment payments in WooCommerce.
- * Version:           4.9.1
+ * Version:           4.9.2
  * Requires at least: 5.8
  * Requires PHP:      7.4
  * Requires Plugins:  woocommerce
@@ -35,7 +35,7 @@ if ( ! defined( 'TOROBPAY_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'TOROBPAY_VERSION' ) ) {
-	define( 'TOROBPAY_VERSION', '4.9.1' );
+	define( 'TOROBPAY_VERSION', '4.9.2' );
 }
 
 add_action( 'before_woocommerce_init', 'torobpay_declare_wc_compatibility' );

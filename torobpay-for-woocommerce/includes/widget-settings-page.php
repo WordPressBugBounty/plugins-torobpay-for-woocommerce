@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function torobpay_widget_settings_page() {
 	if ( isset( $_POST['submit'] ) && isset( $_POST['torobpay_widget_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['torobpay_widget_nonce'] ) ), 'torobpay_widget_settings' ) ) {
 		update_option( 'torobpay_widget_enabled', isset( $_POST['torobpay_widget_enabled'] ) ? 'yes' : 'no' );
+		update_option( 'torobpay_live_price_preview', isset( $_POST['torobpay_live_price_preview'] ) ? 'yes' : 'no' );
 		update_option( 'torobpay_badge_enabled', isset( $_POST['torobpay_badge_enabled'] ) ? 'yes' : 'no' );
 		update_option( 'torobpay_marquee_enabled', isset( $_POST['torobpay_marquee_enabled'] ) ? 'yes' : 'no' );
 		update_option( 'torobpay_topbar_enabled', isset( $_POST['torobpay_topbar_enabled'] ) ? 'yes' : 'no' );
@@ -123,6 +124,7 @@ function torobpay_widget_settings_page() {
 
 	if ( isset( $_POST['reset'] ) && isset( $_POST['torobpay_widget_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['torobpay_widget_nonce'] ) ), 'torobpay_widget_settings' ) ) {
 		update_option( 'torobpay_widget_enabled', 'yes' );
+		update_option( 'torobpay_live_price_preview', 'yes' );
 		update_option( 'torobpay_badge_enabled', 'yes' );
 		update_option( 'torobpay_marquee_enabled', 'no' );
 		update_option( 'torobpay_topbar_enabled', 'no' );
@@ -277,7 +279,8 @@ function torobpay_widget_settings_page() {
 		$topbar_placement              = 'automatic';
 	}
 
-	$widget_enabled  = get_option( 'torobpay_widget_enabled', 'yes' );
+	$widget_enabled     = get_option( 'torobpay_widget_enabled', 'yes' );
+	$live_price_preview = get_option( 'torobpay_live_price_preview', 'yes' );
 	$badge_enabled   = get_option( 'torobpay_badge_enabled', 'yes' );
 	$marquee_enabled = get_option( 'torobpay_marquee_enabled', 'no' );
 
@@ -772,6 +775,23 @@ function torobpay_widget_settings_page() {
 									<option value="status-dot" <?php selected( $logo_animation, 'status-dot' ); ?>><?php esc_html_e( 'Status dot', 'torobpay-for-woocommerce' ); ?></option>
 									<option value="none" <?php selected( $logo_animation, 'none' ); ?>><?php esc_html_e( 'No animation', 'torobpay-for-woocommerce' ); ?></option>
 								</select>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<!-- Behavior Settings Section -->
+				<h2 class="section-title" data-section-key="widget-behavior"><span class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Behavior settings', 'torobpay-for-woocommerce' ); ?><span class="section-collapse-icon dashicons dashicons-arrow-up-alt2"></span></h2>
+				<table class="form-table">
+					<tbody>
+						<tr>
+							<th scope="row">
+								<label for="torobpay_live_price_preview"><?php esc_html_e( 'Live installment price preview', 'torobpay-for-woocommerce' ); ?></label>
+								<span class="torobpay-tooltip" data-tip="<?php echo esc_attr__( 'Updates the installment amount as the shopper changes quantity. The selected variation always updates the price. Turn this off when a tiered or sliding-scale pricing plugin changes the unit price by quantity, so the widget keeps the one-item price.', 'torobpay-for-woocommerce' ); ?>" title="<?php echo esc_attr__( 'Live installment price preview', 'torobpay-for-woocommerce' ); ?>"><?php esc_html_e( '?', 'torobpay-for-woocommerce' ); ?></span>
+							</th>
+							<td>
+								<label>
+									<input type="checkbox" id="torobpay_live_price_preview" name="torobpay_live_price_preview" value="yes" <?php checked( $live_price_preview, 'yes' ); ?>><?php esc_html_e( 'Update the installment amount when the shopper changes quantity.', 'torobpay-for-woocommerce' ); ?></label>
 							</td>
 						</tr>
 					</tbody>

@@ -199,11 +199,21 @@ class TorobPayAPI {
 	 * Ensure bearer token is available (attempts to fetch if not cached)
 	 * Public wrapper for get_request_bearer_token used for authentication checks
 	 *
+	 * @param int|null $timeout Optional HTTP timeout for a cold-token OAuth call.
 	 * @return bool True if bearer token exists or was successfully obtained
 	 */
-	public function ensure_bearer_token() {
-		$headers = $this->get_request_bearer_token();
-		return is_array( $headers ) && ! empty( $headers['Authorization'] );
+	public function ensure_bearer_token( $timeout = null ) {
+		$previous_timeout = $this->http_timeout;
+		if ( null !== $timeout ) {
+			$this->http_timeout = max( 1, (int) $timeout );
+		}
+
+		try {
+			$headers = $this->get_request_bearer_token();
+			return is_array( $headers ) && ! empty( $headers['Authorization'] );
+		} finally {
+			$this->http_timeout = $previous_timeout;
+		}
 	}
 
 	/**

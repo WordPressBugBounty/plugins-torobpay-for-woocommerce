@@ -1,4 +1,4 @@
-// ceil(unit × qty × factor) >= threshold, same as torobpay_get_amount_by_currency().
+// Rial total: ceil(unit × qty × factor), same as torobpay_get_amount_by_currency().
 var torobpayWidgetThreshold = (function () {
     function parseUnitPrice(value) {
         var price = parseFloat(value);
@@ -20,9 +20,70 @@ var torobpayWidgetThreshold = (function () {
         return Math.ceil(scaled) >= limit;
     }
 
+    function showsInstallmentPrice(unitPrice, quantity, currencyFactor, minAmount, threshold) {
+        var price = parseUnitPrice(unitPrice);
+        var factor = parseFloat(currencyFactor);
+        if (price === null || !isFinite(factor) || factor <= 0) {
+            return false;
+        }
+        var qty = quantity > 0 ? quantity : 1;
+        var scaled = price * qty * factor;
+        if (!isFinite(scaled)) {
+            return false;
+        }
+        var rial = Math.ceil(scaled);
+        var min = parseFloat(minAmount);
+        if (!isFinite(min)) {
+            min = 200000;
+        }
+        if (rial < min) {
+            return false;
+        }
+        var limit = parseFloat(threshold);
+        return !(isFinite(limit) && rial >= limit);
+    }
+
+    function escapeHtml(value) {
+        return String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
+    function formatStorePrice(amount, currency) {
+        currency = currency || {};
+        var decimals = parseInt(currency.decimals, 10);
+        if (!isFinite(decimals) || decimals < 0) {
+            decimals = 0;
+        }
+        var decimalSeparator = currency.decimalSeparator != null ? String(currency.decimalSeparator) : '.';
+        var thousandSeparator = currency.thousandSeparator != null ? String(currency.thousandSeparator) : ',';
+        var negative = amount < 0;
+        var factor = Math.pow(10, decimals);
+        var rounded = Math.round((Math.abs(amount) + Number.EPSILON) * factor) / factor;
+        var fixed = rounded.toFixed(decimals);
+        var pieces = fixed.split('.');
+        pieces[0] = pieces[0].replace(/\B(?=(\d{3})+(?!\d))/g, thousandSeparator);
+        var number = pieces.join(decimalSeparator);
+        if (currency.trimZeros && decimals > 0 && pieces[1]) {
+            var trimmed = pieces[1].replace(/0+$/, '');
+            number = trimmed.length ? pieces[0] + decimalSeparator + trimmed : pieces[0];
+        }
+        if (negative) {
+            number = '-' + number;
+        }
+        var symbolHtml = '<span class="woocommerce-Price-currencySymbol">' + escapeHtml(currency.symbol != null ? currency.symbol : '') + '</span>';
+        var format = currency.format ? String(currency.format) : '%1$s%2$s';
+        var formatted = format.replace('%1$s', symbolHtml).replace('%2$s', escapeHtml(number));
+        return '<span class="woocommerce-Price-amount amount"><bdi>' + formatted + '</bdi></span>';
+    }
+
     return {
         parseUnitPrice: parseUnitPrice,
-        isOverDisplayThreshold: isOverDisplayThreshold
+        isOverDisplayThreshold: isOverDisplayThreshold,
+        showsInstallmentPrice: showsInstallmentPrice,
+        formatStorePrice: formatStorePrice
     };
 }());
 
@@ -58,10 +119,6 @@ jQuery(function($) {
     var $widgetContainer = $('#torobpay-variation-widget-container');
     var $cartForm = $('form.cart').first();
     var $variationForm = $('.variations_form');
-    var initialHtml = $widgetContainer.html();
-    var currentXhr = null;
-    var requestedKey = null;
-    var renderedKey = null;
     var currentVariation = null;
     var qtyDebounceTimer = null;
     var productId = parseInt(config.productId, 10) || ($variationForm.data('product_id') || 0);
@@ -70,32 +127,14 @@ jQuery(function($) {
     if (!bakedQty || bakedQty < 1) {
         bakedQty = 1;
     }
-    var initialHtmlQty = bakedQty;
     var activeUnitPrice = torobpayWidgetThreshold.parseUnitPrice(config.unitPrice);
 
     if (!$widgetContainer.length || !productId) {
         return;
     }
 
-    function applyOverThresholdState(variationId) {
-        if (!config.fallbackHtml) {
-            return false;
-        }
-        var $widget = $widgetContainer.find('.torobpay-widget').first();
-        // "0" is already the price-less copy. Anything else is rebuilt from it.
-        if (!$widget.length || $widget.attr('data-show-price') !== '0') {
-            $widgetContainer.html(config.fallbackHtml).show();
-            $widget = $widgetContainer.find('.torobpay-widget').first();
-            if (!$widget.length) {
-                return false;
-            }
-        }
-        if (variationId) {
-            $widget.attr('data-variation-id', String(variationId));
-        }
-        $widget.attr('data-show-price', '0');
-        $widgetContainer.removeClass('torobpay-loading').show();
-        return true;
+    function livePreviewEnabled() {
+        return config.livePreview !== false && config.livePreview !== 0 && config.livePreview !== '0';
     }
 
     function getQuantity() {
@@ -107,8 +146,11 @@ jQuery(function($) {
         return (qty && qty > 0) ? qty : 1;
     }
 
-    function requestKey(variationId, quantity) {
-        return String(variationId || 0) + ':' + String(quantity);
+    function previewQuantity() {
+        if (!livePreviewEnabled()) {
+            return 1;
+        }
+        return getQuantity();
     }
 
     function getPreviewVariationId() {
@@ -120,125 +162,57 @@ jQuery(function($) {
         return fromWidget || 0;
     }
 
-    function showUnavailable() {
-        // Price-less copy when the total is under 200,000 rial or the refetch fails. The widget stays.
-        var fallback = config.fallbackHtml || '';
-        if (fallback) {
-            $widgetContainer.html(fallback).show();
-        } else {
-            $widgetContainer.empty().hide();
+    function pricedTitleHtml(priceHtml) {
+        var template = config.pricedTitle || 'Each installment with TorobPay: %s';
+        var token = '\u0000PRICE\u0000';
+        var withToken = String(template).replace('%1$s', token).replace('%s', token);
+        if (withToken.indexOf(token) === -1) {
+            withToken += ' ' + token;
         }
-        $widgetContainer.removeClass('torobpay-loading');
+        return withToken
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(token, priceHtml);
     }
 
-    function rememberPreviewHtml(html, quantity) {
-        initialHtml = html;
-        initialHtmlQty = quantity;
+    function renderInstallment(variationId) {
+        var $widget = $widgetContainer.find('.torobpay-widget').first();
+        if (!$widget.length) {
+            return;
+        }
+        if (variationId) {
+            $widget.attr('data-variation-id', String(variationId));
+        }
+
+        var quantity = previewQuantity();
+        var showPrice = torobpayWidgetThreshold.showsInstallmentPrice(
+            activeUnitPrice,
+            quantity,
+            config.currencyFactor,
+            config.minAmount,
+            config.threshold
+        );
+        var $title = $widget.find('.torobpay-widget-title').first();
+        if (showPrice) {
+            var installment = activeUnitPrice * quantity / 4;
+            $widget.attr('data-show-price', '1');
+            if ($title.length) {
+                $title.html(pricedTitleHtml(torobpayWidgetThreshold.formatStorePrice(installment, config.currency)));
+            }
+        } else {
+            $widget.attr('data-show-price', '0');
+            if ($title.length) {
+                $title.text(config.plainTitle || '');
+            }
+        }
+        $widgetContainer.removeClass('torobpay-loading').show();
     }
 
     function resetWidgetToInitial() {
-        if (currentXhr) {
-            currentXhr.abort();
-            currentXhr = null;
-        }
-        requestedKey = null;
-        renderedKey = null;
         currentVariation = null;
         activeUnitPrice = torobpayWidgetThreshold.parseUnitPrice(config.unitPrice);
-
-        var qty = getQuantity();
-        var previewId = getPreviewVariationId();
-
-        // Snapshot matches only the quantity it was captured at.
-        if (previewId && qty === initialHtmlQty && initialHtml) {
-            requestedKey = requestKey(previewId, qty);
-            renderedKey = requestedKey;
-            $widgetContainer.addClass('torobpay-loading');
-            $widgetContainer.html(initialHtml).show();
-            setTimeout(function() {
-                $widgetContainer.removeClass('torobpay-loading');
-            }, 220);
-            return;
-        }
-
-        if (previewId) {
-            fetchWidget(previewId, qty);
-            return;
-        }
-
-        showUnavailable();
-    }
-
-    function fetchWidget(variationId, quantity) {
-        var key = requestKey(variationId, quantity);
-
-        if (key === requestedKey || key === renderedKey) {
-            return;
-        }
-
-        // Price-less mode at or above the display threshold. The widget stays.
-        if (torobpayWidgetThreshold.isOverDisplayThreshold(activeUnitPrice, quantity, config.currencyFactor, config.threshold) && applyOverThresholdState(variationId)) {
-            requestedKey = key;
-            renderedKey = key;
-            if (currentXhr) {
-                currentXhr.abort();
-                currentXhr = null;
-            }
-            if (!currentVariation) {
-                rememberPreviewHtml($widgetContainer.html(), quantity);
-            }
-            return;
-        }
-
-        requestedKey = key;
-
-        if (currentXhr) {
-            currentXhr.abort();
-            currentXhr = null;
-        }
-
-        $widgetContainer.addClass('torobpay-loading').show();
-        currentXhr = $.ajax({
-            url: config.ajaxUrl,
-            type: 'POST',
-            data: {
-                action: 'torobpay_get_variation_widget',
-                variation_id: variationId,
-                product_id: productId,
-                quantity: quantity,
-                nonce: config.nonce
-            },
-            success: function(response) {
-                if (requestedKey !== key) {
-                    return;
-                }
-                renderedKey = key;
-                if (response && response.success && response.data && response.data.html) {
-                    $widgetContainer.html(response.data.html).show();
-                    $widgetContainer.removeClass('torobpay-loading');
-                    if (!currentVariation) {
-                        rememberPreviewHtml(response.data.html, quantity);
-                    }
-                } else {
-                    showUnavailable();
-                }
-            },
-            error: function(_jqXHR, textStatus) {
-                if (textStatus === 'abort') {
-                    return;
-                }
-                if (requestedKey !== key) {
-                    return;
-                }
-                renderedKey = key;
-                showUnavailable();
-            },
-            complete: function() {
-                if (requestedKey === key) {
-                    currentXhr = null;
-                }
-            }
-        });
+        renderInstallment(getPreviewVariationId());
     }
 
     function updateWidget(variation) {
@@ -260,20 +234,19 @@ jQuery(function($) {
             activeUnitPrice = torobpayWidgetThreshold.parseUnitPrice(variation && variation.display_price);
         }
 
-        fetchWidget(variationId, getQuantity());
+        renderInstallment(variationId);
     }
 
     function refreshForQuantity() {
+        if (!livePreviewEnabled()) {
+            return;
+        }
         if (productType === 'variable') {
             if (currentVariation) {
                 updateWidget(currentVariation);
                 return;
             }
-            // No selection yet. Reprice the preview variation.
-            var previewId = getPreviewVariationId();
-            if (previewId) {
-                fetchWidget(previewId, getQuantity());
-            }
+            renderInstallment(getPreviewVariationId());
             return;
         }
         updateWidget(null);
@@ -297,14 +270,11 @@ jQuery(function($) {
         });
     }
 
-    // Qty input can differ from the server-rendered initial quantity.
-    if (getQuantity() !== bakedQty) {
+    if (livePreviewEnabled() && getQuantity() !== bakedQty) {
         refreshForQuantity();
     }
 
     $(document).on('change input', 'form.cart input.qty', function() {
-        requestedKey = null;
-        renderedKey = null;
         scheduleQuantityRefresh();
     });
 });

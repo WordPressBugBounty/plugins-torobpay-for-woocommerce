@@ -4,7 +4,7 @@ Tags: torobpay, ترب‌پی, woocommerce, payment gateway, installments
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 4.9.1
+Stable tag: 4.9.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -63,6 +63,12 @@ It was removed in 4.7.2. If you had custom CSS there, copy it into your theme or
 5. WooCommerce payment settings for the TorobPay gateway.
 
 == Changelog ==
+
+= 4.9.2 =
+* Added more compatible widget styles that work with a wider range of themes.
+* Performance improved.
+* Visual settings include Live installment price preview. Turn it off when a tiered or sliding-scale pricing plugin changes the unit price by quantity. The widget then keeps the one-item price and still follows the selected variation.
+* Minor bug fixes.
 
 = 4.9.1 =
 * The top bar discount button keeps the TorobPay style when the theme styles every button.
@@ -137,6 +143,9 @@ It was removed in 4.7.2. If you had custom CSS there, copy it into your theme or
 * First WordPress.org release. Updates now come through WordPress.org. Re-activate the plugin if the main file name changed.
 
 == Upgrade Notice ==
+
+= 4.9.2 =
+Product widgets update installment amounts in the browser, and variable-product pages do less work. Upgrade recommended. Purge any full-page cache after updating.
 
 = 4.9.1 =
 Top bar discount button styling, translated copy confirmation, and quieter campaign refresh. Upgrade recommended.

@@ -8,6 +8,10 @@
  * later timeout can still show that list. The next refresh uses a short
  * timeout. A successful empty list clears the stored campaigns.
  *
+ * Storefront refresh is single-flight and never stacks OAuth + campaigns on
+ * one visitor: a cold bearer is warmed first; campaigns wait until the token
+ * is already cached (usually the next page load).
+ *
  * @package TorobPay
  */
 
@@ -25,9 +29,10 @@ function torobpay_discount_campaigns_transient_key() {
 }
 
 /**
- * HTTP timeout for a campaigns refresh, including a nested token request.
+ * HTTP timeout for a campaigns refresh.
  *
- * Short on purpose: this call can run during a product-page render.
+ * Short on purpose: this call can run during a storefront render when the
+ * bearer is already warm. Cold tokens refresh OAuth alone first.
  *
  * @return int Seconds.
  */
@@ -296,10 +301,103 @@ function torobpay_discount_campaigns_commit_response( $response, $previous ) {
 }
 
 /**
- * Fetch campaigns from the API.
+ * Whether a cached bearer token is already available.
+ *
+ * Reads the transient only. Does not call TorobPay or ensure_bearer_token().
+ *
+ * @return bool
+ */
+function torobpay_discount_campaigns_bearer_is_warm() {
+	$token = get_transient( 'torobpay_bearer_token' );
+	if ( is_string( $token ) ) {
+		return '' !== $token;
+	}
+
+	return ! empty( $token );
+}
+
+/**
+ * TorobPay API used for campaign refresh / bearer warm-up.
+ *
+ * Tests may replace the instance with the torobpay_discount_campaigns_api filter.
+ *
+ * @return object|null
+ */
+function torobpay_discount_campaigns_api() {
+	$api = apply_filters( 'torobpay_discount_campaigns_api', null );
+	if ( is_object( $api ) ) {
+		return $api;
+	}
+
+	if ( ! class_exists( 'TorobPayAPI' ) ) {
+		return null;
+	}
+
+	return new TorobPayAPI();
+}
+
+/**
+ * Campaign list and ok flag from a cache payload.
+ *
+ * @param array|null $previous Payload from torobpay_read_discount_campaigns_cache().
+ * @return array{0: array, 1: bool}
+ */
+function torobpay_discount_campaigns_previous_display( $previous ) {
+	$campaigns = ( is_array( $previous ) && isset( $previous['campaigns'] ) && is_array( $previous['campaigns'] ) )
+		? $previous['campaigns']
+		: array();
+	$ok        = is_array( $previous ) && ( ! array_key_exists( 'ok', $previous ) || ! empty( $previous['ok'] ) );
+
+	return array( $campaigns, $ok );
+}
+
+/**
+ * Warm the bearer on this request; keep serving the previous campaign list.
+ *
+ * Storefront must not stack OAuth + campaigns on one visitor. After a successful
+ * warm-up, freshness expires immediately so the next page load (token warm) can
+ * fetch campaigns. Failed OAuth keeps the list and backs off for the retry window.
+ *
+ * @param array|null $previous Previous payload from torobpay_read_discount_campaigns_cache().
+ * @return array Sanitized campaigns to display.
+ */
+function torobpay_discount_campaigns_prioritize_oauth( $previous ) {
+	list( $campaigns, $ok ) = torobpay_discount_campaigns_previous_display( $previous );
+
+	$warmed = false;
+	$api    = torobpay_discount_campaigns_api();
+	if ( $api && function_exists( 'torobpay_is_configured' ) && torobpay_is_configured() && method_exists( $api, 'ensure_bearer_token' ) ) {
+		// Same short budget as campaigns GET — never the API client default 10s.
+		$warmed = (bool) $api->ensure_bearer_token( torobpay_discount_campaigns_http_timeout() );
+	}
+
+	if ( ! $warmed ) {
+		torobpay_store_discount_campaigns_cache( $campaigns, torobpay_discount_campaigns_retry_seconds(), $ok );
+		return torobpay_discount_campaigns_remember( $campaigns, $ok ? 'ok' : 'error' );
+	}
+
+	// Token is warm for later requests. Expire freshness now so the next page
+	// load fetches campaigns (store() floors fresh_for at 60s — too long here).
+	$keep = ( $ok || ! empty( $campaigns ) ) ? DAY_IN_SECONDS : torobpay_discount_campaigns_retry_seconds();
+	set_transient(
+		torobpay_discount_campaigns_transient_key(),
+		array(
+			'campaigns'   => array_values( $campaigns ),
+			'fresh_until' => time(),
+			'ok'          => (bool) $ok,
+		),
+		$keep
+	);
+
+	return torobpay_discount_campaigns_remember( $campaigns, $ok ? 'ok' : 'error' );
+}
+
+/**
+ * Fetch campaigns from the API when the bearer token is already warm.
  *
  * Unavailable or slow responses keep the previous list and pause retries for
- * a minute. The product page only waits for the short campaigns timeout.
+ * a minute. Callers must not invoke this on a cold token; use
+ * torobpay_discount_campaigns_prioritize_oauth() instead.
  *
  * @param array|null $previous Previous payload. Read from the transient when omitted.
  * @return array Sanitized campaigns.
@@ -309,12 +407,13 @@ function torobpay_fetch_discount_campaigns( $previous = null ) {
 		$previous = torobpay_read_discount_campaigns_cache();
 	}
 
-	if ( ! class_exists( 'TorobPayAPI' ) || ! function_exists( 'torobpay_is_configured' ) || ! torobpay_is_configured() ) {
+	$api = torobpay_discount_campaigns_api();
+	if ( ! $api || ! function_exists( 'torobpay_is_configured' ) || ! torobpay_is_configured() || ! method_exists( $api, 'get_discount_campaigns' ) ) {
 		torobpay_forget_discount_campaigns_cache();
 		return torobpay_discount_campaigns_remember( array(), 'ok' );
 	}
 
-	$response = ( new TorobPayAPI() )->get_discount_campaigns( torobpay_discount_campaigns_http_timeout() );
+	$response = $api->get_discount_campaigns( torobpay_discount_campaigns_http_timeout() );
 
 	return torobpay_discount_campaigns_commit_response( $response, $previous );
 }
@@ -382,6 +481,10 @@ function torobpay_discount_campaigns_release_refresh_lock() {
  * A stale cache is refreshed by one request. Others keep the last list
  * instead of each waiting on the gateway.
  *
+ * Browse budget: at most one TorobPay HTTP call per refresh. A cold bearer is
+ * warmed with OAuth on this request; campaigns wait for a later page load when
+ * the token is already cached.
+ *
  * @return array
  */
 function torobpay_get_discount_campaigns() {
@@ -408,6 +511,10 @@ function torobpay_get_discount_campaigns() {
 	}
 
 	try {
+		if ( ! torobpay_discount_campaigns_bearer_is_warm() ) {
+			return torobpay_discount_campaigns_prioritize_oauth( $cached );
+		}
+
 		return torobpay_fetch_discount_campaigns( $cached );
 	} finally {
 		torobpay_discount_campaigns_release_refresh_lock();
